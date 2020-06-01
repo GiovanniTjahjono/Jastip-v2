@@ -12,7 +12,7 @@
 
                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-
+                            @if(count($gambar) > 0)
                             @for($i = 0;$i < count($gambar); $i++) @if($i===0) <div class="carousel-item active">
                                 <img src="{{asset('produk_images/'.$gambar[$i]->url)}}" class="d-block w-100" alt="...">
                         </div>
@@ -23,9 +23,7 @@
                         @endif
 
                         @endfor
-
-
-
+                        @endif
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -38,62 +36,61 @@
                 </div>
                 <div class="row" style="margin-bottom: 10px">
                     <div class="col-md-4">
-                        <a href="/pesan/{{$product->id_user}}" class="btn btn-success"
+                        <a href="/pesan/{{$produk->id_user}}" class="btn btn-success"
                             style="background-color: #65587f; border: hidden">Chat Penjual</a>
                     </div>
                 </div>
-
             </div>
             <div class="col">
                 <div class="card mt-5 border-0">
                     <div class="card-body">
-                        <h3 class="card-title">{{$product->nama}}</h3>
+                        <h3 class="card-title">{{$produk->nama}}</h3>
                         <p class="card-subtitle mb-2 text-muted">{{$kategori[0]->nama_kategori}}</p>
-                        <p class="card-text">{{$product->keterangan}}</p>
+                        <p class="card-text">{{$produk->keterangan}}</p>
                     </div>
                     <ul class="list-group list-group-flush">
 
-                        <li class="list-group-item" id="harga_produk" value="{{$product->harga_produk}}"><small
+                        <li class="list-group-item" id="harga_produk" value="{{$produk->harga_produk}}"><small
                                 class="text-muted">Harga produk:
-                            </small>Rp.{{$product->harga_produk}}</li>
-                        <li class="list-group-item" id="harga_jasa" value="{{$product->harga_jasa}}"><small
+                            </small>Rp.{{$produk->harga_produk}}</li>
+                        <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small
                                 class="text-muted">Harga jasa:
-                            </small>Rp.{{$product->harga_jasa}}</li>
+                            </small>Rp.{{$produk->harga_jasa}}</li>
                         <li class="list-group-item"><small class="text-muted">Jenis produk:
-                            </small>{{$product->jenis_produk}}</li>
-                        <li class="list-group-item"><small class="text-muted">Stok: </small>{{$product->stok}}</li>
-                        <li class="list-group-item"><small class="text-muted">Berat: </small>{{$product->berat}} Kg
+                            </small>{{$produk->jenis_produk}}</li>
+                        <li class="list-group-item"><small class="text-muted">Stok: </small>{{$produk->stok}}</li>
+                        <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produk->berat}} Kg
                         </li>
 
-                        <li class="list-group-item" id="asal" value="{{$product->asal_pengiriman}}"><small
+                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small
                                 class="text-muted">Asal Pengiriman:
 
-                        <li class="list-group-item" id="asal" value="{{$product->asal_pengiriman}}"><small
+                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small
                                 class="text-muted">Asal Pengiriman:
 
-                            </small>Rp.{{$product->asal_pengiriman}}</li>
+                            </small>Rp.{{$produk->asal_pengiriman}}</li>
                     </ul>
 
                     <div class="card-body">
                         <form method="POST" action="/order/confirm">
                             @csrf
                             <input type="text" hidden class="form-control" id="id_produk" name="id_produk"
-                                value="{{$product->id}}">
+                                value="{{$produk->id}}">
                             <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli"
                                 value="{{Auth::user()->id}}">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Jumlah Pembelian</label>
                                 <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
-                                    value="1" min="1" max="{{$product->stok}}">
+                                    value="1" min="1" max="{{$produk->stok}}">
 
                                 <input type="text" hidden class="form-control" id="id_produk" name="id_produk"
-                                    value="{{$product->id}}">
+                                    value="{{$produk->id}}">
                                 <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli"
                                     value="{{Auth::user()->id}}">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Jumlah Pembelian</label>
                                     <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
-                                        value="1" min="1" max="{{$product->stok}}">
+                                        value="1" min="1" max="{{$produk->stok}}">
 
                                 </div>
                                 <div class="form-group">
@@ -164,10 +161,10 @@
             $('#nama_kota').val(nama_kota);
 
             var name = $('#kab_id').val();
-            var name2 = "{{$product->asal_pengiriman}}";
+            var name2 = "{{$produk->asal_pengiriman}}";
             $.post("{{url('/order/get_price')}}", {
                     'kab_id': name,
-                    'asal': "{{$product->asal_pengiriman}}",
+                    'asal': "{{$produk->asal_pengiriman}}",
                     '_token': "{{csrf_token()}}"
                 },
                 function(data) {

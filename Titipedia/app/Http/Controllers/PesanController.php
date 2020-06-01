@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Pesan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\DB;
 
 class PesanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,21 @@ class PesanController extends Controller
      */
     public function index()
     {
-        //
+        $queryuser = DB::table('users')
+            ->join('pesans', function ($join) {
+                $join->on('users.id', '=', 'pesans.id_penerima')
+                    ->where('pesans.id_pengirim', Auth::user()->id)
+                    ->orWhere('pesans.id_pengirim', 'user.id')
+                    // ->where(function ($query) {
+                    //     $query->where('id_penerima', Auth::user()->id);
+                    // })
+                    ->where('pesans.id_penerima', Auth::user()->id);
+            })
+            ->select('users.*', DB::raw('max(waktu_kirim) as waktu_kirim'))
+            ->groupBy('users.id')
+            ->orderBy('waktu_kirim', 'desc')->get();
+        $cek = 'user';
+        return view('pages.pesan.pesanClone', compact('queryuser', 'cek'));
     }
 
     /**
@@ -35,7 +58,14 @@ class PesanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Pesan::create([
+            'id_pengirim' => Auth::user()->id,
+            'id_penerima' => $request->id_penerima,
+            'isi_pesan' => $request->isi_pesan,
+            'waktu_kirim' => date("Y-m-d H:i:s"),
+            'dibaca' => 'belum'
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -48,7 +78,54 @@ class PesanController extends Controller
     {
         //
     }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function roomchat(Request $request)
+    {
+        $id = $request->pesan;
+        Pesan::where('id', $id)
+            ->update([
+                'dibaca' => 'sudah'
+            ]);
+        $pesan = DB::table('pesans')
+            // ->where('id_penerima', Auth::user()->id)
+            // ->orWhere('id_penerima', $request->pesan)
+            // ->where('id_pengirim', Auth::user()->id)
+            // ->orWhere('id_pengirim', $request->pesan)
+            // ->orderBy('id', 'asc')->get();
+            ->where('id_penerima', Auth::user()->id)
+            ->orWhere('id_penerima', $request->pesan)
+            ->where(function ($query) use ($request) {
+                $query->where('id_pengirim', Auth::user()->id)
+                    ->orWhere('id_pengirim', $request->pesan);
+            })
+            ->orderBy('id', 'asc')->get();
 
+        $user1 = DB::table('users')
+            ->where('id', Auth::user()->id)->get();
+        $user2 = DB::table('users')
+            ->where('id', $request->pesan)->get();
+        //dd($pesan);
+        $queryuser = DB::table('users')
+            ->join('pesans', function ($join) {
+                $join->on('users.id', '=', 'pesans.id_penerima')
+                    ->where('pesans.id_pengirim', Auth::user()->id)
+                    ->orWhere('pesans.id_pengirim', 'user.id')
+                    // ->where(function ($query) {
+                    //     $query->where('id_penerima', Auth::user()->id);
+                    // })
+                    ->where('pesans.id_penerima', Auth::user()->id);
+            })
+            ->select('users.*', DB::raw('max(waktu_kirim) as waktu_kirim'))
+            ->groupBy('users.id')
+            ->orderBy('waktu_kirim', 'desc')->get();
+        $cek = 'room';
+        return view('pages.pesan.pesan', compact('pesan', 'user1', 'user2', 'cek', 'queryuser'));
+    }
     /**
      * Show the form for editing the specified resource.
      *

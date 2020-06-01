@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('home');
-});
 
 Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 Auth::routes();
 
 Route::get('/profile', 'HomeController@index')->name('pages/home');
@@ -52,7 +50,7 @@ Route::patch('/request/{req}', 'RequestController@update');
 Route::get('/Profile/{profile}/edit', 'UserController@edit');
 
 //topup
-Route::get('/topup', 'Mutasi_SaldosController@index');
+Route::get('/topup', 'MutasiSaldoController@index');
 Route::post('/tambahsaldo', 'MutasiSaldoController@store');
 Route::post('/tariksaldo', 'MutasiSaldoController@withdraw');
 
@@ -61,9 +59,14 @@ Route::get('/pesan', 'PesanController@index');
 Route::get('/pesan/{pesan}', 'PesanController@chat');
 
 //Penjualan Pre-order
-Route::get('/order/{product}', 'PenjualanPreorderController@showProduk');
+Route::get('/order/{produk}', 'PenjualanPreorderController@showProduk');
 Route::post('/order/confirm', 'PenjualanPreorderController@store');
 Route::get('/order/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
+
+//pesan
+Route::get('/pesan', 'PesanController@index');
+Route::get('/pesan/{pesan}', 'PesanController@roomchat');
+Route::post('/kirim', 'PesanController@store');
 
 //Profile
 Route::get('/profile', 'UserController@index');
