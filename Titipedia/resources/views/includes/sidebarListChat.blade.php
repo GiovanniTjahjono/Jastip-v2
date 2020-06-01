@@ -9,20 +9,5 @@
         {{$data->name}}
     </a>
     @endforeach
-
-    <div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
-      <h4 id="fat">@fat</h4>
-      <p>...</p>
-      <h4 id="mdo">@mdo</h4>
-      <p>...</p>
-      <h4 id="one">one</h4>
-      <p>...</p>
-      <h4 id="two">two</h4>
-      <p>...</p>
-      <h4 id="three">three</h4>
-      <p>...</p>
-    </div>
-
-
   </div>
 </div>
