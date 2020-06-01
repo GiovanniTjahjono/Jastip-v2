@@ -23,21 +23,27 @@ class PesanController extends Controller
      */
     public function index()
     {
-        $queryuser = DB::table('users')
-            ->join('pesans', function ($join) {
-                $join->on('users.id', '=', 'pesans.id_penerima')
-                    ->where('pesans.id_pengirim', Auth::user()->id)
-                    ->orWhere('pesans.id_pengirim', 'user.id')
-                    // ->where(function ($query) {
-                    //     $query->where('id_penerima', Auth::user()->id);
-                    // })
-                    ->where('pesans.id_penerima', Auth::user()->id);
-            })
-            ->select('users.*', DB::raw('max(waktu_kirim) as waktu_kirim'))
-            ->groupBy('users.id')
-            ->orderBy('waktu_kirim', 'desc')->get();
+        // $queryuser = DB::table('users')
+        //     ->join('pesans', function ($join) {
+        //         $join->on('users.id', '=', 'pesans.id_penerima')
+        //             ->orON('users.id', '=', 'pesans.id_pengirim')
+        //             ->where('pesans.id_penerima', 'users.id')
+        //             ->where('pesans.id_pengirim', Auth::user()->id)
+        //             ->orWhere('pesans.id_penerima', Auth::user()->id)
+        //             ->Where('pesans.id_pengirim', 'users.id')
+        //             // ->where(function ($query) {
+        //             //     $query->where('id_penerima', Auth::user()->id);
+        //             // })
+        //         ;
+        //     })
+        //     ->select('users.*', DB::raw('max(pesans.waktu_kirim) as waktu_kirim'))
+        //     ->groupBy('users.id')
+        //     ->orderBy('waktu_kirim', 'desc')->get();
+        $id = Auth::user()->id;
+        $queryuser = DB::select("SELECT u.*, MAX(p.waktu_kirim)as waktu_kirim FROM pesans as p JOIN users as u ON p.id_penerima = u.id OR p.id_pengirim = u.id WHERE p.id_penerima = u.id AND p.id_pengirim = $id OR p.id_penerima = $id AND p.id_pengirim = u.id GROUP BY u.id ORDER BY p.waktu_kirim DESC");
         $cek = 'user';
         return view('pages.pesan.pesanDetail', compact('queryuser', 'cek'));
+        //dd($queryuser);
     }
 
     /**
@@ -97,8 +103,12 @@ class PesanController extends Controller
             // ->where('id_pengirim', Auth::user()->id)
             // ->orWhere('id_pengirim', $request->pesan)
             // ->orderBy('id', 'asc')->get();
-            ->where('id_penerima', Auth::user()->id)
-            ->orWhere('id_penerima', $request->pesan)
+            //->where('id_penerima', Auth::user()->id)
+            //->orWhere('id_penerima', $request->pesan)
+            ->where(function ($query) use ($request) {
+                $query->where('id_penerima', Auth::user()->id)
+                    ->orWhere('id_penerima', $request->pesan);
+            })
             ->where(function ($query) use ($request) {
                 $query->where('id_pengirim', Auth::user()->id)
                     ->orWhere('id_pengirim', $request->pesan);
@@ -109,21 +119,10 @@ class PesanController extends Controller
             ->where('id', Auth::user()->id)->get();
         $user2 = DB::table('users')
             ->where('id', $request->pesan)->get();
-        //dd($pesan);
-        $queryuser = DB::table('users')
-            ->join('pesans', function ($join) {
-                $join->on('users.id', '=', 'pesans.id_penerima')
-                    ->where('pesans.id_pengirim', Auth::user()->id)
-                    ->orWhere('pesans.id_pengirim', 'user.id')
-                    // ->where(function ($query) {
-                    //     $query->where('id_penerima', Auth::user()->id);
-                    // })
-                    ->where('pesans.id_penerima', Auth::user()->id);
-            })
-            ->select('users.*', DB::raw('max(waktu_kirim) as waktu_kirim'))
-            ->groupBy('users.id')
-            ->orderBy('waktu_kirim', 'desc')->get();
+        $id = Auth::user()->id;
+        $queryuser = DB::select("SELECT u.*, MAX(p.waktu_kirim)as waktu_kirim FROM pesans as p JOIN users as u ON p.id_penerima = u.id OR p.id_pengirim = u.id WHERE p.id_penerima = u.id AND p.id_pengirim = $id OR p.id_penerima = $id AND p.id_pengirim = u.id GROUP BY u.id ORDER BY p.waktu_kirim DESC");
         $cek = 'room';
+        //dd($pesan);
         return view('pages.pesan.pesan', compact('pesan', 'user1', 'user2', 'cek', 'queryuser'));
     }
     /**

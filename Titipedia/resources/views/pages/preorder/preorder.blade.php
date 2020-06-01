@@ -44,6 +44,16 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
+<<<<<<< HEAD
+=======
+                @if($produk->id_user !== Auth::user()->id)
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-md-4">
+                        <a href="/pesan/{{$produk->id_user}}" class="btn btn-success" style="background-color: #65587f; border: hidden">Chat Penjual</a>
+                    </div>
+                </div>
+                @endif
+>>>>>>> 86fa7b2321148cbcb0c506fea2a69b2730d77658
             </div>
             <div class="col">
                 <div class="card mt-5 border-0">
@@ -54,11 +64,9 @@
                     </div>
                     <ul class="list-group list-group-flush">
 
-                        <li class="list-group-item" id="harga_produk" value="{{$produk->harga_produk}}"><small
-                                class="text-muted">Harga produk:
+                        <li class="list-group-item" id="harga_produk" value="{{$produk->harga_produk}}"><small class="text-muted">Harga produk:
                             </small>Rp.{{$produk->harga_produk}}</li>
-                        <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small
-                                class="text-muted">Harga jasa:
+                        <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small class="text-muted">Harga jasa:
                             </small>Rp.{{$produk->harga_jasa}}</li>
                         <li class="list-group-item"><small class="text-muted">Jenis produk:
                             </small>{{$produk->jenis_produk}}</li>
@@ -66,11 +74,9 @@
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produk->berat}} Kg
                         </li>
 
-                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small
-                                class="text-muted">Asal Pengiriman:
+                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
 
-                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small
-                                class="text-muted">Asal Pengiriman:
+                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
 
                             </small>Rp.{{$produk->asal_pengiriman}}</li>
                     </ul>
@@ -78,34 +84,31 @@
                     <div class="card-body">
                         <form method="POST" action="/order/confirm">
                             @csrf
-                            <input type="text" hidden class="form-control" id="id_produk" name="id_produk"
-                                value="{{$produk->id}}">
-                            <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli"
-                                value="{{Auth::user()->id}}">
+                            <input type="text" hidden class="form-control" id="id_produk" name="id_produk" value="{{$produk->id}}">
+                            <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Jumlah Pembelian</label>
-                                <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
-                                    value="1" min="1" max="{{$produk->stok}}">
+                                <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian" value="1" min="1" max="{{$produk->stok}}">
 
-                                <input type="text" hidden class="form-control" id="id_produk" name="id_produk"
-                                    value="{{$produk->id}}">
-                                <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli"
-                                    value="{{Auth::user()->id}}">
+                                <input type="text" hidden class="form-control" id="id_produk" name="id_produk" value="{{$produk->id}}">
+                                <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Jumlah Pembelian</label>
+<<<<<<< HEAD
                                     <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
                                         value="1" min="1" max="{{$produk->stok}}">
+=======
+                                    <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian" value="1" min="1" max="{{$produk->stok}}">
+
+>>>>>>> 86fa7b2321148cbcb0c506fea2a69b2730d77658
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nama Pembeli</label>
-                                    <input type="text" class="form-control" id="nama" name="nama_pembeli"
-                                        value="{{Auth::user()->name}}" aria-describedby="emailHelp">
+                                    <input type="text" class="form-control" id="nama" name="nama_pembeli" value="{{Auth::user()->name}}" aria-describedby="emailHelp">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Alamat Pengiriman</label>
-                                    <input type="text" class="form-control" id="alamat_pengiriman"
-                                        name="alamat_pengiriman" value="{{Auth::user()->alamat}}"
-                                        aria-describedby="emailHelp">
+                                    <input type="text" class="form-control" id="alamat_pengiriman" name="alamat_pengiriman" value="{{Auth::user()->alamat}}" aria-describedby="emailHelp">
                                 </div>
 
                                 <div class="form-group">
