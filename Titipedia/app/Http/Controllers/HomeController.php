@@ -14,7 +14,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //Jika ingin tidak melewati login untuk pergi ke halaman ini, hapus code d bawah
+        //$this->middleware('auth');
     }
 
     /**

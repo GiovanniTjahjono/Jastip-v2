@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,21 +22,30 @@ Auth::routes();
 Route::get('/profile', 'HomeController@index')->name('pages/home');
 
 //Produk
-Route::get('/produk', 'ProductsController@index');
-Route::get('/produk/create', 'ProductsController@create');
-Route::get('/produk/{product}', 'ProductsController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
-Route::post('/produk', 'ProductsController@store');
-Route::delete('/produk/{product}', 'ProductsController@destroy');
-Route::get('/produk/{product}/edit', 'ProductsController@edit');
-Route::patch('/produk/{product}', 'ProductsController@update');
+Route::get('/produk', 'ProdukController@index');
+Route::get('/produk/create', 'ProdukController@create');
+Route::get('/produk/{produk}', 'ProdukController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
+Route::post('/produk', 'ProdukController@store');
+Route::delete('/produk/{produk}', 'ProdukController@destroy');
+Route::get('/produk/{produk}/edit', 'ProdukController@edit');
+Route::patch('/produk/{produk}', 'ProdukController@update');
+
+//Produk Bulk Buy
+Route::get('/produk-bulk-buy', 'ProdukBulkBuyController@index');
+Route::get('/produk-bulk-buy/create', 'ProdukBulkBuyController@create');
+Route::get('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
+Route::post('/produk-bulk-buy', 'ProdukBulkBuyController@store');
+Route::delete('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@destroy');
+Route::get('/produk-bulk-buy/{produk}/edit', 'ProdukBulkBuyController@edit');
+Route::patch('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@update');
 
 //request
-Route::get('/request', 'ReqController@index');
-Route::get('/request/createreq', 'ReqController@create');
-Route::post('/request', 'ReqController@store');
-Route::delete('/request/{req}', 'ReqController@destroy');
-Route::get('/request/{req}/edit', 'ReqController@edit');
-Route::patch('/request/{req}', 'ReqController@update');
+Route::get('/request', 'RequestController@index');
+Route::get('/request/create', 'RequestController@create');
+Route::post('/request', 'RequestController@store');
+Route::delete('/request/{req}', 'RequestController@destroy');
+Route::get('/request/{req}/edit', 'RequestController@edit');
+Route::patch('/request/{req}', 'RequestController@update');
 
 //User
 //Route::post('/tambahsaldo', 'UserController@update');
@@ -44,21 +53,21 @@ Route::get('/Profile/{profile}/edit', 'UserController@edit');
 
 //topup
 Route::get('/topup', 'Mutasi_SaldosController@index');
-Route::post('/tambahsaldo', 'Mutasi_SaldosController@store');
-Route::post('/tariksaldo', 'Mutasi_SaldosController@withdraw');
+Route::post('/tambahsaldo', 'MutasiSaldoController@store');
+Route::post('/tariksaldo', 'MutasiSaldoController@withdraw');
 
 //pesan
 Route::get('/pesan', 'PesanController@index');
 Route::get('/pesan/{pesan}', 'PesanController@chat');
 
-//Order
-Route::get('/order/{product}', 'OrderController@showProduk');
-Route::post('/order/confirm', 'OrderController@store');
-Route::get('/order/daftar_pembelian_preorder/{id}', 'OrderController@show');
+//Penjualan Pre-order
+Route::get('/order/{product}', 'PenjualanPreorderController@showProduk');
+Route::post('/order/confirm', 'PenjualanPreorderController@store');
+Route::get('/order/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
 
 //Profile
 Route::get('/profile', 'UserController@index');
 
 //RajaOngkir
-Route::post('/order/get_price', 'OrderController@RajaOngkir');
+Route::post('/order/get_price', 'PenjualanPreorderController@RajaOngkir');
 

@@ -1,16 +1,11 @@
-@extends('layouts.productview')
+@extends('layouts.produkView')
 @section('content')
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
+<div class="container mt-4 shadow-lg p-3 mb-5 bg-white rounded border-0">
+    <div class="card border-0">
+        <div class="card-header bg-white">
             <h3>Data Request</h3>
         </div>
         <div class="card-body">
-            <div class="row" style="margin-bottom: 10px">
-                <div class="col-md-4">
-                    <a href="request/createreq" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data Request</a>
-                </div>
-            </div>
             @if (session('status')==="Data Berhasil Ditambahkan!")
             <div class="alert alert-success">
                 {{ session('status') }}
@@ -24,8 +19,13 @@
                 {{ session('status') }}
             </div>
             @endif
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="request/create" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data Request</a>
+                </div>
+            </div>
             <div class="mt-3">
-                <table id="table_product" class="table table-striped table-bordered table-hover">
+                <table id="table_product" class="table table-responsive table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -39,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($req as $data)
+                        @foreach($request as $data)
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama_req}}</td>

@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\ProdukBulkBuy;
+use App\User;
+use App\Gambar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Contracts\DataTable;
 
 class ProdukBulkBuyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,15 @@ class ProdukBulkBuyController extends Controller
      */
     public function index()
     {
-        //
+        $produkBulkBuys = DB::table('produk_bulk_buys')
+        ->join('users', function($join) {
+            $join->on('produk_bulk_buys.id_user', '=', 'users.id')
+            ->where('users.id', '=', Auth::user()->id);
+        })
+        ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
+        ->select('produk_bulk_buys.*', 'users.name', 'kategoris.nama_kategori')
+        ->get();
+        return view('pages.produkBulkBuy.produk', compact('produkBulkBuys'));
     }
 
     /**
