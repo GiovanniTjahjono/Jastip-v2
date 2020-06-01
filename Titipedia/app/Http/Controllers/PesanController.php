@@ -37,7 +37,7 @@ class PesanController extends Controller
             ->groupBy('users.id')
             ->orderBy('waktu_kirim', 'desc')->get();
         $cek = 'user';
-        return view('pages.pesan.pesanClone', compact('queryuser', 'cek'));
+        return view('pages.pesan.pesanDetail', compact('queryuser', 'cek'));
     }
 
     /**
