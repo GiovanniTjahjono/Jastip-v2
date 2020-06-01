@@ -24,16 +24,18 @@
               <li class="nav-item">
                 <a class="nav-link text-light" href="/produk">Produk & Request</a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item">
                 <a class="nav-link text-light" href="/order/daftar_pembelian_preorder/{{Auth::user()->id}}">Pembelian</a>
               </li>
               <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <img src="{{ asset('photo_profile/'.Auth::user()->foto)}}" width="30" height="30" class="rounded-circle" >
                       {{Auth::user()->name}}
                     </a>
                     <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                         <a class="nav-link text-dark" href="/profile">Profile</a>
                         <a class="nav-link  text-dark" href="/topup">Top Up Saldo</a>
+                        <a class="nav-link text-dark" href="/pesan">Pesan</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>

@@ -3,14 +3,23 @@
 <div class="container mt-5">
     <div class="card  shadow-lg p-3 mb-5 bg-white rounded border-0">
         <div class="card-header bg-white">
-            <h3>Order</h3>
+            <div class="row">
+                <div class="col-6">
+                    <h3>Order</h3>
+                </div>
+                <div class="col-6">
+                    <a href="/pesan/{{$produk->id_user}}" class="btn float-right btn-success border-0"
+                        style="background-color: #65587f;">Chat Penjual</a>
+                </div>
+            </div>
+            
+            
+           
         </div>
         <div class="container">
             <div class="row">
-                <div class="col">
-
-
-                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="col-md-6">
+                    <div id="carouselExampleControls" class="carousel slide mt-4" data-ride="carousel">
                         <div class="carousel-inner">
                             <!--Harus ada-->
                             @if(count($gambar) > 0)
@@ -34,12 +43,6 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
-                </div>
-                <div class="row" style="margin-bottom: 10px">
-                    <div class="col-md-4">
-                        <a href="/pesan/{{$produk->id_user}}" class="btn btn-success"
-                            style="background-color: #65587f; border: hidden">Chat Penjual</a>
-                    </div>
                 </div>
             </div>
             <div class="col">
@@ -92,7 +95,6 @@
                                     <label for="exampleInputEmail1">Jumlah Pembelian</label>
                                     <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
                                         value="1" min="1" max="{{$produk->stok}}">
-
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nama Pembeli</label>
