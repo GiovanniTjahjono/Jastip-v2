@@ -12,6 +12,7 @@
 
                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
+                            <!--Harus ada-->
                             @if(count($gambar) > 0)
                             @for($i = 0;$i < count($gambar); $i++) @if($i===0) <div class="carousel-item active">
                                 <img src="{{asset('produk_images/'.$gambar[$i]->url)}}" class="d-block w-100" alt="...">
