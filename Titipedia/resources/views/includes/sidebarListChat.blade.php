@@ -4,9 +4,9 @@
   </div>
   <div class="list-group overflow-auto">
     @foreach($queryuser as $data)
-    <a href="#" class="list-group-item list-group-item-action border-0">
+    <a href="/pesan/{{$data->id}}" class="list-group-item list-group-item-action border-0">
       <img src="{{ asset('photo_profile/'.$data->foto)}}" width="30" height="30" class="d-inline-block align-top mr-1" alt="">
-        {{$data->name}}
+      {{$data->name}}
     </a>
     @endforeach
   </div>
