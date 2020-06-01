@@ -7,14 +7,15 @@
                 <div class="col-6">
                     <h3>Order</h3>
                 </div>
+                @if($produk->id_user !== Auth::user()->id)
                 <div class="col-6">
-                    <a href="/pesan/{{$produk->id_user}}" class="btn float-right btn-success border-0"
-                        style="background-color: #65587f;">Chat Penjual</a>
+                    <a href="/pesan/{{$produk->id_user}}" class="btn float-right btn-success border-0" style="background-color: #65587f;">Chat Penjual</a>
                 </div>
+                @endif
             </div>
-            
-            
-           
+
+
+
         </div>
         <div class="container">
             <div class="row">
@@ -44,16 +45,6 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-<<<<<<< HEAD
-=======
-                @if($produk->id_user !== Auth::user()->id)
-                <div class="row" style="margin-bottom: 10px">
-                    <div class="col-md-4">
-                        <a href="/pesan/{{$produk->id_user}}" class="btn btn-success" style="background-color: #65587f; border: hidden">Chat Penjual</a>
-                    </div>
-                </div>
-                @endif
->>>>>>> 86fa7b2321148cbcb0c506fea2a69b2730d77658
             </div>
             <div class="col">
                 <div class="card mt-5 border-0">
@@ -94,13 +85,8 @@
                                 <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Jumlah Pembelian</label>
-<<<<<<< HEAD
-                                    <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
-                                        value="1" min="1" max="{{$produk->stok}}">
-=======
                                     <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian" value="1" min="1" max="{{$produk->stok}}">
 
->>>>>>> 86fa7b2321148cbcb0c506fea2a69b2730d77658
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nama Pembeli</label>
