@@ -17,8 +17,7 @@ class CreateProdukBulkBuysTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('nama');
-            $table->integer('minimum_target');
-            $table->integer('maximum_target');
+            $table->integer('jumlah_target');
             $table->integer('harga_jasa');
             $table->integer('harga_produk');
             $table->integer('berat');
@@ -27,7 +26,7 @@ class CreateProdukBulkBuysTable extends Migration
             $table->integer('id_user');
             $table->integer('id_kategori');
             $table->date('batas_waktu');
-            $table->string('status'); //waiting, approve
+            $table->enum('status_bulk', ['menunggu', 'diproses']);
         });
     }
 
