@@ -13,9 +13,6 @@
                 </div>
                 @endif
             </div>
-
-
-
         </div>
         <div class="container">
             <div class="row">
@@ -103,7 +100,7 @@
                                         <?PHP
                                         $data = json_decode($response, true);
                                         for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                            if ($data['rajaongkir']['results'][$i]['city_name'] === "Jakarta Barat") {
+                                            if ($data['rajaongkir']['results'][$i]['city_name'] === Auth::user()->kota) {
                                                 echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                             }
                                             echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";

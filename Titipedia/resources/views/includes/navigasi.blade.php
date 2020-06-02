@@ -18,9 +18,6 @@
                     <a class="nav-link text-light" href="/register">Register</a>
                 </li>
                 @else
-               
-                
-             
               <li class="nav-item">
                 <a class="nav-link text-light" href="/produk">Produk & Request</a>
               </li>
@@ -43,13 +40,10 @@
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
-                    </div>
-               
+                    </div>             
               </li>
             </ul>
             @endguest
-          </div>
-
-     
+          </div> 
     </div>
 </nav>

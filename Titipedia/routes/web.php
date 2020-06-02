@@ -26,7 +26,7 @@ Route::get('/produk/{produk}', 'ProdukController@show'); // harus dibawwah, krn 
 Route::post('/produk', 'ProdukController@store');
 Route::delete('/produk/{produk}', 'ProdukController@destroy');
 Route::get('/produk/{produk}/edit', 'ProdukController@edit');
-Route::patch('/produk/{produk}', 'ProdukController@update');
+Route::patch('/produk/update/{produk}', 'ProdukController@update');
 
 //Produk Bulk Buy
 Route::get('/produk-bulk-buy', 'ProdukBulkBuyController@index');
@@ -71,6 +71,10 @@ Route::post('/kirim', 'PesanController@store');
 //Profile
 Route::get('/profile', 'UserController@index');
 
+//Gambar
+Route::delete('/gambar/{gambar}', 'GambarController@destroy');
+Route::get('/edit-gambar/{gambar}', 'GambarController@edit');
+Route::post('/tambah_gambar', 'GambarController@store');
 //RajaOngkir
 Route::post('/order/get_price', 'PenjualanPreorderController@RajaOngkir');
 

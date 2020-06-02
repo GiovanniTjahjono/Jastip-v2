@@ -24,7 +24,7 @@
                         <select class="custom-select @error('jenis_produk') is-invalid @enderror" id="jenis_produk"
                             name="nama_kategori" value="{{old('jenis_produk')}}">
                             @foreach($kategoris as $key => $data)
-                            <option value="{{$key+1}}">{{$data->nama_kategori}}</option>
+                            <option value="{{$data->id}}">{{$data->nama_kategori}}</option>
                             @endforeach
                         </select>
                         @error('jenis_produk')

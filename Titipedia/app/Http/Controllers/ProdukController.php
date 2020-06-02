@@ -102,6 +102,7 @@ class ProdukController extends Controller
      */
     public function show(Produk $produk)
     {
+        
         return view('pages.produk.show', compact('produk'));
     }
 
@@ -113,7 +114,10 @@ class ProdukController extends Controller
      */
     public function edit(Produk $produk)
     {
-        return view('pages.produk.edit', compact('produk'));
+        $gambars = DB::table('gambars')
+                ->where('id_produk', '=', $produk->id)
+                ->get();
+        return view('pages.produk.edit', compact('produk', 'gambars'));
     }
 
     /**
@@ -154,9 +158,6 @@ class ProdukController extends Controller
                 $identity++;
             }
         }
-      
-        
-        //
         Produk::where('id', $produk->id)
             ->update([
                 'nama' => $request->nama_produk,
@@ -181,7 +182,9 @@ class ProdukController extends Controller
     public function destroy(Produk $produk)
     {
         Produk::destroy($produk->id);
-        //gambar::destroy($gambar->id_produk);
+        //Gambar::destroy($gambar->id_produk);
         return redirect('produk')->with('status', 'Data Produk Berhasil Dihapus!');
     }
+    
 }
+

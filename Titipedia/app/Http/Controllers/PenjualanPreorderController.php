@@ -116,6 +116,7 @@ class PenjualanPreorderController extends Controller
      */
     public function showProduk(Produk $produk)
     {
+        //Get nama kota list
         $key = Config::get('RAJA_ONGKIR_API');
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -132,6 +133,7 @@ class PenjualanPreorderController extends Controller
             ),
         ));
 
+        // Response
         $response = curl_exec($curl);
         $err = curl_error($curl);
 

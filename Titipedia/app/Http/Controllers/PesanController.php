@@ -120,7 +120,13 @@ class PesanController extends Controller
         $user2 = DB::table('users')
             ->where('id', $request->pesan)->get();
         $id = Auth::user()->id;
-        $queryuser = DB::select("SELECT u.*, MAX(p.waktu_kirim)as waktu_kirim FROM pesans as p JOIN users as u ON p.id_penerima = u.id OR p.id_pengirim = u.id WHERE p.id_penerima = u.id AND p.id_pengirim = $id OR p.id_penerima = $id AND p.id_pengirim = u.id GROUP BY u.id ORDER BY p.waktu_kirim DESC");
+        $queryuser = DB::select("SELECT u.*, MAX(p.waktu_kirim)as waktu_kirim 
+                                    FROM pesans as p 
+                                    JOIN users as u 
+                                    ON p.id_penerima = u.id OR p.id_pengirim = u.id 
+                                    WHERE p.id_penerima = u.id AND p.id_pengirim = $id 
+                                    OR p.id_penerima = $id AND p.id_pengirim = u.id 
+                                    GROUP BY u.id ORDER BY p.waktu_kirim DESC");
         $cek = 'room';
         //dd($pesan);
         return view('pages.pesan.pesan', compact('pesan', 'user1', 'user2', 'cek', 'queryuser'));
