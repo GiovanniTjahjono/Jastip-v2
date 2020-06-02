@@ -3,10 +3,10 @@
 <div class="container mt-4 shadow-lg p-3 mb-5 bg-white rounded border-0">
     <div class="card border-0">
         <div class="card-header bg-white">
-            <h3>Data Produk</h3>
+            <h3>Data Produk Bulk Buy</h3>
         </div>
         <div class="card-body">
-           
+
             @if (session('status') === "Data Berhasil Ditambahkan!")
             <div class="alert alert-success">
                 {{ session('status') }}
@@ -22,7 +22,7 @@
             @endif
             <div class="row">
                 <div class="col-md-4">
-                    <a href="produk/create" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data</a>
+                    <a href="produk-bulk-buy/create" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data</a>
                 </div>
             </div>
             <div class="mt-3">

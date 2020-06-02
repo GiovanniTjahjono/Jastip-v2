@@ -3,7 +3,7 @@
 <div class="container mt-4 shadow-lg p-3 mb-5 bg-white rounded border-0">
     <div class="card border-0">
         <div class="card-header bg-white">
-            <h3>Ubah Data Produk</h3>
+            <h3>Ubah Data Produk Bulk Buy</h3>
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data" action="/produk/{{$produk->id}}">
