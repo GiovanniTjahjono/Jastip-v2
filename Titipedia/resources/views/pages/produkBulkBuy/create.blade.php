@@ -69,8 +69,14 @@
                 <div class="form-group row">
                     <label for="berat" class="col-sm-2 col-form-label">Batas Waktu</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control datepicker" name="batas_waktu" id="batas_waktu" placeholder="Batas Waktu" value="" />
+                        <input class="date form-control" id="date_of_birth" class="form-control"
+                        name="date_of_birth" type="text" required placeholder="Batas Waktu"  />
                     </div>
+
+
+                   
+
+
                 </div>
                 <div class="form-group row">
                     <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
@@ -149,7 +155,12 @@
                         $(this).parents(".control-group").remove();
                     });
                 });
+                // Script datetime
+                $('.date').datepicker({  
+                   format: 'yyyy-mm-dd'
+                 });  
             </script>
+            
         </div>
     </div>
 </div>
