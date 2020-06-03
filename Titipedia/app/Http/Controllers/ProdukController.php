@@ -114,11 +114,12 @@ class ProdukController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Produk $produk)
-    {
+    {   
+        $kategoris = DB::table('kategoris')->get();
         $gambars = DB::table('gambars')
                 ->where('id_produk', '=', $produk->id)
                 ->get();
-        return view('pages.produk.edit', compact('produk', 'gambars'));
+        return view('pages.produk.edit', compact('produk', 'gambars', 'kategoris'));
     }
 
     /**
