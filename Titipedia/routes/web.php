@@ -27,7 +27,7 @@ Route::get('/produk/{produk}', 'ProdukController@show'); // harus dibawwah, krn 
 Route::post('/produk', 'ProdukController@store');
 Route::delete('/produk/{produk}', 'ProdukController@destroy');
 Route::get('/produk/{produk}/edit', 'ProdukController@edit');
-Route::patch('/produk/update/{produk}', 'ProdukController@update');
+Route::patch('/produk/{produk}', 'ProdukController@update');
 
 //Produk Bulk Buy
 Route::resource('/produk-bulk-buy', 'ProdukBulkBuyController'); //Untuk menggunakan method patch, put, delete
@@ -78,6 +78,7 @@ Route::get('/profile', 'UserController@index');
 Route::delete('/gambar/{gambar}', 'GambarController@destroy');
 Route::get('/edit-gambar/{gambar}', 'GambarController@edit');
 Route::post('/tambah_gambar', 'GambarController@store');
+Route::get('/edit-gambar-bulk/{gambar}', 'GambarController@editBulkBuy');
+Route::post('/tambah_gambar_bulk', 'GambarController@storeBulkBuy');
 //RajaOngkir
 Route::post('/order/get_price', 'PenjualanPreorderController@RajaOngkir');
-

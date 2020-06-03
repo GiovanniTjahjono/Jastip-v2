@@ -55,10 +55,10 @@
                             <td>{{$data->batas_waktu}}</td>
                             <td>{{$data->status_bulk}}</td>
                             <td>{{$data->keterangan}}</td>
-                            <td><a href="/produk/{{$data->id}}" class="badge badge-primary">detail</a>
-                                <a href="/produk/{{$data->id}}/edit" class="badge badge-success">edit</a>
+                            <td><a href="/produk-bulk-buy/{{$data->id}}" class="badge badge-primary">detail</a>
+                                <a href="/produk-bulk-buy/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
-                                <form action="/produk/{{$data->id}}" method="post">
+                                <form action="/produk-bulk-buy/{{$data->id}}" method="post">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="badge badge-danger">Delete</button>

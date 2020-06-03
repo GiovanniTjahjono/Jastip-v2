@@ -137,6 +137,11 @@ class ProdukBulkBuyController extends Controller
     public function edit(ProdukBulkBuy $produkBulkBuy)
     {
         //
+        $gambars = DB::table('gambars')
+            ->where('id_bulkbuy', '=', $produkBulkBuy->id)
+            ->get();
+        $kategoris = DB::table('kategoris')->get();
+        return view('pages.produkBulkBuy.edit', compact('produkBulkBuy', 'gambars', 'kategoris'));
     }
 
     /**

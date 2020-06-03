@@ -44,17 +44,44 @@ class GambarController extends Controller
 
         if ($request->hasFile('gambar')) {
             $getLastIDImage = DB::table('gambars')
-                            ->where('id_produk', $id)
-                            ->select('url')
-                            ->orderBy('id', 'desc')->first();;
-            
+                ->where('id_produk', $id)
+                ->select('url')
+                ->orderBy('id', 'desc')->first();;
+
             $identity = explode("_", $getLastIDImage->url); //[0] = '2', [1] = 'produk', [3] = '3.jpg'
             $distinctExtention = explode(".", $identity[2])[0] + 1; //[0] = '3', [1] = 'jpg'
 
-            foreach($request->file('gambar') as $image) {
+            foreach ($request->file('gambar') as $image) {
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
-                $extension = $extensionTemp[count($extensionTemp) - 1]; 
+                $extension = $extensionTemp[count($extensionTemp) - 1];
+                $image->move("produk_images/", strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                Gambar::create([
+                    'url' => strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension,
+                    'id_produk' => $id
+                ]);
+                $distinctExtention++;
+            }
+            return redirect()->back();
+        }
+    }
+    public function storeBulkBuy(Request $request)
+    {
+        $id = $request->id_produk;
+
+        if ($request->hasFile('gambar')) {
+            $getLastIDImage = DB::table('gambars')
+                ->where('id_produk', $id)
+                ->select('url')
+                ->orderBy('id', 'desc')->first();;
+
+            $identity = explode("_", $getLastIDImage->url); //[0] = '2', [1] = 'produk', [3] = '3.jpg'
+            $distinctExtention = explode(".", $identity[2])[0] + 1; //[0] = '3', [1] = 'jpg'
+
+            foreach ($request->file('gambar') as $image) {
+                $filename = $image->getClientOriginalName();
+                $extensionTemp = explode(".", $filename);
+                $extension = $extensionTemp[count($extensionTemp) - 1];
                 $image->move("produk_images/", strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
                     'url' => strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension,
@@ -86,8 +113,15 @@ class GambarController extends Controller
     public function edit(Gambar $gambar)
     {
         $gambars = DB::table('gambars')
-                ->where('id_produk', '=', $gambar->id)
-                ->get();
+            ->where('id_produk', '=', $gambar->id)
+            ->get();
+        return view('pages.produk.editGambar', compact('gambars'));
+    }
+    public function editBulkBuy(Gambar $gambar)
+    {
+        $gambars = DB::table('gambars')
+            ->where('id_produk', '=', $gambar->id)
+            ->get();
         return view('pages.produk.editGambar', compact('gambars'));
     }
 
