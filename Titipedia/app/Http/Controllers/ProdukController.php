@@ -62,7 +62,6 @@ class ProdukController extends Controller
             'berat' => 'required',
             'gambar' => 'required'
         ]);
-
         //get last id from product
         $produk = DB::table('produks')->orderBy('id', 'desc')->first();
         $id = $produk->id;
@@ -73,9 +72,9 @@ class ProdukController extends Controller
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id+1) . "_produk" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                $image->move("produk_images/", strval($id+1) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
-                    'url' => strval($id+1) . "_produk" . strval($identity) . "." . $extension,
+                    'url' => strval($id+1) . "_produk_" . strval($identity) . "." . $extension,
                     'id_produk' => $id+1
                 ]);
                 $identity++;
@@ -150,7 +149,7 @@ class ProdukController extends Controller
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id+1) . "_produk" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                $image->move("produk_images/", strval($id+1) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
                     'url' => strval($id+1) . "_produk" . strval($identity) . "." . $extension,
                     'id_produk' => $id+1

@@ -54,9 +54,9 @@ class GambarController extends Controller
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id) . "_produk" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                $image->move("produk_images/", strval($id) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
-                    'url' => strval($id) . "_produk" . strval($identity) . "." . $extension,
+                    'url' => strval($id) . "_produk_" . strval($identity) . "." . $extension,
                     'id_produk' => $id
                 ]);
                 $identity++;
