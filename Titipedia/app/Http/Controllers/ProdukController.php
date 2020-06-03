@@ -134,6 +134,7 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required',
             'stok' => 'required',
+            'nama_kategori' => 'required',
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
             'berat' => 'required'
@@ -142,6 +143,7 @@ class ProdukController extends Controller
             ->update([
                 'nama' => $request->nama_produk,
                 'stok' => $request->stok,
+                'id_kategori' => $request->nama_kategori,
                 'harga_jasa' => $request->harga_jasa,
                 'harga_produk' => $request->harga_produk,
                 'berat' => $request->berat,
