@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data" action="/produk/{{$produk->id}}">
-                @method('patch')
+                @method('PATCH')
                 @csrf
                 <div class="form-group row">
                     <label for="nama_produk" class="col-sm-2 col-form-label">Nama Produk</label>
@@ -19,24 +19,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="jenis_produk" class="col-sm-2 col-form-label">Jenis Produk</label>
-                    <div class="col-sm-10">
-                        <select class="custom-select @error('jenis_produk') is-invalid @enderror" id="jenis_produk"
-                            name="jenis_produk" value="{{$produk->jenis_produk}}">
-                            @if($produk->jenis_produk==='Normal Buy')
-                            <option selected value="normal">Normal Buy</option>
-                            <option value="bulk">Bulk Buy</option>
-                            @else
-                            <option value="normal">Normal Buy</option>
-                            <option selected value="bulk">Bulk Buy</option>
-                            @endif
-                        </select>
-                        @error('jenis_produk')
-                        <div class="invalid-feedback">{{$message}}</div>
-                        @enderror
-                    </div>
-                </div>
+              
                 <div class="form-group row">
                     <label for="stok" class="col-sm-2 col-form-label">Stok Produk</label>
                     <div class="col-sm-10">
