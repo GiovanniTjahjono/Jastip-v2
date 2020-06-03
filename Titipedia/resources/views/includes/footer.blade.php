@@ -6,12 +6,4 @@
     $(document).ready(function() {
         $('#table_order').DataTable();
     });
-    $('.datepicker').datepicker({
-        autoclose: true,
-        format: "dd-mm-yyyy",
-        todayHighlight: true,
-        orientation: "top auto",
-        todayBtn: true,
-        endDate: new Date()
-    });
 </script>

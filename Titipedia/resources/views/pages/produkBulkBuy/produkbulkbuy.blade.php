@@ -31,14 +31,14 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Produk</th>
-                            <th>Minimum Target</th>
-                            <th>Maksimum Target</th>
+                            <th>Jumlah Target</th>
                             <th>Harga Jasa</th>
                             <th>Harga Produk</th>
                             <th>Berat</th>
-                            <th>Keterangan</th>
+                            <th>Asal Pengiriman</th>
                             <th>Batas Waktu</th>
                             <th>Status</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -47,13 +47,14 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama}}</td>
-                            <td>{{$data->minimum_target}}</td>
-                            <td>{{$data->maksimum_target}}</td>
+                            <td>{{$data->jumlah_target}}</td>
                             <td>{{$data->harga_jasa}}</td>
                             <td>{{$data->harga_produk}}</td>
                             <td>{{$data->berat}}</td>
+                            <td>{{$data->asal_pengiriman}}</td>
+                            <td>{{$data->batas_waktu}}</td>
+                            <td>{{$data->status_bulk}}</td>
                             <td>{{$data->keterangan}}</td>
-                            <td>{{$data->minimum_target}}</td>
                             <td><a href="/produk/{{$data->id}}" class="badge badge-primary">detail</a>
                                 <a href="/produk/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->

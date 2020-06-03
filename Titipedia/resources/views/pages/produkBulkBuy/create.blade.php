@@ -6,7 +6,7 @@
             <h3>Tambah Data Produk Bulk Buy</h3>
         </div>
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data" action="produk-bulk-buy">
+            <form method="post" enctype="multipart/form-data" action="/produk-bulk-buy">
                 @csrf
                 <div class="form-group row">
                     <label for="nama_produk" class="col-sm-2 col-form-label">Nama Produk</label>
@@ -67,14 +67,16 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="berat" class="col-sm-2 col-form-label">Batas Waktu</label>
-                    <div class="col-sm-9">
-                        <input class="date form-control" id="date_of_birth" class="form-control"
-                        name="date_of_birth" type="text" required placeholder="Batas Waktu"  />
+                    <label for="date_of_birth" class="col-sm-2 col-form-label">Batas Waktu</label>
+                    <div class="col-sm-10">
+                        <input class="date form-control @error('batas_waktu') is-invalid @enderror" id="date_of_birth" class="form-control" name="batas_waktu" type="text" value="{{old('batas_waktu')}}" />
+                        @error('batas_waktu')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
                     </div>
 
 
-                   
+
 
 
                 </div>
@@ -156,11 +158,11 @@
                     });
                 });
                 // Script datetime
-                $('.date').datepicker({  
-                   format: 'yyyy-mm-dd'
-                 });  
+                $('.date').datepicker({
+                    format: 'yyyy-mm-dd'
+                });
             </script>
-            
+
         </div>
     </div>
 </div>
