@@ -60,6 +60,7 @@ class ProdukController extends Controller
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
             'berat' => 'required',
+            'keterangan' => 'required',
             'gambar' => 'required'
         ]);
         Produk::create([
@@ -113,11 +114,12 @@ class ProdukController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Produk $produk)
-    {
+    {   
+        $kategoris = DB::table('kategoris')->get();
         $gambars = DB::table('gambars')
                 ->where('id_produk', '=', $produk->id)
                 ->get();
-        return view('pages.produk.edit', compact('produk', 'gambars'));
+        return view('pages.produk.edit', compact('produk', 'gambars', 'kategoris'));
     }
 
     /**
@@ -132,6 +134,7 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required',
             'stok' => 'required',
+            'nama_kategori' => 'required',
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
             'berat' => 'required'
@@ -140,6 +143,7 @@ class ProdukController extends Controller
             ->update([
                 'nama' => $request->nama_produk,
                 'stok' => $request->stok,
+                'id_kategori' => $request->nama_kategori,
                 'harga_jasa' => $request->harga_jasa,
                 'harga_produk' => $request->harga_produk,
                 'berat' => $request->berat,

@@ -75,7 +75,7 @@ Route::post('/kirim', 'PesanController@store');
 Route::get('/profile', 'UserController@index');
 
 //Gambar
-Route::delete('/gambar/{gambar}', 'GambarController@destroy');
+Route::delete('/gambar/{gambar}/{produk}', 'GambarController@destroy');
 Route::get('/edit-gambar/{gambar}', 'GambarController@edit');
 Route::post('/tambah_gambar', 'GambarController@store');
 Route::get('/edit-gambar-bulk/{gambar}', 'GambarController@editBulkBuy');

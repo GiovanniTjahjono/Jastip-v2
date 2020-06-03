@@ -6,6 +6,15 @@
             <h3>Ubah Gambar</h3>
         </div>
         <div class="card-body">
+            @if (session('status') === "Berhasil Dihapus!")
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+            @elseif (session('status')==="Gagal dihapus, produk setidaknya harus memiliki 1 gambar!")
+            <div class="alert alert-danger">
+                {{ session('status') }}
+            </div>
+            @endif
                 <table class="table">
                     <thead>
                         <tr>
@@ -21,7 +30,7 @@
                             <td><img class="rounded img-thumbnail" style="max-width: 150px;"
                                     src="{{asset('produk_images/' . $data->url)}}"></td>
                             <td>
-                                <form action="/gambar/{{$data->id}}" method="post">
+                            <form action="/gambar/{{$data->id}}/{{$data->id_produk}}" method="post">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="badge badge-danger">Delete</button>

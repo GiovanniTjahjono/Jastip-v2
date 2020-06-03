@@ -19,7 +19,24 @@
                         @enderror
                     </div>
                 </div>
-              
+                <div class="form-group row">
+                    <label for="jenis_produk" class="col-sm-2 col-form-label">Kategori Produk</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('jenis_produk') is-invalid @enderror" id="jenis_produk" name="nama_kategori" value="{{old('jenis_produk')}}">
+                            @foreach($kategoris as $key => $data)
+                            @if($data->id === $produk->id_kategori)
+                            <option selected value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @else
+                            <option value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @endif
+                            
+                            @endforeach
+                        </select>
+                        @error('jenis_produk')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
                 <div class="form-group row">
                     <label for="stok" class="col-sm-2 col-form-label">Stok Produk</label>
                     <div class="col-sm-10">
