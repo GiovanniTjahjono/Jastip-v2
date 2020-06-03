@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Gambar;
 use Illuminate\Support\Facades\DB;
+use App\Produk;
 
 class GambarController extends Controller
 {
@@ -109,9 +110,18 @@ class GambarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Gambar $gambar)
+    public function destroy(Gambar $gambar, Produk $produk)
     {
-        Gambar::destroy($gambar->id);
-        return redirect()->back();
+        $jumlahGambar = DB::table('gambars')
+                ->where('id_produk', '=', $produk->id)
+                ->get();
+        if(count($jumlahGambar) > 1) {
+            Gambar::destroy($gambar->id);
+            return redirect()->back()->with('status', 'Berhasil Dihapus!');;
+        }
+        else {
+            return redirect()->back()->with('status', 'Gagal dihapus, produk setidaknya harus memiliki 1 gambar!');;
+        }
+        
     }
 }

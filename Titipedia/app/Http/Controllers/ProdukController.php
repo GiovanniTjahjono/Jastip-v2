@@ -60,6 +60,7 @@ class ProdukController extends Controller
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
             'berat' => 'required',
+            'keterangan' => 'required',
             'gambar' => 'required'
         ]);
         Produk::create([

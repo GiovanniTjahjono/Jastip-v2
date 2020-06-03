@@ -70,7 +70,10 @@
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
                         <div class="form-group">
-                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                            <textarea class="form-control @error('keterangan') is-invalid @enderror" id="keterangan"  name="keterangan" rows="3"></textarea>
+                            @error('keterangan')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -78,7 +81,10 @@
 
                 <label for="gambar" class="col-sm-2 col-form-label">Pilih Foto </label>
                 <div class="input-group control-group increment">
-                    <input type="file" name="gambar[]" class="form-control" id="gambar">
+                    <input type="file" name="gambar[]"  class="form-control @error('gambar') is-invalid @enderror" id="gambar">
+                    @error('gambar')
+                    <div class="invalid-feedback">{{$message}}</div>
+                    @enderror
                     <div class="input-group-btn">
                         <button id="btnAdd" class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Tambah Foto</button>
                     </div>
@@ -92,9 +98,6 @@
                         </div>
                     </div>
                 </div>
-                @error('gambar')
-                <div class="invalid-feedback">{{$message}}</div>
-                @enderror
 
 
 
