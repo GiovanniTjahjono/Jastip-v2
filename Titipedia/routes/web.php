@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/profile', 'HomeController@index')->name('pages/home');
 
 //Produk
-Route::resource('/produk', 'ProdukController'); //Untuk menggunakan method patch, put, delete
+//Route::resource('/produk', 'ProdukController'); //Untuk menggunakan method patch, put, delete
 Route::get('/produk', 'ProdukController@index');
 Route::get('/produk/create', 'ProdukController@create');
 Route::get('/produk/{produk}', 'ProdukController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
@@ -40,7 +40,7 @@ Route::get('/produk-bulk-buy/{produk}/edit', 'ProdukBulkBuyController@edit');
 Route::patch('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@update');
 
 //request
-Route::resource('/request', 'RequestController'); //Untuk menggunakan method patch, put, delete
+//Route::resource('/request', 'RequestController'); //Untuk menggunakan method patch, put, delete
 Route::get('/request', 'RequestController@index');
 Route::get('/request/create', 'RequestController@create');
 Route::post('/request', 'RequestController@store');

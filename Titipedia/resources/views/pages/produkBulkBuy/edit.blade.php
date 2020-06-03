@@ -21,7 +21,14 @@
                 <div class="form-group row">
                     <label for="nama_kategori" class="col-sm-2 col-form-label">Kategori Produk</label>
                     <div class="col-sm-10">
-                        <select class="custom-select @error('nama_kategori') is-invalid @enderror" id="nama_kategori" name="nama_kategori" value="{{$produkBulkBuy->id_kategori}}">
+                        <select class="custom-select @error('nama_kategori') is-invalid @enderror" id="nama_kategori" name="nama_kategori">
+                            @foreach($kategoris as $data)
+                            @if($data->id === $produkBulkBuy->id_kategori)
+                            <option selected value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @else
+                            <option value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @endif
+                            @endforeach
                         </select>
                         @error('nama_kategori')
                         <div class="invalid-feedback">{{$message}}</div>
@@ -65,6 +72,31 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="date_of_birth" class="col-sm-2 col-form-label">Batas Waktu</label>
+                    <div class="col-sm-10">
+                        <input class="date form-control @error('batas_waktu') is-invalid @enderror" id="date_of_birth" class="form-control" name="batas_waktu" type="text" value="{{$produkBulkBuy->batas_waktu}}" />
+                        @error('batas_waktu')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('asal_pengiriman') is-invalid @enderror" id="asal_pengiriman" name="asal_pengiriman">
+                            <?PHP
+                            $data = json_decode($response, true);
+                            for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
+                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                if ($produkBulkBuy->asal_pengiriman == $data['rajaongkir']['results'][$i]['city_name']) {
+                                    echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
                         <div class="form-group">
@@ -74,7 +106,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <a href="/edit-gambar/{{$produkBulkBuy->id}}" class="btn btn-success float-right">Edit Gambar</a>
+                        <a href="/edit-gambar-bulk/{{$produkBulkBuy->id}}" class="btn btn-success float-right">Edit Gambar</a>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -90,18 +122,12 @@
                             @foreach($gambars as $key => $data)
                             <tr>
                                 <th scope="row">{{$key + 1}}</th>
-                                <td><img class="rounded img-thumbnail" style="max-width: 150px;" src="{{asset('produk_images/' . $data->url)}}"></td>
+                                <td><img class="rounded img-thumbnail" style="max-width: 150px;" src="{{asset('produk_bulk_buy_images/' . $data->url)}}"></td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-
-
-
-
-
-
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <input type="text" hidden name="id_user" value="{{Auth::user()->id}}">
@@ -122,4 +148,10 @@
         </div>
     </div>
 </div>
+<script>
+    // Script datetime
+    $('.date').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+</script>
 @stop

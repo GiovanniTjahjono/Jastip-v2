@@ -66,13 +66,21 @@ class GambarController extends Controller
             return redirect()->back();
         }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function storeBulkBuy(Request $request)
     {
-        $id = $request->id_produk;
+        $id = $request->id_bulkbuy;
+        //dd($id);
 
         if ($request->hasFile('gambar')) {
             $getLastIDImage = DB::table('gambars')
-                ->where('id_produk', $id)
+                ->where('id_bulkbuy', $id)
                 ->select('url')
                 ->orderBy('id', 'desc')->first();;
 
@@ -83,10 +91,10 @@ class GambarController extends Controller
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1];
-                $image->move("produk_images/", strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                $image->move("produk_bulk_buy_images/", strval($id) . "_produk_bulk_buy_" . strval($distinctExtention) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
-                    'url' => strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension,
-                    'id_produk' => $id
+                    'url' => strval($id) . "_produk_bulk_buy_" . strval($distinctExtention) . "." . $extension,
+                    'id_bulkbuy' => $id
                 ]);
                 $distinctExtention++;
             }
@@ -121,9 +129,9 @@ class GambarController extends Controller
     public function editBulkBuy(Gambar $gambar)
     {
         $gambars = DB::table('gambars')
-            ->where('id_produk', '=', $gambar->id)
+            ->where('id_bulkbuy', '=', $gambar->id)
             ->get();
-        return view('pages.produk.editGambar', compact('gambars'));
+        return view('pages.produkBulkBuy.editGambarBulk', compact('gambars'));
     }
 
     /**
@@ -147,15 +155,19 @@ class GambarController extends Controller
     public function destroy(Gambar $gambar, Produk $produk)
     {
         $jumlahGambar = DB::table('gambars')
-                ->where('id_produk', '=', $produk->id)
-                ->get();
-        if(count($jumlahGambar) > 1) {
+            ->where('id_produk', '=', $produk->id)
+            ->get();
+        $jumlahGambarBulk = DB::table('gambars')
+            ->where('id_bulkbuy', '=', $produk->id)
+            ->get();
+        if (count($jumlahGambar) > 1) {
             Gambar::destroy($gambar->id);
             return redirect()->back()->with('status', 'Berhasil Dihapus!');;
-        }
-        else {
+        } elseif (count($jumlahGambarBulk) > 1) {
+            Gambar::destroy($gambar->id);
+            return redirect()->back()->with('status', 'Berhasil Dihapus!');;
+        } else {
             return redirect()->back()->with('status', 'Gagal dihapus, produk setidaknya harus memiliki 1 gambar!');;
         }
-        
     }
 }

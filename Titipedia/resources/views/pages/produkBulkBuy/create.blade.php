@@ -74,11 +74,6 @@
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
-
-
-
-
-
                 </div>
                 <div class="form-group row">
                     <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
