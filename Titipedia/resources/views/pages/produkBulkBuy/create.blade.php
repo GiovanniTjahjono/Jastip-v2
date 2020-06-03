@@ -68,15 +68,10 @@
                 </div>
                 <div class="form-group row">
                     <label for="berat" class="col-sm-2 col-form-label">Batas Waktu</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-10">
                         <input class="date form-control" id="date_of_birth" class="form-control"
                         name="date_of_birth" type="text" required placeholder="Batas Waktu"  />
                     </div>
-
-
-                   
-
-
                 </div>
                 <div class="form-group row">
                     <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
@@ -124,11 +119,6 @@
                 @error('gambar')
                 <div class="invalid-feedback">{{$message}}</div>
                 @enderror
-
-
-
-
-
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <input type="text" hidden name="id_user" value="{{Auth::user()->id}}">
@@ -159,10 +149,8 @@
                 $('.date').datepicker({  
                    format: 'yyyy-mm-dd'
                  });  
-            </script>
-            
+            </script>    
         </div>
     </div>
 </div>
-
 @stop

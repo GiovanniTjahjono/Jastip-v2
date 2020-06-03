@@ -47,19 +47,20 @@ class GambarController extends Controller
                             ->where('id_produk', $id)
                             ->select('url')
                             ->orderBy('id', 'desc')->first();;
-            dd($getLastIDImage);
-                            $identity = explode("_", $getLastIDImage)[count($getLastIDImage) - 1];
+            
+            $identity = explode("_", $getLastIDImage->url); //[0] = '2', [1] = 'produk', [3] = '3.jpg'
+            $distinctExtention = explode(".", $identity[2])[0] + 1; //[0] = '3', [1] = 'jpg'
 
             foreach($request->file('gambar') as $image) {
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                $image->move("produk_images/", strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
-                    'url' => strval($id) . "_produk_" . strval($identity) . "." . $extension,
+                    'url' => strval($id) . "_produk_" . strval($distinctExtention) . "." . $extension,
                     'id_produk' => $id
                 ]);
-                $identity++;
+                $distinctExtention++;
             }
             return redirect()->back();
         }

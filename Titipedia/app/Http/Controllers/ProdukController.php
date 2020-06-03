@@ -62,24 +62,6 @@ class ProdukController extends Controller
             'berat' => 'required',
             'gambar' => 'required'
         ]);
-        //get last id from product
-        $produk = DB::table('produks')->orderBy('id', 'desc')->first();
-        $id = $produk->id;
-
-        if ($request->hasFile('gambar')) {
-            $identity = 0;
-            foreach($request->file('gambar') as $image) {
-                $filename = $image->getClientOriginalName();
-                $extensionTemp = explode(".", $filename);
-                $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id+1) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
-                Gambar::create([
-                    'url' => strval($id+1) . "_produk_" . strval($identity) . "." . $extension,
-                    'id_produk' => $id+1
-                ]);
-                $identity++;
-            }
-        }
         Produk::create([
             'nama' => $request->nama_produk,
             'stok' => $request->stok,
@@ -90,6 +72,25 @@ class ProdukController extends Controller
             'id_user' => $request->id_user,
             'id_kategori' => $request->nama_kategori
         ]);
+        //get last id from product
+        $produk = DB::table('produks')->orderBy('id', 'desc')->first();
+        $id = $produk->id;
+        //dd($id);
+        if ($request->hasFile('gambar')) {
+            $identity = 0;
+            foreach($request->file('gambar') as $image) {
+                $filename = $image->getClientOriginalName();
+                $extensionTemp = explode(".", $filename);
+                $extension = $extensionTemp[count($extensionTemp) - 1]; 
+                $image->move("produk_images/", strval($id) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                Gambar::create([
+                    'url' => strval($id) . "_produk_" . strval($identity) . "." . $extension,
+                    'id_produk' => $id
+                ]);
+                $identity++;
+            }
+        }
+       
         return redirect('produk')->with('status', 'Data Berhasil Ditambahkan!');
     }
 
@@ -130,44 +131,20 @@ class ProdukController extends Controller
     {
         $request->validate([
             'nama_produk' => 'required',
-            'jenis_produk' => 'required',
             'stok' => 'required',
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
-            'berat' => 'required',
-            'gambar' => 'required'
+            'berat' => 'required'
         ]);
-        //-------------------BELUM SELESAI----------------------
-        
-        $id = DB::table('produks')->orderBy('id', 'desc')->first()->id + 1;
-        $request->file('gambar')->move("produk_images/", strval($id) . "_produk.jpg"); //penamaan yg bukan array, penamaan array ada di registercontroller
-        $filename = $id . '_produk.jpg';
-        
-        if ($request->hasFile('gambar')) {
-            $identity = 0;
-            foreach($request->file('gambar') as $image) {
-                $filename = $image->getClientOriginalName();
-                $extensionTemp = explode(".", $filename);
-                $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id+1) . "_produk_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
-                Gambar::create([
-                    'url' => strval($id+1) . "_produk" . strval($identity) . "." . $extension,
-                    'id_produk' => $id+1
-                ]);
-                $identity++;
-            }
-        }
         Produk::where('id', $produk->id)
             ->update([
                 'nama' => $request->nama_produk,
-                'jenis_produk' => $request->jenis_produk,
                 'stok' => $request->stok,
                 'harga_jasa' => $request->harga_jasa,
                 'harga_produk' => $request->harga_produk,
                 'berat' => $request->berat,
                 'keterangan' => $request->keterangan,
-                'id_user' => $request->id_user,
-                'gambar' => $filename
+                'id_user' => $request->id_user
             ]);
         return redirect('produk')->with('status', 'Data Berhasil Diubah!');
     }
