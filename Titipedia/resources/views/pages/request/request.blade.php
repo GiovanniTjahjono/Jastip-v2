@@ -48,10 +48,10 @@
                             <td>{{$data->kota_req}}</td>
                             <td>{{$data->status_req}}</td>
                             <td>{{$data->keterangan}}</td>
-                            <td><a href="/request/{{$data->id}}" class="badge badge-primary">detail</a>
-                                <a href="/request/{{$data->id}}/edit" class="badge badge-success">edit</a>
+                            <td><a href="/req/{{$data->id}}" class="badge badge-primary">detail</a>
+                                <a href="/req/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
-                                <form action="/request/{{$data->id}}" method="post">
+                                <form action="/permintaan/{{$data->id}}" method="post">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="badge badge-danger">Delete</button>

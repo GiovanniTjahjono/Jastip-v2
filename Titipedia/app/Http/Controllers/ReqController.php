@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Req;
 use Illuminate\Http\Request;
-use App\User;
 use App\Gambar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\Contracts\DataTable;
 
 class ReqController extends Controller
 {
@@ -118,7 +116,6 @@ class ReqController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *

@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+
+//---------Penamaan ROUTE harus sama dengan nama Controller------------
+//---------Penamaan PARAMETER ROUTE harus sama dengan nama PARAMETER Controller dan Model------------
+
 Route::get('/home', 'HomeController@index');
 Route::get('/', 'HomeController@index');
 Auth::routes();
@@ -30,23 +34,30 @@ Route::get('/produk/{produk}/edit', 'ProdukController@edit');
 Route::patch('/produk/{produk}', 'ProdukController@update');
 
 //Produk Bulk Buy
-Route::resource('/produk-bulk-buy', 'ProdukBulkBuyController'); //Untuk menggunakan method patch, put, delete
+//Route::resource('/produk-bulk-buy', 'ProdukBulkBuyController'); //Untuk menggunakan method patch, put, delete
 Route::get('/produk-bulk-buy', 'ProdukBulkBuyController@index');
 Route::get('/produk-bulk-buy/create', 'ProdukBulkBuyController@create');
-Route::get('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
+Route::get('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
 Route::post('/produk-bulk-buy', 'ProdukBulkBuyController@store');
-Route::delete('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@destroy');
-Route::get('/produk-bulk-buy/{produk}/edit', 'ProdukBulkBuyController@edit');
+Route::delete('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@destroy');
+Route::get('/produk-bulk-buy/{produkBulkBuy}/edit', 'ProdukBulkBuyController@edit');
+
+//Route::get('/produk-bulk-buy/{produkBulkBuy}/edit', )
+
 Route::patch('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@update');
 
 //request
-//Route::resource('/request', 'RequestController'); //Untuk menggunakan method patch, put, delete
+Route::resource('/req', 'ReqController'); //Untuk menggunakan method patch, put, delete
+/*
 Route::get('/request', 'ReqController@index');
 Route::get('/request/create', 'ReqController@create');
 Route::post('/request', 'ReqController@store');
 Route::delete('/request/{req}', 'ReqController@destroy');
 Route::get('/request/{req}/edit', 'ReqController@edit');
 Route::patch('/request/{req}', 'ReqController@update');
+*/
+
+Route::resource('/permintaan', 'PermintaanController');
 
 //User
 //Route::post('/tambahsaldo', 'UserController@update');
@@ -75,11 +86,13 @@ Route::post('/kirim', 'PesanController@store');
 Route::get('/profile', 'UserController@index');
 
 //Gambar
+Route::resource('/gambar', 'GambarController');
 Route::delete('/gambar/{gambar}/{produk}', 'GambarController@destroy');
 Route::get('/edit-gambar/{gambar}', 'GambarController@edit');
 Route::post('/tambah_gambar', 'GambarController@store');
 Route::get('/edit-gambar-bulk/{gambar}', 'GambarController@editBulkBuy');
 Route::post('/tambah_gambar_bulk', 'GambarController@storeBulkBuy');
+//Route::post('/tambah_gambar_bulk/{gambar}/edit', 'GambarController@editBulkBuy');
 
 //RajaOngkir
 Route::post('/order/get_price', 'PenjualanPreorderController@RajaOngkir');

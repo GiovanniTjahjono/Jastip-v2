@@ -5,5 +5,5 @@
   </div>
   <a href="/produk" class="list-group-item border-0">Produk Biasa</a>
   <a href="/produk-bulk-buy" class="list-group-item border-0">Produk Bulk Buy</a>
-  <a href="/request" class="list-group-item border-0">Request</a> 
+  <a href="/req" class="list-group-item border-0">Request</a> 
 </div>
