@@ -27,7 +27,6 @@ class ReqController extends Controller
         $request = DB::table('requests')->where('id_user', '=', $pengguna)->get();
         return view('pages.request.request', compact('request'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
