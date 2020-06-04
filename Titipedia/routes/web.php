@@ -37,14 +37,11 @@ Route::patch('/produk/{produk}', 'ProdukController@update');
 //Route::resource('/produk-bulk-buy', 'ProdukBulkBuyController'); //Untuk menggunakan method patch, put, delete
 Route::get('/produk-bulk-buy', 'ProdukBulkBuyController@index');
 Route::get('/produk-bulk-buy/create', 'ProdukBulkBuyController@create');
-Route::get('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
+Route::get('/produk-bulk-buy/produkBulkBuy}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
 Route::post('/produk-bulk-buy', 'ProdukBulkBuyController@store');
 Route::delete('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@destroy');
 Route::get('/produk-bulk-buy/{produkBulkBuy}/edit', 'ProdukBulkBuyController@edit');
-
-//Route::get('/produk-bulk-buy/{produkBulkBuy}/edit', )
-
-Route::patch('/produk-bulk-buy/{produk}', 'ProdukBulkBuyController@update');
+Route::patch('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@update');
 
 //request
 Route::resource('/req', 'ReqController'); //Untuk menggunakan method patch, put, delete

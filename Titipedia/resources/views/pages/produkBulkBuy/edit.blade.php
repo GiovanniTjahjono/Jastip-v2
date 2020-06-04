@@ -3,7 +3,7 @@
 <div class="container mt-4 shadow-lg p-3 mb-5 bg-white rounded border-0">
     <div class="card border-0">
         <div class="card-header bg-white">
-            <h3>Ubah Data Produk</h3>
+            <h3>Ubah Data Produk Bulk Buy</h3>
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data" action="/produk-bulk-buy/{{$produkBulkBuy->id}}">
@@ -87,7 +87,7 @@
                             <?PHP
                             $data = json_decode($response, true);
                             for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                 if ($produkBulkBuy->asal_pengiriman == $data['rajaongkir']['results'][$i]['city_name']) {
                                     echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                 }

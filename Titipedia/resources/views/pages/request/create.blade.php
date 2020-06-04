@@ -42,7 +42,7 @@
                             <?PHP
                             $data = json_decode($response, true);
                             for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                 if (Auth::user()->kota == $data['rajaongkir']['results'][$i]['city_name']) {
                                     echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                 }
@@ -71,13 +71,12 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <label for="gambar" class="col-sm-2 col-form-label">Pilih Foto </label>
                 <div class="input-group control-group increment">
                     <input type="file" name="gambar[]" class="form-control" id="gambar">
                     <div class="input-group-btn">
-                        <button id="btnAdd" class="btn btn-success" type="button"><i
-                                class="glyphicon glyphicon-plus"></i>Tambah Foto</button>
+                        <button id="btnAdd" class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Tambah Foto</button>
                     </div>
                 </div>
                 <div class="clone hide">
@@ -110,13 +109,13 @@
             </form>
             <script type="text/javascript">
                 $(document).ready(function() {
-                  $("#btnAdd").click(function(){ 
-                      var html = $(".clone").html();
-                      $(".increment").after(html);
-                  });
-                  $("body").on("click","#btnRemove",function(){ 
-                      $(this).parents(".control-group").remove();
-                  });
+                    $("#btnAdd").click(function() {
+                        var html = $(".clone").html();
+                        $(".increment").after(html);
+                    });
+                    $("body").on("click", "#btnRemove", function() {
+                        $(this).parents(".control-group").remove();
+                    });
                 });
             </script>
         </div>

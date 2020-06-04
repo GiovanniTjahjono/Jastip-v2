@@ -170,6 +170,29 @@ class ProdukBulkBuyController extends Controller
     public function update(Request $request, ProdukBulkBuy $produkBulkBuy)
     {
         //
+        $request->validate([
+            'nama_produk' => 'required',
+            'jumlah_target' => 'required',
+            'harga_jasa' => 'required',
+            'harga_produk' => 'required',
+            'berat' => 'required',
+            'batas_waktu' => 'required',
+        ]);
+        ProdukBulkBuy::where('id', $produkBulkBuy->id)
+            ->update([
+                'nama' => $request->nama_produk,
+                'jumlah_target' => $request->jumlah_target,
+                'harga_jasa' => $request->harga_jasa,
+                'harga_produk' => $request->harga_produk,
+                'berat' => $request->berat,
+                'batas_waktu' => $request->batas_waktu,
+                'asal_pengiriman' => $request->asal_pengiriman,
+                'keterangan' => $request->keterangan,
+                'status_bulk' => 'menunggu',
+                'id_user' => $request->id_user,
+                'id_kategori' => $request->nama_kategori
+            ]);
+        return redirect('produk-bulk-buy')->with('status', 'Data Berhasil Diubah!');
     }
 
     /**
@@ -181,5 +204,8 @@ class ProdukBulkBuyController extends Controller
     public function destroy(ProdukBulkBuy $produkBulkBuy)
     {
         //
+        ProdukBulkBuy::destroy($produkBulkBuy->id);
+        //Gambar::destroy($gambar->id_produk);
+        return redirect('produk-bulk-buy')->with('status', 'Data Produk Berhasil Dihapus!');
     }
 }
