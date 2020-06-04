@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data" action="/request/{{$req->id}}">
-                @method('patch')
+                @method('PATCH')
                 @csrf
                 <div class="form-group row">
                     <label for="nama_req" class="col-sm-2 col-form-label">Nama Request</label>

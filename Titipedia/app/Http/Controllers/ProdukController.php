@@ -91,7 +91,6 @@ class ProdukController extends Controller
                 $identity++;
             }
         }
-       
         return redirect('produk')->with('status', 'Data Berhasil Ditambahkan!');
     }
 
@@ -121,7 +120,6 @@ class ProdukController extends Controller
                 ->get();
         return view('pages.produk.edit', compact('produk', 'gambars', 'kategoris'));
     }
-
     /**
      * Update the specified resource in storage.
      *

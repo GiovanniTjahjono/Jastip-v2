@@ -75,18 +75,20 @@ class GambarController extends Controller
      */
     public function storeBulkBuy(Request $request)
     {
+        //Pengecekan extensi gambar
         $id = $request->id_bulkbuy;
         //dd($id);
-
         if ($request->hasFile('gambar')) {
             $getLastIDImage = DB::table('gambars')
                 ->where('id_bulkbuy', $id)
                 ->select('url')
                 ->orderBy('id', 'desc')->first();;
-
+            //dd($getLastIDImage);
             $identity = explode("_", $getLastIDImage->url); //[0] = '2', [1] = 'produk', [3] = '3.jpg'
-            $distinctExtention = explode(".", $identity[2])[0] + 1; //[0] = '3', [1] = 'jpg'
-
+            //produk = 1_produk_0.jpg [3]
+            //produk bb = 1_produk_bulk_buy_0.jpg [5]
+            //explode adalah substring berdasarkan seuatu karakter
+            $distinctExtention = explode(".", $identity[4])[0] + 1; //[0] = '3', [1] = 'jpg'
             foreach ($request->file('gambar') as $image) {
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);

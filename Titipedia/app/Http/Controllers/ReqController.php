@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Request as RequestModel;
+use App\Req;
+use Illuminate\Http\Request;
 use App\User;
 use App\Gambar;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Contracts\DataTable;
 
-class RequestController extends Controller
+class ReqController extends Controller
 {
     public function __construct()
     {
@@ -22,7 +23,6 @@ class RequestController extends Controller
      */
     public function index()
     {
-        
         $pengguna = Auth::user()->id;
         $request = DB::table('requests')->where('id_user', '=', $pengguna)->get();
         return view('pages.request.request', compact('request'));
@@ -62,10 +62,9 @@ class RequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $req)
+    public function store(Request $request)
     {
-        //validation
-        $req->validate([
+        $request->validate([
             'nama_req' => 'required',
             'jumlah_req' => 'required',
             'alamat_req' => 'required',
@@ -73,28 +72,28 @@ class RequestController extends Controller
             'status_req' => 'required',
             'gambar' => 'required',
         ]);
-        //penamaan gambar/foto
 
+        //penamaan gambar/foto
         $getIDForFileName = DB::table('requests')->orderBy('id', 'desc')->get();
         $id = 0;
         if (count($getIDForFileName) > 0) {
             $id = $getIDForFileName->first()->id + 1;
         }
         //
-        RequestModel::create([
-            'nama_req' => $req->nama_req,
-            'jumlah_req' => $req->jumlah_req,
-            'alamat_req' => $req->alamat_req,
-            'kota_req' => $req->kota_req,
-            'status_req' => $req->status_req,
-            'keterangan' => $req->keterangan,
-            'id_user' => $req->id_user
+        Req::create([
+            'nama_req' => $request->nama_req,
+            'jumlah_req' => $request->jumlah_req,
+            'alamat_req' => $request->alamat_req,
+            'kota_req' => $request->kota_req,
+            'status_req' => $request->status_req,
+            'keterangan' => $request->keterangan,
+            'id_user' => $request->id_user
         ]);
         $getRequestRowID = DB::table('requests')->orderBy('id', 'desc')->first();
         $id = $getRequestRowID->id;
-        if ($req->hasFile('gambar')) {
+        if ($request->hasFile('gambar')) {
             $identity = 0;
-            foreach($req->file('gambar') as $image) {
+            foreach($request->file('gambar') as $image) {
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1]; 
@@ -113,10 +112,10 @@ class RequestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Request  $request
+     * @param  \App\Req  $req
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Req $req)
     {
         //
     }
@@ -124,10 +123,10 @@ class RequestController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Request  $request
+     * @param  \App\Req  $req
      * @return \Illuminate\Http\Response
      */
-    public function edit(RequestModel $req)
+    public function edit(Req $req)
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -142,22 +141,24 @@ class RequestController extends Controller
                 "key: 20abcef3dbf0bc2149a7412bc9b60005"
             ),
         ));
-
+        
         $response = curl_exec($curl);
         $err = curl_error($curl);
 
         curl_close($curl);
+        //$request = DB::table('requests')->where('id', $req)->get();
+        //dd($req);
         return view('pages.request.edit', compact('req', 'response'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Request  $request
+     * @param  \App\Req  $req
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Request $req)
+    public function update(Request $request, Req $req)
     {
         $request->validate([
             'nama_req' => 'required',
@@ -189,12 +190,12 @@ class RequestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Request  $request
+     * @param  \App\Req  $req
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Req $req)
     {
-        Request::destroy($request->id);
+        Req::destroy($req->id);
         return redirect('request')->with('status', 'Data Request Order Berhasil Dihapus!');
     }
 }

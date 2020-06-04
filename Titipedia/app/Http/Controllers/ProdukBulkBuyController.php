@@ -41,7 +41,6 @@ class ProdukBulkBuyController extends Controller
      */
     public function create()
     {
-        //
         $kategoris = DB::table('kategoris')->get();
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -113,7 +112,6 @@ class ProdukBulkBuyController extends Controller
                 $identity++;
             }
         }
-
         return redirect('produk-bulk-buy')->with('status', 'Data Berhasil Ditambahkan!');
     }
 
