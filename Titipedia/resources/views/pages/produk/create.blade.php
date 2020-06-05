@@ -67,6 +67,22 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('asal_pengiriman') is-invalid @enderror" id="asal_pengiriman" name="asal_pengiriman">
+                            <?PHP
+                            $data = json_decode($response, true);
+                            for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
+                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                if (Auth::user()->kota == $data['rajaongkir']['results'][$i]['city_name']) {
+                                    echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
                         <div class="form-group">

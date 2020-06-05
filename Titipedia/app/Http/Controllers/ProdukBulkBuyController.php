@@ -30,6 +30,7 @@ class ProdukBulkBuyController extends Controller
             })
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
             ->select('produk_bulk_buys.*', 'users.name', 'kategoris.nama_kategori')
+            ->orderBy('updated_at', 'desc')
             ->get();
         return view('pages.produkBulkBuy.produkbulkbuy', compact('produkBulkBuys'));
     }

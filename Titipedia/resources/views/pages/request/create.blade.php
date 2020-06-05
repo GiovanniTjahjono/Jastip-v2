@@ -6,13 +6,26 @@
             <h3>Tambah Data Request</h3>
         </div>
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data" action="/request">
+            <form method="post" enctype="multipart/form-data" action="/req">
                 @csrf
                 <div class="form-group row">
                     <label for="nama_req" class="col-sm-2 col-form-label">Nama Request</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control @error('nama_req') is-invalid @enderror" id="nama_req" name="nama_req" value="{{old('nama_req')}}">
                         @error('nama_req')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="id_kategori" class="col-sm-2 col-form-label">Kategori Produk</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('id_kategori') is-invalid @enderror" id="id_kategori" name="id_kategori" value="{{old('jenis_produk')}}">
+                            @foreach($kategoris as $key => $data)
+                            <option value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @endforeach
+                        </select>
+                        @error('id_kategori')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
@@ -98,7 +111,7 @@
                 </div>
                 <div class="form-group row pull-right d-inline p-2">
                     <div class="col-sm-10">
-                        <a href="/request" class="btn btn-primary">Kembali</a>
+                        <a href="/req" class="btn btn-primary">Kembali</a>
                     </div>
                 </div>
                 <div class="form-group row pull-right p-2">

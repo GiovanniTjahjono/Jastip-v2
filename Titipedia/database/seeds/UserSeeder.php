@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'tanggal_lahir' => '1997-10-12',
                 'tempat_lahir' => $faker->city,
                 'foto' => '2_photo.jpg',
+                'kota' => $faker->city,
                 'no_hp' => $faker->phoneNumber,
                 'alamat' => $faker->address,
     			]);

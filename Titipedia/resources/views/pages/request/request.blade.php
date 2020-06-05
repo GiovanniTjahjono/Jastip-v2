@@ -21,7 +21,7 @@
             @endif
             <div class="row">
                 <div class="col-md-4">
-                    <a href="request/create" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data Request</a>
+                    <a href="req/create" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data Request</a>
                 </div>
             </div>
             <div class="mt-3">
@@ -51,7 +51,7 @@
                             <td><a href="/req/{{$data->id}}" class="badge badge-primary">detail</a>
                                 <a href="/req/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
-                                <form action="/permintaan/{{$data->id}}" method="post">
+                                <form action="/req/{{$data->id}}" method="post">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="badge badge-danger">Delete</button>

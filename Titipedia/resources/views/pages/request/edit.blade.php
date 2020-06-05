@@ -6,7 +6,7 @@
             <h3>Ubah Data Request</h3>
         </div>
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data" action="/request/{{$req->id}}">
+            <form method="post" enctype="multipart/form-data" action="/req/{{$req->id}}">
                 @method('PATCH')
                 @csrf
                 <div class="form-group row">
@@ -14,6 +14,23 @@
                     <div class="col-sm-10">
                         <input type="text" class="form-control @error('nama_req') is-invalid @enderror" id="nama_req" name="nama_req" value="{{$req->nama_req}}">
                         @error('nama_req')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="id_kategori" class="col-sm-2 col-form-label">Kategori Produk</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('id_kategori') is-invalid @enderror" id="id_kategori" name="id_kategori" value="{{old('jenis_produk')}}">
+                            @foreach($kategoris as $data)
+                            @if($data->id === $req->id_kategori)
+                            <option selected value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @else
+                            <option value="{{$data->id}}">{{$data->nama_kategori}}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                        @error('id_kategori')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
@@ -77,17 +94,33 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="form-group row">
-                    <label for="gambar" class="col-sm-2 col-form-label">Pilih Banner</label>
-                    <div class="col-sm-10">
-                        <input type="file" class="form-control-file" id="gambar" name="gambar" value="{{$req->gambar}}">
-
-                        <div class="card" style="width: 18rem;">
-                            <img class="rounded img-thumbnail" src="{{asset('request_images/' . $req->gambar)}}">
-
-                        </div>
+                    <div class="col-sm-12">
+                    <a href="/edit-gambar/{{$req->id}}" class="btn btn-success float-right">Edit Gambar</a>
                     </div>
                 </div>
+                <div class="form-group row">
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Gambar</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            @foreach($gambars as $key => $data)
+                            <tr>
+                                <th scope="row">{{$key + 1}}</th>
+                                <td><img class="rounded img-thumbnail" style="max-width: 150px;"
+                                        src="{{asset('request_images/' . $data->url)}}"></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <input type="text" hidden name="id_user" value="{{Auth::user()->id}}">
@@ -100,7 +133,7 @@
                 </div>
                 <div class="form-group row pull-right p-2">
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Data</button>
+                        <button type="submit" class="btn btn-success" style="background-color: #65587f; border: hidden">Ubah Data</button>
                     </div>
                 </div>
             </form>

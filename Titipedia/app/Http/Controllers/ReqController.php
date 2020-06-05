@@ -50,7 +50,9 @@ class ReqController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
-        return view('pages.request.create', compact('response'));
+
+        $kategoris = DB::table('kategoris')->get();
+        return view('pages.request.create', compact('response', 'kategoris'));
     }
 
     /**
@@ -68,14 +70,8 @@ class ReqController extends Controller
             'kota_req' => 'required',
             'status_req' => 'required',
             'gambar' => 'required',
+            'id_kategori' => 'required'
         ]);
-
-        //penamaan gambar/foto
-        $getIDForFileName = DB::table('requests')->orderBy('id', 'desc')->get();
-        $id = 0;
-        if (count($getIDForFileName) > 0) {
-            $id = $getIDForFileName->first()->id + 1;
-        }
         //
         Req::create([
             'nama_req' => $request->nama_req,
@@ -84,7 +80,8 @@ class ReqController extends Controller
             'kota_req' => $request->kota_req,
             'status_req' => $request->status_req,
             'keterangan' => $request->keterangan,
-            'id_user' => $request->id_user
+            'id_user' => $request->id_user,
+            'id_kategori' => $request->id_kategori
         ]);
         $getRequestRowID = DB::table('requests')->orderBy('id', 'desc')->first();
         $id = $getRequestRowID->id;
@@ -94,16 +91,16 @@ class ReqController extends Controller
                 $filename = $image->getClientOriginalName();
                 $extensionTemp = explode(".", $filename);
                 $extension = $extensionTemp[count($extensionTemp) - 1]; 
-                $image->move("produk_images/", strval($id+1) . "_produk" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                $image->move("request_images/", strval($id) . "_request_" . strval($identity) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
                 Gambar::create([
-                    'url' => strval($id+1) . "_request" . strval($identity) . "." . $extension,
-                    'id_request' => $id+1
+                    'url' => strval($id) . "_request_" . strval($identity) . "." . $extension,
+                    'id_request' => $id
                 ]);
                 $identity++;
             }
         }
 
-        return redirect('request')->with('status', 'Data Berhasil Ditambahkan!');
+        return redirect('req')->with('status', 'Data Berhasil Ditambahkan!');
     }
 
     /**
@@ -142,9 +139,14 @@ class ReqController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
+        $kategoris = DB::table('kategoris')->get();
+        $gambars = DB::table('gambars')
+                ->where('id_request', '=', $req->id)
+                ->get();
+        //return view('pages.produk.edit', compact('produk', 'gambars', 'kategoris'));
         //$request = DB::table('requests')->where('id', $req)->get();
         //dd($req);
-        return view('pages.request.edit', compact('req', 'response'));
+        return view('pages.request.edit', compact('req', 'response', 'gambars', 'kategoris'));
     }
 
     /**
@@ -162,14 +164,9 @@ class ReqController extends Controller
             'alamat_req' => 'required',
             'kota_req' => 'required',
             'status_req' => 'required',
+            'id_kategori' => 'required'
         ]);
-        //penamaan gambar/foto
-        $id = DB::table('reqs')->orderBy('id', 'desc')->first()->id + 1;
-        $request->file('gambar')->move("request_images/", strval($id) . "_request.jpg"); //penamaan yg bukan array, penamaan array ada di registercontroller
-        $filename = $id . '_request.jpg';
-
-        //
-        Request::where('id', $req->id)
+        Req::where('id', $req->id)
             ->update([
                 'nama_req' => $request->nama_req,
                 'jumlah_req' => $request->jumlah_req,
@@ -178,9 +175,9 @@ class ReqController extends Controller
                 'status_req' => $request->status_req,
                 'keterangan' => $request->keterangan,
                 'id_user' => $request->id_user,
-                'gambar' => $filename
+                'id_kategori' => $request->id_kategori
             ]);
-        return redirect('request')->with('status', 'Data Request Order Berhasil Diubah!');
+        return redirect('/req')->with('status', 'Data Request Order Berhasil Diubah!');
     }
 
     /**
@@ -192,6 +189,7 @@ class ReqController extends Controller
     public function destroy(Req $req)
     {
         Req::destroy($req->id);
-        return redirect('request')->with('status', 'Data Request Order Berhasil Dihapus!');
+        Gambar::destroy($req->id_request);
+        return redirect()->back()->with('status', 'Data Request Order Berhasil Dihapus!');
     }
 }
