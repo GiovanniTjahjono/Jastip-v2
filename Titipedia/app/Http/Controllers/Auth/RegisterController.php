@@ -8,6 +8,8 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\Environment\Console;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -64,10 +66,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $id = DB::table('users')->orderBy('id', 'desc')->first()->id + 1;
+    
+        $data['photo_profile']->move("photo_profile/", strval($id) . "_photo.jpg");
+        
+
+        $filename = $id . '_photo.jpg';
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
+            'jenis_kelamin' => $data['sex'],
+            'tempat_lahir' => $data['place_of_birth'],
+            'tanggal_lahir' => date($data['date_of_birth']),
+            'alamat' => $data['alamat'],
+            'kota' => $data['kota'],
+            'no_hp' => $data['no_hp'],
+            'foto' => $filename
+            
         ]);
     }
 }
