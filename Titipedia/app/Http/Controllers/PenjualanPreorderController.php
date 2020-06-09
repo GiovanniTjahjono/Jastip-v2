@@ -82,11 +82,11 @@ class PenjualanPreorderController extends Controller
         //produk::create($request->all());//all akan mengambil semua data fillable yang ada di model produk
         $kategoris = DB::table('kategoris')->get();
 
-        $orders = DB::table('prenjualan_preorders')
-        ->where('prenjualan_preorders.id_user', '=', $request->id_pembeli)
-        ->join('produks', 'produks.id', '=', 'prenjualan_preorders.id_produk')
+        $orders = DB::table('penjualan_preorders')
+        ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
+        ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
         ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
-        ->latest('prenjualan_preorders.created_at')->get();
+        ->latest('penjualan_preorders.created_at')->get();
         //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
         return view('pages.preorder.show', compact('orders'));
     }

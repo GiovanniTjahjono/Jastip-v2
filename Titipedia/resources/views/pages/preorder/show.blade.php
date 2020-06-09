@@ -12,7 +12,6 @@
                         <tr>
                             <th>Kode Transaksi</th>
                             <th>Nama Produk</th>
-                            <th>Jenis Produk</th>
                             <th>Kategori</th>
                             <th>Gambar Produk</th>
                             <th>Jumlah Beli</th>
@@ -28,9 +27,8 @@
                         <tr>
                         <td>{{$data->kode_transaksi}}</td>
                         <td>{{$data->nama}}</td>
-                        <td>{{$data->jenis_produk}}</td>
                         <td>{{$data->nama_kategori}}</td>
-                        <td><img class="w-100" src="{{asset('produk_images/'.$data->gambar)}}"></td>
+                        
                         <td>{{$data->kuantitas}}</td>
                         <td>{{$data->kurir}}</td>
                         <td>{{$data->service}}</td>
