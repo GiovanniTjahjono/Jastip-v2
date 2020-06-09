@@ -136,13 +136,13 @@ class PenjualanPreorderController extends Controller
         DB::table('produk_bulk_buys')
             ->where('id', $request->id_produk)
             ->update(['jumlah_target' => $target_terbaru]);
-        if ($target_terbaru = 0) {
+        if ($jumlah_target[0]->jumlah_target = 0) {
             DB::table('produk_bulk_buys')
                 ->where('id', $request->id_produk)
                 ->update(['status_bulk' => 'diproses']);
             DB::table('penjualan_preorders')
                 ->where('penjualan_preorders', $request->id_produk)
-                ->update(['dikirim']);
+                ->update(['status', 'dikirim']);
         }
         // if ($count_target == $jumlah_target[0]->jumlah_target) {
         //     DB::table('produk_bulk_buys')
