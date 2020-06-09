@@ -93,6 +93,78 @@ class PenjualanPreorderController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeBulkBuy(Request $request)
+    {
+        //validation
+        // $request->validate([
+        //     'id_produk' => 'required',
+        //     'id_pembeli' => 'required',
+        //     'jumlah_pembelian' => 'required',
+        //     'nama_pembeli' => 'required',
+        //     'alamat_pengiriman' => 'required',
+        //     'nama_kota' => 'required',
+        //     'tipeService' => 'required',
+        //     'hargaTotalnya' => 'required'
+        // ]);
+
+        PenjualanPreorder::create([
+            'kode_transaksi' => Carbon::now()->format('mdHis') . $request->id_pembeli . $request->id_produk,
+            'kuantitas' => $request->jumlah_target,
+            'total_harga' => $request->hargaTotalnya,
+            'kurir' => 'Tiki',
+            'service' => explode(",", $request->tipeService)[1],
+            'ongkir' => explode(",", $request->tipeService)[0],
+            'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
+            'status_order' => 'menunggu',
+            'id_user' => $request->id_pembeli,
+            'id_bulkbuy' => $request->id_produk
+        ]);
+
+        //
+        // $count_target = DB::table('penjualan_preorders')
+        //     ->where('penjualan_preorders.id_bulkbuy', $request->id_produk)
+        //     ->count();
+        $jumlah_target = DB::table('produk_bulk_buys')
+            ->where('produk_bulk_buys.id', $request->id_produk)
+            ->get();
+        $target_terbaru = $jumlah_target[0]->jumlah_target - $request->jumlah_target;
+        DB::table('produk_bulk_buys')
+            ->where('id', $request->id_produk)
+            ->update(['jumlah_target' => $target_terbaru]);
+        if ($target_terbaru = 0) {
+            DB::table('produk_bulk_buys')
+                ->where('id', $request->id_produk)
+                ->update(['status_bulk' => 'diproses']);
+            DB::table('penjualan_preorders')
+                ->where('penjualan_preorders', $request->id_produk)
+                ->update(['dikirim']);
+        }
+        // if ($count_target == $jumlah_target[0]->jumlah_target) {
+        //     DB::table('produk_bulk_buys')
+        //         ->where('id', $request->id_produk)
+        //         ->update(['status_bulk' => 'diproses']);
+        //     DB::table('penjualan_preorders')
+        //         ->where('penjualan_preorders', $request->id_produk)
+        //         ->update(['dikirim']);
+        // }
+        $kategoris = DB::table('kategoris')->get();
+
+        $orders = DB::table('penjualan_preorders')
+            ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
+            ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
+            ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
+            ->latest('penjualan_preorders.created_at')->get();
+        //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
+        //dd($orders);
+        return view('pages.bulkbuy.show', compact('orders'));
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\PenjualanPreorder  $penjualanPreorder
@@ -176,8 +248,12 @@ class PenjualanPreorderController extends Controller
         curl_close($curl);
 
         $kategori = DB::table('kategoris')->where('id', '=', $produkBulkBuy->id_kategori)->get();
-        $gambar = DB::table('gambars')->where('id_produk', '=', $produkBulkBuy->id)->get();
-        return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
+        $gambar = DB::table('gambars')->where('id_bulkbuy', '=', $produkBulkBuy->id)->get();
+        // $count_target = DB::table('penjualan_preorders')
+        //     ->where('penjualan_preorders.id_bulkbuy', $produkBulkBuy->id)
+        //     ->count();
+        // dd($count_target);
+        return view('pages.bulkbuy.bulkbuy', compact('produkBulkBuy', 'kategori', 'response', 'gambar'));
     }
     public function RajaOngkir(Request $request)
     {

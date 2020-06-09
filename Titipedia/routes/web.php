@@ -75,7 +75,7 @@ Route::post('/order/confirm', 'PenjualanPreorderController@store');
 Route::get('/order/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
 //Penjualan BulkBuy
 Route::get('/bulkbuy/{produkBulkBuy}', 'PenjualanPreorderController@showBulkBuy');
-Route::post('/bulkbuy/confirm', 'PenjualanPreorderController@store');
+Route::post('/bulkbuy/confirm', 'PenjualanPreorderController@storeBulkBuy');
 Route::get('/bulkbuy/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
 
 //pesan

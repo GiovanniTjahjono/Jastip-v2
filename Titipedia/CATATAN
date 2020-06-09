@@ -10,3 +10,4 @@ error saat gambar hanya 1
 Bug:
 - tipe pengiriman belum load,harus ganti kota pengiriman dl baru terload
 - harga total masih akumulasi dari pengiriman, jadi akan bertambah jika diganti kota
+- preorderController function create where di $produk_stok salah

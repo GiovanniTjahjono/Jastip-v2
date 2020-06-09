@@ -40,7 +40,8 @@ class HomeController extends Controller
             ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
             ->select('produk_bulk_buys.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->latest()->take(8)->get();
-        //dd($bulkbuy);
+        //$produk = DB::table('produks')->where('id_user', 1)->count();
+        //dd($produk);
         return view('pages.home', compact('produks', 'kategoris', 'bulkbuy'));
     }
 }
