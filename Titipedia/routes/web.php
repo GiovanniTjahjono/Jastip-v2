@@ -37,7 +37,7 @@ Route::patch('/produk/{produk}', 'ProdukController@update');
 //Route::resource('/produk-bulk-buy', 'ProdukBulkBuyController'); //Untuk menggunakan method patch, put, delete
 Route::get('/produk-bulk-buy', 'ProdukBulkBuyController@index');
 Route::get('/produk-bulk-buy/create', 'ProdukBulkBuyController@create');
-Route::get('/produk-bulk-buy/produkBulkBuy}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
+Route::get('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@show'); // harus dibawwah, krn kalau diatas akan dibaca menampilkan produk yg idnya create
 Route::post('/produk-bulk-buy', 'ProdukBulkBuyController@store');
 Route::delete('/produk-bulk-buy/{produkBulkBuy}', 'ProdukBulkBuyController@destroy');
 Route::get('/produk-bulk-buy/{produkBulkBuy}/edit', 'ProdukBulkBuyController@edit');
@@ -73,6 +73,10 @@ Route::get('/pesan/{pesan}', 'PesanController@chat');
 Route::get('/order/{produk}', 'PenjualanPreorderController@showProduk');
 Route::post('/order/confirm', 'PenjualanPreorderController@store');
 Route::get('/order/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
+//Penjualan BulkBuy
+Route::get('/bulkbuy/{produkBulkBuy}', 'PenjualanPreorderController@showBulkBuy');
+Route::post('/bulkbuy/confirm', 'PenjualanPreorderController@store');
+Route::get('/bulkbuy/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
 
 //pesan
 Route::get('/pesan', 'PesanController@index');

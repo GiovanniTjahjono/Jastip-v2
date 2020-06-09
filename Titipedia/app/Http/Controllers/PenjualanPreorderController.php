@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\PenjualanPreorder;
 use Illuminate\Http\Request;
 use App\Produk;
+use App\ProdukBulkBuy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -44,8 +45,8 @@ class PenjualanPreorderController extends Controller
      */
     public function store(Request $request)
     {
-         //validation
-         $request->validate([
+        //validation
+        $request->validate([
             'id_produk' => 'required',
             'id_pembeli' => 'required',
             'stok_pembelian' => 'required',
@@ -56,37 +57,37 @@ class PenjualanPreorderController extends Controller
             'hargaTotalnya' => 'required'
         ]);
         PenjualanPreorder::create([
-            'kode_transaksi' => Carbon::now()->format('mdHis').$request->id_pembeli.$request->id_produk, 
-            'kuantitas' => $request->stok_pembelian, 
-            'total_harga' => $request->hargaTotalnya, 
-            'kurir' => 'Tiki', 
-            'service' => explode(",", $request->tipeService)[1], 
-            'ongkir' => explode(",", $request->tipeService)[0], 
-            'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),  
-            'status_order' => 'menunggu', 
-            'id_user' => $request->id_pembeli, 
+            'kode_transaksi' => Carbon::now()->format('mdHis') . $request->id_pembeli . $request->id_produk,
+            'kuantitas' => $request->stok_pembelian,
+            'total_harga' => $request->hargaTotalnya,
+            'kurir' => 'Tiki',
+            'service' => explode(",", $request->tipeService)[1],
+            'ongkir' => explode(",", $request->tipeService)[0],
+            'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
+            'status_order' => 'menunggu',
+            'id_user' => $request->id_pembeli,
             'id_produk' => $request->id_produk
         ]);
         $produk_stok = DB::table('produks')
-        ->where('produks.id', '=', '1')
-        ->get();
+            ->where('produks.id', '=', '1')
+            ->get();
 
         //$id = DB::table('produks')->orderBy('id', 'desc')->first()->id + 1;
-        
+
         $stok_baru = $produk_stok[0]->stok - $request->stok_pembelian;
 
         DB::table('produks')
-        ->where('id', $request->id_produk)
-        ->update(['stok' => $stok_baru]);
+            ->where('id', $request->id_produk)
+            ->update(['stok' => $stok_baru]);
         //cara 3
         //produk::create($request->all());//all akan mengambil semua data fillable yang ada di model produk
         $kategoris = DB::table('kategoris')->get();
 
         $orders = DB::table('penjualan_preorders')
-        ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
-        ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
-        ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
-        ->latest('penjualan_preorders.created_at')->get();
+            ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
+            ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
+            ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
+            ->latest('penjualan_preorders.created_at')->get();
         //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
         return view('pages.preorder.show', compact('orders'));
     }
@@ -129,7 +130,7 @@ class PenjualanPreorderController extends Controller
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
                 "key: b4cf42007b63acb57e34af6c70bddd8d"
-                
+
             ),
         ));
 
@@ -138,9 +139,44 @@ class PenjualanPreorderController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
-       
+
         $kategori = DB::table('kategoris')->where('id', '=', $produk->id_kategori)->get();
         $gambar = DB::table('gambars')->where('id_produk', '=', $produk->id)->get();
+        return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\ProdukBulkBuy  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function showBulkBuy(ProdukBulkBuy $produkBulkBuy)
+    {
+        //Get nama kota list
+        $key = Config::get('RAJA_ONGKIR_API');
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: b4cf42007b63acb57e34af6c70bddd8d"
+
+            ),
+        ));
+
+        // Response
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        $kategori = DB::table('kategoris')->where('id', '=', $produkBulkBuy->id_kategori)->get();
+        $gambar = DB::table('gambars')->where('id_produk', '=', $produkBulkBuy->id)->get();
         return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
     }
     public function RajaOngkir(Request $request)
@@ -167,12 +203,12 @@ class PenjualanPreorderController extends Controller
         curl_close($curl1);
         $id_kab = '';
         $data = json_decode($response1, true);
-        for ($i=0; $i < count($data['rajaongkir']['results']); $i++) { 
-            if($data['rajaongkir']['results'][$i]['city_name'] === $nama_kota_asal_pengiriman){
+        for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
+            if ($data['rajaongkir']['results'][$i]['city_name'] === $nama_kota_asal_pengiriman) {
                 $id_kab = $data['rajaongkir']['results'][$i]['city_id'];
             }
-        }       
-                          
+        }
+
         Log::debug($request['kab_id']);
         Log::debug($id_kab);
         $asal = $id_kab;
