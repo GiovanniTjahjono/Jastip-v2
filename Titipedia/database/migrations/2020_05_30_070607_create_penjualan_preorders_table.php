@@ -28,7 +28,8 @@ class CreatePenjualanPreordersTable extends Migration
             $table->enum('status_order', ['menunggu', 'dikirim', 'diterima', 'selesai']);
             $table->integer('rating');
             $table->string('review')->nullable();
-            $table->integer('id_produk');
+            $table->integer('id_produk')->nullable();
+            $table->integer('id_bulkbuy')->nullable();
             $table->integer('id_user');
         });
     }
