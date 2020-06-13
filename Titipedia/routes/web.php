@@ -73,6 +73,12 @@ Route::get('/pesan/{pesan}', 'PesanController@chat');
 Route::get('/order/{produk}', 'PenjualanPreorderController@showProduk');
 Route::post('/order/confirm', 'PenjualanPreorderController@store');
 Route::get('/order/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
+
+//Update status preorder
+Route::get('/terjual', 'PenjualanPreorderController@indexPreorderTerjual');
+Route::get('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@edit');
+Route::patch('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@update');
+Route::delete('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@destroy');
 //Penjualan BulkBuy
 Route::get('/bulkbuy/{produkBulkBuy}', 'PenjualanPreorderController@showBulkBuy');
 Route::post('/bulkbuy/confirm', 'PenjualanPreorderController@storeBulkBuy');

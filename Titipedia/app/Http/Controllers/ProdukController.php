@@ -89,6 +89,7 @@ class ProdukController extends Controller
             'harga_produk' => $request->harga_produk,
             'berat' => $request->berat,
             'keterangan' => $request->keterangan,
+            'asal_pengiriman' => $request->asal_pengiriman,
             'id_user' => $request->id_user,
             'id_kategori' => $request->nama_kategori
         ]);

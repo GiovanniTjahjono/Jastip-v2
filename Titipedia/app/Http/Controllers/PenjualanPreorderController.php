@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Produk;
 use App\ProdukBulkBuy;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,14 +20,29 @@ class PenjualanPreorderController extends Controller
     }
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        
     }
+    public function indexPreorderTerjual()
+    {
+        $id_user = Auth::user()->id;
+        $penjualanOrders = DB::table('penjualan_preorders')
+                        ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
+                        ->join('users', 'users.id', '=', 'produks.id_user')
+                        ->join('kategoris', 'kategoris.id', '=', 'produks.id_kategori')
+                        ->where('users.id', $id_user)
+                        ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori')
+                        ->get();
+        return view('pages.penjualan_preorder.penjualan_preorder', compact('penjualanOrders'));
+    }
+    public function editPreorderTerjual(PenjualanPreorder $prenjualan_preorder) 
+    {
 
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -125,10 +141,6 @@ class PenjualanPreorderController extends Controller
             'id_bulkbuy' => $request->id_produk
         ]);
 
-        //
-        // $count_target = DB::table('penjualan_preorders')
-        //     ->where('penjualan_preorders.id_bulkbuy', $request->id_produk)
-        //     ->count();
         $jumlah_target = DB::table('produk_bulk_buys')
             ->where('produk_bulk_buys.id', $request->id_produk)
             ->get();
@@ -144,14 +156,6 @@ class PenjualanPreorderController extends Controller
                 ->where('penjualan_preorders', $request->id_produk)
                 ->update(['status', 'dikirim']);
         }
-        // if ($count_target == $jumlah_target[0]->jumlah_target) {
-        //     DB::table('produk_bulk_buys')
-        //         ->where('id', $request->id_produk)
-        //         ->update(['status_bulk' => 'diproses']);
-        //     DB::table('penjualan_preorders')
-        //         ->where('penjualan_preorders', $request->id_produk)
-        //         ->update(['dikirim']);
-        // }
         $kategoris = DB::table('kategoris')->get();
 
         $orders = DB::table('penjualan_preorders')
@@ -328,7 +332,7 @@ class PenjualanPreorderController extends Controller
      */
     public function edit(PenjualanPreorder $penjualanPreorder)
     {
-        //
+        return view('pages.penjualan_preorder.edit', compact('penjualanPreorder'));
     }
 
     /**
@@ -340,7 +344,20 @@ class PenjualanPreorderController extends Controller
      */
     public function update(Request $request, PenjualanPreorder $penjualanPreorder)
     {
-        //
+        
+        $request->validate([
+            'kode_transaksi' => 'required',
+            'nomer_resi' => 'required'
+        ]);
+        
+        //dd($request);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'nomor_resi' => $request->nomer_resi,
+                'tanggal_pengiriman' => Carbon::now()->format('Y-m-d H:i:s'),
+                'status_order' => 2
+            ]);
+        return redirect('/terjual')->with('status', 'Data Berhasil Diubah!');
     }
 
     /**
@@ -351,6 +368,10 @@ class PenjualanPreorderController extends Controller
      */
     public function destroy(PenjualanPreorder $penjualanPreorder)
     {
-        //
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'status_order' => 5
+            ]);
+        return redirect('/terjual')->with('status', 'Data Berhasil Dibatalkan!');
     }
 }
