@@ -56,17 +56,12 @@
                             </small>Rp.{{$produk->harga_produk}}</li>
                         <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small class="text-muted">Harga jasa:
                             </small>Rp.{{$produk->harga_jasa}}</li>
-                        <li class="list-group-item"><small class="text-muted">Jenis produk:
-                            </small>{{$produk->jenis_produk}}</li>
                         <li class="list-group-item"><small class="text-muted">Stok: </small>{{$produk->stok}}</li>
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produk->berat}} Kg
                         </li>
 
                         <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
-
-                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
-
-                            </small>Rp.{{$produk->asal_pengiriman}}</li>
+                            </small>{{$produk->asal_pengiriman}}</li>
                     </ul>
 
                     <div class="card-body">
@@ -75,9 +70,6 @@
                             <input type="text" hidden class="form-control" id="id_produk" name="id_produk" value="{{$produk->id}}">
                             <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Jumlah Pembelian</label>
-                                <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian" value="1" min="1" max="{{$produk->stok}}">
-
                                 <input type="text" hidden class="form-control" id="id_produk" name="id_produk" value="{{$produk->id}}">
                                 <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                                 <div class="form-group">
