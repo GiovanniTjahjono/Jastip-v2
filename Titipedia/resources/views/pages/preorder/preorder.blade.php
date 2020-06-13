@@ -97,12 +97,10 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Kota Pengiriman</label>
                                     <select class="form-control" id="kab_id" name="kab_id">
+                                        <option selected>Pilih Kota</option>;
                                         <?PHP
                                         $data = json_decode($response, true);
                                         for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                            if ($data['rajaongkir']['results'][$i]['city_name'] === Auth::user()->kota) {
-                                                echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
-                                            }
                                             echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                         }
                                         ?>
@@ -140,12 +138,19 @@
         var harga_jasa = $('#harga_jasa').val();
         var harga_total = harga_produk + harga_jasa;
 
+        var harga_total_plus_ongkir = 0
+
         var asal = $('#asal').val();
         localStorage.setItem('harga', harga_total);
         localStorage.setItem('hargaTerakhir', 0);
         var nama_kota = $('#kab_id').find(":selected").text();
         $('#nama_kota').val(nama_kota);
+
         $('#kab_id').on('change', function(e) {
+            //Reset local storage harga
+            localStorage.setItem('harga', harga_total);
+            localStorage.setItem('hargaTerakhir', 0);
+            //Ambil id kabupaten untuk query raja ongkir
             var nama_kota = $('#kab_id').find(":selected").text();
             $('#nama_kota').val(nama_kota);
 
@@ -158,33 +163,42 @@
                 },
                 function(data) {
                     var obj = JSON.parse(data);
-                    //var harga = data[0].rajaongkir;
                     $('#tipeService').html('');
-                    //alert(Object.keys(obj.rajaongkir.results[0].costs).length);
-                    var harga_default = obj.rajaongkir.results[0].costs[0].cost[0].value;
+                    // Mendapatkan harga ongkir
+                    var biaya_ongkir = obj.rajaongkir.results[0].costs[0].cost[0].value;
                     for (var i = 0; i < Object.keys(obj.rajaongkir.results[0].costs).length; i++) {
                         $('#tipeService').append('<option value="' + obj.rajaongkir.results[0].costs[i].cost[0].value + ',' + obj.rajaongkir.results[0].costs[i].service + '">' + obj.rajaongkir.results[0].costs[i].service + ' - ' + obj.rajaongkir.results[0].costs[i].description.toLowerCase() + ' - Rp. ' + obj.rajaongkir.results[0].costs[i].cost[0].value + '</option>');
                     }
-                    localStorage.setItem('biayaOngkir', harga_default);
+                    // Simpan biaya orngkir ke local storage
+                    localStorage.setItem('biayaOngkir', biaya_ongkir);
                     var hargaSekarang = localStorage.getItem('harga');
+                    // Kalkulasi harga produk + jasa + ongkir
                     var hargaJadi = Number(hargaSekarang) + Number(obj.rajaongkir.results[0].costs[0].cost[0].value)
-
+                    // Simpan hasilnya di harga
                     localStorage.setItem('harga', hargaJadi);
+                    // Tampilkan d total harga
                     $('#totalHarga').html('');
                     $('#totalHarga').append('<h3>Rp.' + localStorage.getItem('harga') + '</h3><input type="hidden" class="form-control" name="hargaTotalnya" id="totalHargaH3" value="' + localStorage.getItem('harga') + '">');
 
                 });
         });
         $('#tipeService').on('change', function(e) {
+            // Ambil biaya ongkir lama
             var hargaOngkirLama = localStorage.getItem('biayaOngkir');
+            // Ambil total harga lama 
             var hargaSekarang = localStorage.getItem('harga');
+            // Kurangi harga lama dan ongkir lama agar mendapatkan harga produk dan jasa saja
             var hargaSementara = Number(hargaSekarang) - Number(hargaOngkirLama);
+            // Ambil value dari tipe servis
             var biayaOngkirBaru1 = $('#tipeService').val();
-            alert(biayaOngkirBaru1);
             var biayaOngkirBaru = biayaOngkirBaru1.split(",")[0];
+            // simpan harga ongkir baru ke biaya ongkir di local storage
             localStorage.setItem('biayaOngkir', biayaOngkirBaru);
+            // jumlahkan harga jasa + produk + ongkir baru
             var hargaBaru = Number(biayaOngkirBaru) + Number(hargaSementara);
+            // simpan kembali hasilnya ke local storage
             localStorage.setItem('harga', hargaBaru);
+            // tampilkan
             $('#totalHarga').html('');
             $('#totalHarga').append('<h3>Rp.' + localStorage.getItem('harga') + '</h3><input type="hidden" class="form-control" name="hargaTotalnya" id="totalHargaH3" value="' + localStorage.getItem('harga') + '">');
         });

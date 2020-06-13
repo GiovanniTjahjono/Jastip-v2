@@ -202,7 +202,6 @@ class PenjualanPreorderController extends Controller
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
                 "key: b4cf42007b63acb57e34af6c70bddd8d"
-
             ),
         ));
 
