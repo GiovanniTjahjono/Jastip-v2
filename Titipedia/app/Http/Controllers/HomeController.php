@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -25,6 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //auth::chek untuk kondisi jika user login
+        //if (Auth::check()) {
         $kategoris = DB::table('kategoris')->get();
         // Ambil data produk
         $produks = DB::table('produks')
@@ -49,7 +52,7 @@ class HomeController extends Controller
             ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
             ->select('produk_bulk_buys.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->latest()->take(8)->get();
-
+            
         return view('pages.home', compact('produks', 'kategoris', 'bulkbuy'));
     }
 }
