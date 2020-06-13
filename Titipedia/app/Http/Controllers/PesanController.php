@@ -6,6 +6,7 @@ use App\Pesan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Notifikasi;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\DB;
@@ -42,8 +43,9 @@ class PesanController extends Controller
         $id = Auth::user()->id;
         $queryuser = DB::select("SELECT u.*, MAX(p.waktu_kirim)as waktu_kirim FROM pesans as p JOIN users as u ON p.id_penerima = u.id OR p.id_pengirim = u.id WHERE p.id_penerima = u.id AND p.id_pengirim = $id OR p.id_penerima = $id AND p.id_pengirim = u.id GROUP BY u.id ORDER BY p.waktu_kirim DESC");
         $cek = 'user';
+
+        //dd($notify);
         return view('pages.pesan.pesanDetail', compact('queryuser', 'cek'));
-        //dd($queryuser);
     }
 
     /**
@@ -71,6 +73,15 @@ class PesanController extends Controller
             'waktu_kirim' => date("Y-m-d H:i:s"),
             'dibaca' => 'belum'
         ]);
+        //adding notify
+        Notifikasi::create([
+            'isi_notifikasi' => 'coba',
+            'waktu_kirim' => date("Y-m-d H:i:s"),
+            'jenis' => 'pesan',
+            'dibaca' => 'belum',
+            'id_penerima' => $request->id_penerima,
+            'id_trigger' => Auth::user()->id
+        ]);
         return redirect()->back();
     }
 
@@ -92,11 +103,13 @@ class PesanController extends Controller
      */
     public function roomchat(Request $request)
     {
-        $id = $request->pesan;
-        Pesan::where('id', $id)
+        $idlawan = $request->pesan;
+        Pesan::where('id_penerima', Auth::user()->id)
+            ->where('id_pengirim', $idlawan)
             ->update([
                 'dibaca' => 'sudah'
             ]);
+        //query pesan
         $pesan = DB::table('pesans')
             // ->where('id_penerima', Auth::user()->id)
             // ->orWhere('id_penerima', $request->pesan)
@@ -120,6 +133,7 @@ class PesanController extends Controller
         $user2 = DB::table('users')
             ->where('id', $request->pesan)->get();
         $id = Auth::user()->id;
+        //query list user chat
         $queryuser = DB::select("SELECT u.*, MAX(p.waktu_kirim)as waktu_kirim 
                                     FROM pesans as p 
                                     JOIN users as u 
@@ -128,7 +142,7 @@ class PesanController extends Controller
                                     OR p.id_penerima = $id AND p.id_pengirim = u.id 
                                     GROUP BY u.id ORDER BY p.waktu_kirim DESC");
         $cek = 'room';
-        //dd($pesan);
+        //dd($idlawan);
         return view('pages.pesan.pesan', compact('pesan', 'user1', 'user2', 'cek', 'queryuser'));
     }
     /**
