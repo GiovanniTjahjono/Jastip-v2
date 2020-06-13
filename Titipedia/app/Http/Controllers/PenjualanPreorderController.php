@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PenjualanPreorder;
+use App\User;
 use Illuminate\Http\Request;
 use App\Produk;
 use App\ProdukBulkBuy;
@@ -368,10 +369,22 @@ class PenjualanPreorderController extends Controller
      */
     public function destroy(PenjualanPreorder $penjualanPreorder)
     {
+        
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
                 'status_order' => 5
             ]);
+            
+        $harga = $penjualanPreorder->total_harga;
+        $saldo_user = DB::table('users')
+                    ->where('id', $penjualanPreorder->id_user)
+                    ->get();
+        $saldo_baru = $harga + $saldo_user[0]->saldo;
+        //dd($saldo_baru);
+        User::where('id', $penjualanPreorder->id_user)
+                ->update([
+                    'saldo' => $saldo_baru
+                ]);
         return redirect('/terjual')->with('status', 'Data Berhasil Dibatalkan!');
     }
 }
