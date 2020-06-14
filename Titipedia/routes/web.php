@@ -58,6 +58,9 @@ Route::patch('/request/{req}', 'ReqController@update');
 Route::get('/penawaran/{request}', 'PenawaranController@index');
 Route::get('/penawaran/{request}/create', 'PenawaranController@create');
 Route::post('/penawaran', 'PenawaranController@store');
+Route::delete('/penawaran/{penawaran}', 'PenawaranController@destroy');
+
+
 
 
 Route::resource('/permintaan', 'PermintaanController');

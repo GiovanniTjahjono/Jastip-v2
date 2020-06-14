@@ -93,19 +93,17 @@
         <div class="alert alert-success">
             {{ session('status') }}
         </div>
-        @elseif (session('status')==="Data Request Order Berhasil Diubah!")
-        <div class="alert alert-primary">
-            {{ session('status') }}
-        </div>
-        @elseif (session('status')==="Data Request Order Berhasil Dihapus!")
+        @elseif (session('status')==="Data Penawaran Berhasil Dihapus!")
         <div class="alert alert-danger">
             {{ session('status') }}
         </div>
         @endif
         <div class="row">
+            @if(!$isAjukanPenawaran)
             <div class="col-md-4">
                 <a href="/penawaran/{{$request->id}}/create" class="btn btn-success" style="background-color: #65587f; border: hidden">Tambah Penawaran</a>
             </div>
+            @endif
         </div>
         <div class="mt-3">
             <table id="table_product" class="table table-responsive table-hover">
@@ -118,19 +116,28 @@
                         <th>Kota</th>
                         <th>Status</th>
                         <th>Penawar</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($penawarans as $data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{number_format($data->harga_produk_penawaran)}}</td>
-                        <td>{{number_format($data->harga_jasa_penawaran)}}</td>
+                        <td>Rp. {{number_format($data->harga_produk_penawaran)}}</td>
+                        <td>Rp. {{number_format($data->harga_jasa_penawaran)}}</td>
                         <td>{{$data->alamat_penawaran}}</td>
                         <td>{{$data->kota_penawaran}}</td>
                         <td>{{$data->status}}</td>
                         <td>{{$data->name}}</td>
-                        
+                        <td>
+                            @if($data->id_penawar === Auth::user()->id)
+                            <form action="/penawaran/{{$data->id}}" method="post">
+                                @method('delete')
+                                @csrf
+                                <button type="submit" class="badge badge-danger">DELETE</button>
+                            </form>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

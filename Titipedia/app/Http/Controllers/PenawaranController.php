@@ -6,9 +6,14 @@ use App\Penawaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Req;
+use Illuminate\Support\Facades\Auth;
 
 class PenawaranController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +24,7 @@ class PenawaranController extends Controller
         $penawarans = DB::table('penawarans')
                 ->join('users', 'users.id', 'penawarans.id_penawar')
                 ->where('id_request',$request->id)
+                ->select('penawarans.*', 'users.name as name')
                 ->get();
         $gambars = DB::table('gambars')
                 ->where('id_request', $request->id)
@@ -31,7 +37,13 @@ class PenawaranController extends Controller
                 ->get();
         $user = $users[0]->name;
         $kategori = $kategoris[0]->nama_kategori;
-        return view('pages.penawaran.penawaran', compact('penawarans', 'request', 'gambars', 'user', 'kategori'));
+        $isAjukanPenawaran = false;
+        foreach($penawarans as $item) {
+            if($item->id_penawar === Auth::user()->id) {
+                $isAjukanPenawaran = true;
+            }
+        }
+        return view('pages.penawaran.penawaran', compact('penawarans', 'request', 'gambars', 'user', 'kategori', 'isAjukanPenawaran'));
     }
 
     /**
@@ -130,6 +142,7 @@ class PenawaranController extends Controller
      */
     public function destroy(Penawaran $penawaran)
     {
-        //
+        Penawaran::destroy($penawaran->id);
+        return redirect()->back()->with('status', 'Data Penawaran Berhasil Dihapus!');
     }
 }
