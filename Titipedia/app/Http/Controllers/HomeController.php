@@ -38,7 +38,7 @@ class HomeController extends Controller
             ->latest()->take(8)->get();
             
         // Ambil data produk bulk buy
-        $bulkbuy = DB::table('produk_bulk_buys')
+        $bulkbuys = DB::table('produk_bulk_buys')
             ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
             ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
@@ -46,13 +46,13 @@ class HomeController extends Controller
             ->latest()->take(8)->get();
 
         // Ambil data prequest
-        $bulkbuy = DB::table('produk_bulk_buys')
-            ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
+        $requests = DB::table('requests')
+            ->join('users', 'users.id', '=', 'requests.id_user')
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
             ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
             ->select('produk_bulk_buys.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->latest()->take(8)->get();
             
-        return view('pages.home', compact('produks', 'kategoris', 'bulkbuy'));
+        return view('pages.home', compact('produks', 'kategoris', 'bulkbuys', 'requests'));
     }
 }

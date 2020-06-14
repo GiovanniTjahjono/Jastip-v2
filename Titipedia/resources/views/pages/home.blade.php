@@ -52,7 +52,8 @@
                             @if(Auth::check())
                             @if(Auth::User()->id === $data->id_user)
                             <a href="/produk/{{$data->id}}/edit" style="border: hidden" class="btn btn-success btn-primary">Edit</a>
-                            
+                            @else
+                            <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
                             @endif
                             @else
                             <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
