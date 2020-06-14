@@ -152,10 +152,10 @@
             $('#nama_kota').val(nama_kota);
 
             var name = $('#kab_id').val();
-            var name2 = "{{$produk->asal_pengiriman}}";
+            var name2 = "{{$produkBulkBuy->asal_pengiriman}}";
             $.post("{{url('/order/get_price')}}", {
                     'kab_id': name,
-                    'asal': "{{$produk->asal_pengiriman}}",
+                    'asal': "{{$produkBulkBuy->asal_pengiriman}}",
                     '_token': "{{csrf_token()}}"
                 },
                 function(data) {

@@ -79,10 +79,16 @@ Route::get('/terjual', 'PenjualanPreorderController@indexPreorderTerjual');
 Route::get('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@edit');
 Route::patch('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@update');
 Route::delete('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@destroy');
+
 //Penjualan BulkBuy
 Route::get('/bulkbuy/{produkBulkBuy}', 'PenjualanPreorderController@showBulkBuy');
 Route::post('/bulkbuy/confirm', 'PenjualanPreorderController@storeBulkBuy');
-Route::get('/bulkbuy/daftar_pembelian_preorder/{id}', 'PenjualanPreorderController@show');
+Route::get('/bulkbuy/daftar_pembelian_preorder/{id_bulk}', 'PenjualanPreorderController@showPembelianBulkBuy');
+//Update status bulkbuy
+Route::get('/penjualan-bulk', 'PenjualanPreorderController@indexBulkBuyTerjual');
+Route::get('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@edit');
+Route::patch('/penjualan-bulk/{penjualanBulkBuy}', 'PenjualanPreorderController@update');
+Route::delete('/penjualan-bulk/{penjualanBulkBuy}', 'PenjualanPreorderController@destroy');
 
 //pesan
 Route::get('/pesan', 'PesanController@index');
@@ -95,6 +101,7 @@ Route::get('/profile', 'UserController@index');
 //Gambar
 Route::resource('/gambar', 'GambarController');
 Route::delete('/gambar/{gambar}/{produk}', 'GambarController@destroy');
+Route::delete('/gambar-bulk-buy/{gambar}/{produkBulkBuy}', 'GambarController@destroyBulkBuy');
 Route::get('/edit-gambar/{gambar}', 'GambarController@edit');
 Route::post('/tambah_gambar', 'GambarController@store');
 Route::get('/edit-gambar-bulk/{gambar}', 'GambarController@editBulkBuy');

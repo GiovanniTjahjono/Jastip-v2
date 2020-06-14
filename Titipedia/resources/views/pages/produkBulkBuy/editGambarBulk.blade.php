@@ -30,7 +30,7 @@
                         <th scope="row">{{$key + 1}}</th>
                         <td><img class="rounded img-thumbnail" style="max-width: 150px;" src="{{asset('produk_bulk_buy_images/' . $data->url)}}"></td>
                         <td>
-                            <form action="/gambar/{{$data->id}}/{{$data->id_bulkbuy}}" method="post">
+                            <form action="/gambar-bulk-buy/{{$data->id}}/{{$data->id_bulkbuy}}" method="post">
                                 @method('delete')
                                 @csrf
                                 <button type="submit" class="badge badge-danger">Delete</button>
