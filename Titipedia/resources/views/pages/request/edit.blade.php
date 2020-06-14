@@ -97,7 +97,7 @@
                 
                 <div class="form-group row">
                     <div class="col-sm-12">
-                    <a href="/edit-gambar/{{$req->id}}" class="btn btn-success float-right">Edit Gambar</a>
+                    <a href="/edit-gambar-request/{{$req->id}}" class="btn btn-success float-right">Edit Gambar</a>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -128,7 +128,7 @@
                 </div>
                 <div class="form-group row pull-right d-inline p-2">
                     <div class="col-sm-10">
-                        <a href="/request" class="btn btn-primary">Kembali</a>
+                        <a href="/req" class="btn btn-primary">Kembali</a>
                     </div>
                 </div>
                 <div class="form-group row pull-right p-2">

@@ -33,7 +33,7 @@
                         <td>{{$data->kuantitas}}</td>
                         <td>{{$data->kurir}}</td>
                         <td>{{$data->service}}</td>
-                        <td>{{$data->total_harga}}</td>
+                        <td>number_format({{$data->total_harga}})</td>
                         <td>{{$data->status_order}}</td>
                         <td>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->

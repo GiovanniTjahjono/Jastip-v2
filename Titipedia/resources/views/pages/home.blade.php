@@ -42,7 +42,7 @@
                 <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
             </div>
             <div class="card-footer bg-white">
-                <h6>Rp. {{$data->harga_produk}}</h6>
+                <h6>Rp. {{number_format($data->harga_produk)}}</h6>
                 <div class="row">
                     <div class="col">
                         <small class="text-muted">stok {{$data->stok}}</small>
@@ -76,7 +76,7 @@
                 <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
             </div>
             <div class="card-footer bg-white">
-                <h6>Rp. {{$data->harga_produk}}</h6>
+                <h6>Rp. {{number_format($data->harga_produk)}}</h6>
                 <div class="row">
                     <div class="col">
                         <small class="text-muted">Jumlah Target {{$data->jumlah_target}}</small>
@@ -94,24 +94,16 @@
 </div>
 <h3>Request Terbaru</h3>
 <div class="row">
-    @foreach($produks as $data)
+    @foreach($requests as $data)
     <div class="col-lg-3 col-md-6 col-6 mb-4">
         <div class="card h-100">
-            <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="produk_images/{{$data->url}}" alt=""></a>
+            <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="request_images/{{$data->url}}" alt=""></a>
             <div class="card-body">
-                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
+                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama_req}}</small>
             </div>
             <div class="card-footer bg-white">
-                <h6>Rp. {{$data->harga_produk}}</h6>
-                <div class="row">
-                    <div class="col">
-                        <small class="text-muted">stok {{$data->stok}}</small>
-                    </div>
-                    <div class="col">
-                        <div class="text-right">
-                            <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
-                        </div>
-                    </div>
+                <div class="text-right">
+                    <a href="/penawaran/{{$data->id}}" style="background-color: #65587f;" class="btn btn-primary border-0">Ajukan Penawaran</a>
                 </div>
             </div>
         </div>

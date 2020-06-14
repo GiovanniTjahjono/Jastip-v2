@@ -23,6 +23,7 @@ class CreateRequestsTable extends Migration
             $table->string('kota_req');
             $table->enum('status_req', ['aktif', 'tidak aktif']);
             $table->string('keterangan')->nullable();
+            $table->integer('id_kategori');
             $table->integer('id_user');
         });
     }

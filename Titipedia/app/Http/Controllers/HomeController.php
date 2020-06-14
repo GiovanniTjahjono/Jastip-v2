@@ -46,11 +46,12 @@ class HomeController extends Controller
             ->latest()->take(8)->get();
 
         // Ambil data prequest
+        
         $requests = DB::table('requests')
             ->join('users', 'users.id', '=', 'requests.id_user')
-            ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
-            ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
-            ->select('produk_bulk_buys.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
+            ->join('kategoris', 'requests.id_kategori', '=', 'kategoris.id')
+            ->join('gambars', 'requests.id', '=', 'gambars.id_request')->groupBy('requests.id')
+            ->select('requests.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->latest()->take(8)->get();
             
         return view('pages.home', compact('produks', 'kategoris', 'bulkbuys', 'requests'));

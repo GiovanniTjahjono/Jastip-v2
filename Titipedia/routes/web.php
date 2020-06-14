@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -53,6 +54,11 @@ Route::delete('/request/{req}', 'ReqController@destroy');
 Route::get('/request/{req}/edit', 'ReqController@edit');
 Route::patch('/request/{req}', 'ReqController@update');
 */
+//Penawaran
+Route::get('/penawaran/{request}', 'PenawaranController@index');
+Route::get('/penawaran/{request}/create', 'PenawaranController@create');
+Route::post('/penawaran', 'PenawaranController@store');
+
 
 Route::resource('/permintaan', 'PermintaanController');
 
@@ -99,6 +105,9 @@ Route::get('/edit-gambar/{gambar}', 'GambarController@edit');
 Route::post('/tambah_gambar', 'GambarController@store');
 Route::get('/edit-gambar-bulk/{gambar}', 'GambarController@editBulkBuy');
 Route::post('/tambah_gambar_bulk', 'GambarController@storeBulkBuy');
+Route::get('edit-gambar-request/{gambar}', 'GambarController@editRequest');
+Route::post('/tambah_gambar_request', 'GambarController@storeRequest');
+Route::delete('/hapus_gambar_request/{gambar}/{req}', 'GambarController@destroyRequest');
 //Route::post('/tambah_gambar_bulk/{gambar}/edit', 'GambarController@editBulkBuy');
 
 //RajaOngkir

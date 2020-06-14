@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Gambar;
 use Illuminate\Support\Facades\DB;
 use App\Produk;
+use App\Req;
 
 class GambarController extends Controller
 {
@@ -64,6 +65,8 @@ class GambarController extends Controller
                 $distinctExtention++;
             }
             return redirect()->back();
+        }else {
+            return redirect()->back();
         }
     }
 
@@ -101,9 +104,40 @@ class GambarController extends Controller
                 $distinctExtention++;
             }
             return redirect()->back();
+        }else {
+            return redirect()->back();
         }
     }
 
+    public function storeRequest(Request $request)
+    {
+        $id = $request->id_request;
+
+        if ($request->hasFile('gambar')) {
+            $getLastIDImage = DB::table('gambars')
+                ->where('id_request', $id)
+                ->select('url')
+                ->orderBy('id', 'desc')->first();;
+
+            $identity = explode("_", $getLastIDImage->url); //[0] = '2', [1] = 'produk', [3] = '3.jpg'
+            $distinctExtention = explode(".", $identity[2])[0] + 1; //[0] = '3', [1] = 'jpg'
+
+            foreach ($request->file('gambar') as $image) {
+                $filename = $image->getClientOriginalName();
+                $extensionTemp = explode(".", $filename);
+                $extension = $extensionTemp[count($extensionTemp) - 1];
+                $image->move("request_images/", strval($id) . "_request_" . strval($distinctExtention) . "." . $extension); //penamaan yg bukan array, penamaan array ada di registercontroller
+                Gambar::create([
+                    'url' => strval($id) . "_request_" . strval($distinctExtention) . "." . $extension,
+                    'id_request' => $id
+                ]);
+                $distinctExtention++;
+            }
+            return redirect()->back();
+        } else {
+            return redirect()->back();
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -135,7 +169,13 @@ class GambarController extends Controller
             ->get();
         return view('pages.produkBulkBuy.editGambarBulk', compact('gambars'));
     }
-
+    public function editRequest(Gambar $gambar)
+    {
+        $gambars = DB::table('gambars')
+            ->where('id_request', '=', $gambar->id)
+            ->get();
+        return view('pages.request.editGambar', compact('gambars'));
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -154,6 +194,7 @@ class GambarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // 
     public function destroy(Gambar $gambar, Produk $produk)
     {
         $jumlahGambar = DB::table('gambars')
@@ -172,4 +213,19 @@ class GambarController extends Controller
             return redirect()->back()->with('status', 'Gagal dihapus, produk setidaknya harus memiliki 1 gambar!');;
         }
     }
+    
+    public function destroyRequest(Gambar $gambar, Req $req)
+    {
+        $jumlahGambar = DB::table('gambars')
+            ->where('id_request', '=', $req->id)
+            ->get();
+        if (count($jumlahGambar) > 1) {
+            Gambar::destroy($gambar->id);
+            return redirect()->back()->with('status', 'Berhasil Dihapus!');;
+        } else {
+            return redirect()->back()->with('status', 'Gagal dihapus, produk setidaknya harus memiliki 1 gambar!');;
+        }
+    }
+
+
 }

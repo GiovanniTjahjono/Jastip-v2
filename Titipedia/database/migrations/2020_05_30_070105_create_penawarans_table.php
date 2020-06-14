@@ -21,7 +21,7 @@ class CreatePenawaransTable extends Migration
             $table->string('alamat_penawaran');
             $table->string('kota_penawaran');
             $table->enum('status', ['menunggu', 'diterima', 'ditolak']);
-            $table->integer('id_penerima');
+            $table->integer('id_penawar');
             $table->integer('id_request');
         });
     }
