@@ -46,6 +46,11 @@
             <div class="col">
                 <div class="card mt-5 border-0">
                     <div class="card-body">
+                        @if (session('status') === "Jumlah Yang Anda Beli Melebihi Batas!")
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                        @endif
                         <h3 class="card-title">{{$produkBulkBuy->nama}}</h3>
                         <p class="card-subtitle mb-2 text-muted">{{$kategori[0]->nama_kategori}}</p>
                         <p class="card-text">{{$produkBulkBuy->keterangan}}</p>
@@ -92,17 +97,14 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Kota Pengiriman</label>
                                     <select class="form-control" id="kab_id" name="kab_id">
+                                        <option selected>Pilih Kota</option>;
                                         <?PHP
                                         $data = json_decode($response, true);
                                         for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                            if ($data['rajaongkir']['results'][$i]['city_name'] === Auth::user()->kota) {
-                                                echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
-                                            }
                                             echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                         }
                                         ?>
-                                    </select>
-                                    <input type="text" hidden class="form-control" id="nama_kota" name="nama_kota">
+                                    </select> <input type="text" hidden class="form-control" id="nama_kota" name="nama_kota">
                                 </div>
                                 <div class="form-group">
                                     <label>Tipe Pengiriman</label>
