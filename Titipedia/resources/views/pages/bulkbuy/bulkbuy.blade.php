@@ -50,6 +50,10 @@
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
+                        @elseif (session('status') === "Saldo Anda Tidak Cukup!")
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
                         @endif
                         <h3 class="card-title">{{$produkBulkBuy->nama}}</h3>
                         <p class="card-subtitle mb-2 text-muted">{{$kategori[0]->nama_kategori}}</p>

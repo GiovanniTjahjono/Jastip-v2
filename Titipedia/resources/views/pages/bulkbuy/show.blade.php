@@ -35,11 +35,9 @@
                             <td>{{$data->status_order}}</td>
                             <td>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
-                                <form action="" method="post">
-                                    @method('delete')
-                                    @csrf
-                                    <button type="submit" class="badge badge-danger">Cancel Order</button>
-                                </form>
+                                @if($data->status_order === 'dikirim')
+                                <a href="/konfirmasi/{{$data->id}}" class="badge badge-success">Konfirmasi</a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
