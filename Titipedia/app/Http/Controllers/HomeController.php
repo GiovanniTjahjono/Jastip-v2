@@ -36,7 +36,7 @@ class HomeController extends Controller
             ->join('gambars', 'produks.id', '=', 'gambars.id_produk')->groupBy('produks.id')
             ->select('produks.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->latest()->take(8)->get();
-            
+
         // Ambil data produk bulk buy
         $bulkbuys = DB::table('produk_bulk_buys')
             ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')

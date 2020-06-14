@@ -4,6 +4,6 @@
     Pembelian
   </div>
   <a href="/order/daftar_pembelian_preorder/{{Auth::user()->id}}" class="list-group-item border-0">Produk Biasa</a>
-  <a href="#" class="list-group-item border-0">Produk Bulk Buy</a>
-  <a href="#" class="list-group-item border-0">Request</a> 
+  <a href="/bulkbuy/daftar_pembelian_preorder/{{Auth::user()->id}}" class="list-group-item border-0">Produk Bulk Buy</a>
+  <a href="#" class="list-group-item border-0">Request</a>
 </div>

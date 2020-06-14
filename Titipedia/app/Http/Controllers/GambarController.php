@@ -7,6 +7,7 @@ use App\Gambar;
 use Illuminate\Support\Facades\DB;
 use App\Produk;
 use App\Req;
+use App\ProdukBulkBuy;
 
 class GambarController extends Controller
 {
@@ -200,13 +201,19 @@ class GambarController extends Controller
         $jumlahGambar = DB::table('gambars')
             ->where('id_produk', '=', $produk->id)
             ->get();
-        $jumlahGambarBulk = DB::table('gambars')
-            ->where('id_bulkbuy', '=', $produk->id)
-            ->get();
         if (count($jumlahGambar) > 1) {
             Gambar::destroy($gambar->id);
             return redirect()->back()->with('status', 'Berhasil Dihapus!');;
-        } elseif (count($jumlahGambarBulk) > 1) {
+        } else {
+            return redirect()->back()->with('status', 'Gagal dihapus, produk setidaknya harus memiliki 1 gambar!');;
+        }
+    }
+    public function destroyBulkBuy(Gambar $gambar, ProdukBulkBuy $produkBulkBuy)
+    {
+        $jumlahGambarBulk = DB::table('gambars')
+            ->where('id_bulkbuy', '=', $produkBulkBuy->id)
+            ->get();
+        if (count($jumlahGambarBulk) > 1) {
             Gambar::destroy($gambar->id);
             return redirect()->back()->with('status', 'Berhasil Dihapus!');;
         } else {
