@@ -86,11 +86,10 @@ class PenjualanPreorderController extends Controller
             'id_produk' => $request->id_produk
         ]);
         $produk_stok = DB::table('produks')
-            ->where('produks.id', '=', '1')
+            ->where('produks.id', '=', $request->id_produk)
             ->get();
 
-        //$id = DB::table('produks')->orderBy('id', 'desc')->first()->id + 1;
-
+        
         $stok_baru = $produk_stok[0]->stok - $request->stok_pembelian;
 
         DB::table('produks')
