@@ -68,7 +68,7 @@
 </div>
 <h3>Produk Bulk Buy Terbaru</h3>
 <div class="row">
-    @foreach($bulkbuy as $data)
+    @foreach($bulkbuys as $data)
     <div class="col-lg-3 col-md-6 col-6 mb-4">
         <div class="card h-100">
             <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="produk_bulk_buy_images/{{$data->url}}" alt=""></a>
