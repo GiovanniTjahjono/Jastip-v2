@@ -99,7 +99,7 @@ Route::get('/penjualan-bulk', 'PenjualanPreorderController@indexBulkBuyTerjual')
 Route::get('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@editPenjualanBulk');
 Route::get('/konfirmasi/{penjualanPreorder}', 'PenjualanPreorderController@konfirmasiBulkBuy');
 Route::patch('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@updatePenjualanBulk');
-Route::delete('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@destroy');
+Route::delete('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@destroyPenjualanBulk');
 
 //pesan
 Route::get('/pesan', 'PesanController@index');
