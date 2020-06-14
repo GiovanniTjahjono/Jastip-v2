@@ -86,9 +86,9 @@ Route::post('/bulkbuy/confirm', 'PenjualanPreorderController@storeBulkBuy');
 Route::get('/bulkbuy/daftar_pembelian_preorder/{id_bulk}', 'PenjualanPreorderController@showPembelianBulkBuy');
 //Update status bulkbuy
 Route::get('/penjualan-bulk', 'PenjualanPreorderController@indexBulkBuyTerjual');
-Route::get('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@edit');
-Route::patch('/penjualan-bulk/{penjualanBulkBuy}', 'PenjualanPreorderController@update');
-Route::delete('/penjualan-bulk/{penjualanBulkBuy}', 'PenjualanPreorderController@destroy');
+Route::get('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@editPenjualanBulk');
+Route::patch('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@updatePenjualanBulk');
+Route::delete('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@destroy');
 
 //pesan
 Route::get('/pesan', 'PesanController@index');

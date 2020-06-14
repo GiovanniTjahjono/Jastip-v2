@@ -53,8 +53,9 @@ class PenjualanPreorderController extends Controller
             ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
             ->join('kategoris', 'kategoris.id', '=', 'produk_bulk_buys.id_kategori')
             ->where('users.id', $id_user)
-            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'kategoris.nama_kategori')
+            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'produk_bulk_buys.jumlah_target as jumlah_target', 'kategoris.nama_kategori')
             ->get();
+        //dd($jumlah_target);
         return view('pages.penjualan_preorder.penjualan_bulk_buy', compact('penjualanOrders'));
     }
     public function editPreorderTerjual(PenjualanPreorder $prenjualan_preorder)
@@ -365,6 +366,16 @@ class PenjualanPreorderController extends Controller
     {
         return view('pages.penjualan_preorder.edit', compact('penjualanPreorder'));
     }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function editPenjualanBulk(PenjualanPreorder $penjualanPreorder)
+    {
+        return view('pages.penjualan_preorder.edit_bulk_buy', compact('penjualanPreorder'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -377,7 +388,6 @@ class PenjualanPreorderController extends Controller
     {
 
         $request->validate([
-            'kode_transaksi' => 'required',
             'nomer_resi' => 'required'
         ]);
 
@@ -389,6 +399,29 @@ class PenjualanPreorderController extends Controller
                 'status_order' => 2
             ]);
         return redirect('/terjual')->with('status', 'Data Berhasil Diubah!');
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePenjualanBulk(Request $request, PenjualanPreorder $penjualanPreorder)
+    {
+
+        $request->validate([
+            'nomer_resi' => 'required'
+        ]);
+
+        //dd($penjualanPreorder->id);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'nomor_resi' => $request->nomer_resi,
+                'tanggal_pengiriman' => Carbon::now()->format('Y-m-d H:i:s'),
+                'status_order' => 2
+            ]);
+        return redirect('penjualan-bulk')->with('status', 'Data Berhasil Diubah!');
     }
 
     /**
