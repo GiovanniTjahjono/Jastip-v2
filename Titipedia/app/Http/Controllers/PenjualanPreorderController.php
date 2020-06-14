@@ -444,10 +444,21 @@ class PenjualanPreorderController extends Controller
      */
     public function konfirmasiBulkBuy(PenjualanPreorder $penjualanPreorder)
     {
-        //dd($penjualanPreorder->id);
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
                 'status_order' => 3
+            ]);
+        $user_penjual = DB::table('penjualan_preorders')
+            ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
+            ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
+            ->join('kategoris', 'kategoris.id', '=', 'produk_bulk_buys.id_kategori')
+            ->where('penjualan_preorders.id', $penjualanPreorder->id)
+            ->select('users.*', 'penjualan_preorders.total_harga as total_harga')->get();
+        $saldo_terbaru = $user_penjual[0]->saldo + $user_penjual[0]->total_harga;
+        //dd($user_penjual[0]->id);
+        User::where('id', $user_penjual[0]->id)
+            ->update([
+                'saldo' => $saldo_terbaru
             ]);
         return redirect()->back()->with('status', 'Data Berhasil Diubah!');
     }
