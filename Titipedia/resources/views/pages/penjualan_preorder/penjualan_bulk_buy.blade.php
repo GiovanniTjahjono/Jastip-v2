@@ -47,12 +47,12 @@
                             <td>{{$data->status_order}}</td>
                             <td>
                                 @if($data->status_order === 'dikirim')
-                                <a href="/terjual/{{$data->id}}" class="badge badge-warning">Ganti Resi</a>
+                                <a href="/penjualan-bulk/{{$data->id}}" class="badge badge-warning">Ganti Resi</a>
                                 @endif
 
-                                @if($data->status_order ==='menunggu')
-                                <a href="/terjual/{{$data->id}}" class="badge badge-success">Kirim Barang</a>
-                                <form action="/terjual/{{$data->id}}" method="post">
+                                @if($data->status_order ==='menunggu' && $data->jumlah_target === 0)
+                                <a href="/penjualan-bulk/{{$data->id}}" class="badge badge-success">Kirim Barang</a>
+                                <form action="/penjualan-bulk/{{$data->id}}" method="post">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="badge badge-danger border-0">Cancel Order</button>

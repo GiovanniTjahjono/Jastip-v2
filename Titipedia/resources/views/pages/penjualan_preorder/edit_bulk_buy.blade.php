@@ -6,7 +6,7 @@
             <h3>Pengiriman</h3>
         </div>
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data" action="/terjual/{{$penjualanPreorder->id}}">
+            <form method="post" enctype="multipart/form-data" action="/penjualan-bulk/{{$penjualanPreorder->id}}">
                 @method('PATCH')
                 @csrf
                 <div class="form-group row">

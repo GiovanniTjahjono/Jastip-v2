@@ -53,8 +53,9 @@ class PenjualanPreorderController extends Controller
             ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
             ->join('kategoris', 'kategoris.id', '=', 'produk_bulk_buys.id_kategori')
             ->where('users.id', $id_user)
-            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'kategoris.nama_kategori')
+            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'produk_bulk_buys.jumlah_target as jumlah_target', 'kategoris.nama_kategori')
             ->get();
+        //dd($jumlah_target);
         return view('pages.penjualan_preorder.penjualan_bulk_buy', compact('penjualanOrders'));
     }
     public function editPreorderTerjual(PenjualanPreorder $prenjualan_preorder)
@@ -146,36 +147,46 @@ class PenjualanPreorderController extends Controller
         $jumlah_target = DB::table('produk_bulk_buys')
             ->where('produk_bulk_buys.id', $request->id_produk)
             ->get();
+        //pengecekan stok
         if ($request->jumlah_target > $jumlah_target[0]->jumlah_target || $request->jumlah_target < 1) {
             return redirect()->back()->with('status', 'Jumlah Yang Anda Beli Melebihi Batas!');
         } else {
-            PenjualanPreorder::create([
-                'kode_transaksi' => Carbon::now()->format('mdHis') . $request->id_pembeli . $request->id_produk,
-                'kuantitas' => $request->jumlah_target,
-                'total_harga' => $request->hargaTotalnya,
-                'kurir' => 'Tiki',
-                'service' => explode(",", $request->tipeService)[1],
-                'ongkir' => explode(",", $request->tipeService)[0],
-                'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
-                'status_order' => 'menunggu',
-                'id_user' => $request->id_pembeli,
-                'id_bulkbuy' => $request->id_produk
-            ]);
-            $target_terbaru = $jumlah_target[0]->jumlah_target - $request->jumlah_target;
-            DB::table('produk_bulk_buys')
-                ->where('id', $request->id_produk)
-                ->update(['jumlah_target' => $target_terbaru]);
+            if (Auth::user()->saldo >= $request->hargaTotalnya) {
+                $saldo_terbaru = Auth::user()->saldo - $request->hargaTotalnya;
+                User::where('id', Auth::user()->id)
+                    ->update([
+                        'saldo' => $saldo_terbaru
+                    ]);
+                PenjualanPreorder::create([
+                    'kode_transaksi' => Carbon::now()->format('mdHis') . $request->id_pembeli . $request->id_produk,
+                    'kuantitas' => $request->jumlah_target,
+                    'total_harga' => $request->hargaTotalnya,
+                    'kurir' => 'Tiki',
+                    'service' => explode(",", $request->tipeService)[1],
+                    'ongkir' => explode(",", $request->tipeService)[0],
+                    'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'status_order' => 'menunggu',
+                    'id_user' => $request->id_pembeli,
+                    'id_bulkbuy' => $request->id_produk
+                ]);
+                $target_terbaru = $jumlah_target[0]->jumlah_target - $request->jumlah_target;
+                DB::table('produk_bulk_buys')
+                    ->where('id', $request->id_produk)
+                    ->update(['jumlah_target' => $target_terbaru]);
 
-            $kategoris = DB::table('kategoris')->get();
+                $kategoris = DB::table('kategoris')->get();
 
-            $orders = DB::table('penjualan_preorders')
-                ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
-                ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
-                ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
-                ->latest('penjualan_preorders.created_at')->get();
-            //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
-            //dd($orders);
-            return view('pages.bulkbuy.show', compact('orders'));
+                $orders = DB::table('penjualan_preorders')
+                    ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
+                    ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
+                    ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
+                    ->latest('penjualan_preorders.created_at')->get();
+                //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
+                //dd($orders);
+                return view('pages.bulkbuy.show', compact('orders'));
+            } else {
+                return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
+            }
         }
         // if ($jumlah_target[0]->jumlah_target = 0) {
         //     DB::table('produk_bulk_buys')
@@ -211,9 +222,10 @@ class PenjualanPreorderController extends Controller
             ->where('penjualan_preorders.id_user', '=', $id_user)
             ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
+            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'kategoris.nama_kategori as nama_kategori')
             ->latest('penjualan_preorders.created_at')->get();
         //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
-        //dd($orders);
+        //dd($id_user);
         return view('pages.bulkbuy.show', compact('orders'));;
     }
     /**
@@ -365,6 +377,16 @@ class PenjualanPreorderController extends Controller
     {
         return view('pages.penjualan_preorder.edit', compact('penjualanPreorder'));
     }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function editPenjualanBulk(PenjualanPreorder $penjualanPreorder)
+    {
+        return view('pages.penjualan_preorder.edit_bulk_buy', compact('penjualanPreorder'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -377,7 +399,6 @@ class PenjualanPreorderController extends Controller
     {
 
         $request->validate([
-            'kode_transaksi' => 'required',
             'nomer_resi' => 'required'
         ]);
 
@@ -389,6 +410,46 @@ class PenjualanPreorderController extends Controller
                 'status_order' => 2
             ]);
         return redirect('/terjual')->with('status', 'Data Berhasil Diubah!');
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePenjualanBulk(Request $request, PenjualanPreorder $penjualanPreorder)
+    {
+
+        $request->validate([
+            'nomer_resi' => 'required'
+        ]);
+
+        //dd($penjualanPreorder->id);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'nomor_resi' => $request->nomer_resi,
+                'tanggal_pengiriman' => Carbon::now()->format('Y-m-d H:i:s'),
+                'status_order' => 2
+            ]);
+        return redirect('penjualan-bulk')->with('status', 'Data Berhasil Diubah!');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function konfirmasiBulkBuy(PenjualanPreorder $penjualanPreorder)
+    {
+        //dd($penjualanPreorder->id);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'status_order' => 3
+            ]);
+        return redirect()->back()->with('status', 'Data Berhasil Diubah!');
     }
 
     /**
