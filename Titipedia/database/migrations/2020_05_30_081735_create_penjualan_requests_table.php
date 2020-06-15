@@ -28,6 +28,7 @@ class CreatePenjualanRequestsTable extends Migration
             $table->integer('rating');
             $table->string('review')->nullable();
             $table->integer('id_penawaran');
+            $table->integer('id_user');
         });
     }
 

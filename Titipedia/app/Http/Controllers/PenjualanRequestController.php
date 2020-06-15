@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\PenjualanRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PenjualanRequestController extends Controller
 {
@@ -14,7 +17,21 @@ class PenjualanRequestController extends Controller
      */
     public function index()
     {
-        //
+        $penjualan_requests = DB::table('penjualan_requests')
+                ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
+                ->join('requests', 'requests.id', '=', 'penawarans.id_request')
+                ->join('kategoris', 'kategoris.id', '=', 'requests.id_kategori')
+                ->where('penjualan_requests.id_user', Auth::user()->id)
+                ->get();
+        /*
+        $penjualan_requests = DB::table('penjualan_requests')
+                ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
+                ->join('requests', 'requests.id', '=', 'penawarans.id_request')
+                ->join('kategoris', 'kategoris.id', '=', 'requests.id_kategori')
+                ->where('penjualan_requests.id_user', Auth::user()->id)
+                ->get();
+        */
+        return view('pages.penjualan_preorder.penjualan_request', compact('penjualan_requests'));
     }
 
     /**
@@ -35,7 +52,31 @@ class PenjualanRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+   
+        $request->validate([
+            'hargaTotalnya' => 'required',
+            'nama_kota' => 'required',
+            'tipeService' => 'required'
+        ]);
+        $totalHarga = $request->hargaTotalnya;
+        if($totalHarga > Auth::user()->saldo) {
+            return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
+        } else {
+            PenjualanRequest::create([
+                'kode_transaksi' => 'R'.Carbon::now()->format('YmdHis'),
+                'service' => explode(",", $request->tipeService)[1],
+                'ongkir' => explode(",", $request->tipeService)[0],
+                'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
+                'kuris' => 'Tiki',
+                'total_harga' => $totalHarga,
+                'status_penjualan_req' => 3,
+                'id_penawaran' => $request->id_penawaran,
+                'id_user' => Auth::user()->id
+            ]);
+            
+            return redirect('/pembelian-request');
+        }
+        
     }
 
     /**

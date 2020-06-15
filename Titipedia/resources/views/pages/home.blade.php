@@ -111,7 +111,15 @@
             </div>
             <div class="card-footer bg-white">
                 <div class="text-right">
+                    @if(Auth::check())
+                        @if($data->id_user === Auth::user()->id)
+                        <a href="/req/{{$data->id}}/edit" class="btn btn-success border-0">Edit</a>
+                        @else
+                        <a href="/penawaran/{{$data->id}}" style="background-color: #65587f;" class="btn btn-primary border-0">Ajukan Penawaran</a>
+                        @endif
+                    @else
                     <a href="/penawaran/{{$data->id}}" style="background-color: #65587f;" class="btn btn-primary border-0">Ajukan Penawaran</a>
+                    @endif
                 </div>
             </div>
         </div>

@@ -45,6 +45,28 @@ class PenawaranController extends Controller
         }
         return view('pages.penawaran.penawaran', compact('penawarans', 'request', 'gambars', 'user', 'kategori', 'isAjukanPenawaran'));
     }
+    public function indexCekPenawaran(Req $request)
+    {
+        $penawarans = DB::table('penawarans')
+        ->join('users', 'users.id', 'penawarans.id_penawar')
+        ->where('id_request',$request->id)
+        ->select('penawarans.*', 'users.name as name')
+        ->get();
+$gambars = DB::table('gambars')
+        ->where('id_request', $request->id)
+        ->get();
+$users = DB::table('users')
+        ->where('id', $request->id_user)
+        ->get();
+$kategoris = DB::table('kategoris')
+        ->where('id', $request->id_kategori)
+        ->get();
+$user = $users[0]->name;
+$kategori = $kategoris[0]->nama_kategori;
+$isAjukanPenawaran = false;
+
+return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gambars', 'user', 'kategori'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -73,7 +95,33 @@ class PenawaranController extends Controller
         curl_close($curl);
         return view('pages.penawaran.create', compact('request', 'response'));
     }
+    public function pilihPenawaran(Penawaran $penawaran)
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 20abcef3dbf0bc2149a7412bc9b60005"
+            ),
+        ));
 
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        $penawar = DB::table('users')
+                    ->where('id', $penawaran->id_penawar)
+                    ->get();
+        $namaPenawar = $penawar[0];
+        return view('pages.request.pilih-penawaran', compact('penawaran', 'response', 'namaPenawar'));
+    }
     /**
      * Store a newly created resource in storage.
      *

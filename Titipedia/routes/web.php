@@ -59,12 +59,15 @@ Route::patch('/request/{req}', 'ReqController@update');
 */
 //Penawaran
 Route::get('/penawaran/{request}', 'PenawaranController@index');
+Route::get('/cek-penawaran/{request}', 'PenawaranController@indexCekPenawaran');
 Route::get('/penawaran/{request}/create', 'PenawaranController@create');
 Route::post('/penawaran', 'PenawaranController@store');
 Route::delete('/penawaran/{penawaran}', 'PenawaranController@destroy');
+Route::get('/pilih-penawaran/{penawaran}', 'PenawaranController@pilihPenawaran');
 
 
-
+Route::post('/pembelian-penawaran', 'PenjualanRequestController@store');
+Route::get('/pembelian-request', 'PenjualanRequestController@index');
 
 Route::resource('/permintaan', 'PermintaanController');
 
