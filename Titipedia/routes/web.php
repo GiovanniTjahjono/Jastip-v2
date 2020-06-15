@@ -88,6 +88,7 @@ Route::get('/terjual', 'PenjualanPreorderController@indexPreorderTerjual');
 Route::get('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@edit');
 Route::patch('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@update');
 Route::delete('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@destroy');
+Route::get('/terjual-konfirmasi/{penjualanPreorder}', 'PenjualanPreorderController@konfirmasiPreorder');
 
 //Penjualan BulkBuy
 Route::get('/bulkbuy/{produkBulkBuy}', 'PenjualanPreorderController@showBulkBuy');

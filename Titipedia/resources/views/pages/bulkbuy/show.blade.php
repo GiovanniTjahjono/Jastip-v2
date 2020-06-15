@@ -37,6 +37,12 @@
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
                                 @if($data->status_order === 'dikirim')
                                 <a href="/konfirmasi/{{$data->id}}" class="badge badge-success">Konfirmasi</a>
+                                @elseif($data->status_order === 'menunggu')
+                                <label>Menunggu Pengiriman</label>
+                                @elseif($data->status_order === 'diterima')
+                                <label>Sukses</label>
+                                @elseif($data->status_order === 'dibatalkan')
+                                <label>Dibatalkan</label>
                                 @endif
                             </td>
                         </tr>

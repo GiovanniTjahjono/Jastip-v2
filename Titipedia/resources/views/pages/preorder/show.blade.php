@@ -13,7 +13,6 @@
                             <th>Kode Transaksi</th>
                             <th>Nama Produk</th>
                             <th>Kategori</th>
-                            <th>Gambar Produk</th>
                             <th>Jumlah Beli</th>
                             <th>Kurir</th>
                             <th>Servis</th>
@@ -25,23 +24,25 @@
                     <tbody>
                         @foreach($orders as $data)
                         <tr>
-                        <td>{{$data->kode_transaksi}}</td>
-                        <td>{{$data->nama}}</td>
-                        <td>{{$data->nama_kategori}}</td>
-                        
-                        
-                        <td>{{$data->kuantitas}}</td>
-                        <td>{{$data->kurir}}</td>
-                        <td>{{$data->service}}</td>
-                        <td>number_format({{$data->total_harga}})</td>
-                        <td>{{$data->status_order}}</td>
-                        <td>
+                            <td>{{$data->kode_transaksi}}</td>
+                            <td>{{$data->nama}}</td>
+                            <td>{{$data->nama_kategori}}</td>
+                            <td>{{$data->kuantitas}}</td>
+                            <td>{{$data->kurir}}</td>
+                            <td>{{$data->service}}</td>
+                            <td>{{$data->total_harga}}</td>
+                            <td>{{$data->status_order}}</td>
+                            <td>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
-                                <form action="" method="post">
-                                    @method('delete')
-                                    @csrf
-                                    <button type="submit" class="badge badge-danger">Cancel Order</button>
-                                </form>
+                                @if($data->status_order === 'dikirim')
+                                <a href="/terjual-konfirmasi/{{$data->id}}" class="badge badge-success">Konfirmasi</a>
+                                @elseif($data->status_order === 'menunggu')
+                                <label>Menunggu Pengiriman</label>
+                                @elseif($data->status_order === 'diterima')
+                                <label>Sukses</label>
+                                @elseif($data->status_order === 'dibatalkan')
+                                <label>Dibatalkan</label>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -52,4 +53,3 @@
     </div>
 </div>
 @stop
-

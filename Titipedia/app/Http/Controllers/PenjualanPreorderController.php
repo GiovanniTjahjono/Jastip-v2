@@ -222,6 +222,7 @@ class PenjualanPreorderController extends Controller
             ->where('penjualan_preorders.id_user', '=', $id)
             ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
             ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
+            ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori as nama_kategori')
             ->latest('penjualan_preorders.created_at')->get();
         //$ordsers = DB::table('orders')->where('id_user', '=', $id)->get();
         return view('pages.preorder.show', compact('orders'));
@@ -446,6 +447,34 @@ class PenjualanPreorderController extends Controller
         return redirect('penjualan-bulk')->with('status', 'Data Berhasil Diubah!');
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function konfirmasiPreorder(PenjualanPreorder $penjualanPreorder)
+    {
+        //dd($penjualanPreorder);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'status_order' => 3
+            ]);
+        $user_penjual = DB::table('penjualan_preorders')
+            ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
+            ->join('users', 'users.id', '=', 'produks.id_user')
+            ->join('kategoris', 'kategoris.id', '=', 'produks.id_kategori')
+            ->where('penjualan_preorders.id', $penjualanPreorder->id)
+            ->select('users.*', 'penjualan_preorders.total_harga as total_harga')->get();
+        $saldo_terbaru = $user_penjual[0]->saldo + $user_penjual[0]->total_harga;
+        //dd($user_penjual[0]->id);
+        User::where('id', $user_penjual[0]->id)
+            ->update([
+                'saldo' => $saldo_terbaru
+            ]);
+        return redirect()->back()->with('status', 'Data Berhasil Diubah!');
+    }
     /**
      * Update the specified resource in storage.
      *
