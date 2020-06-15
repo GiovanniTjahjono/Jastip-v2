@@ -531,21 +531,30 @@ class PenjualanPreorderController extends Controller
     }
     public function destroyPenjualanBulk(PenjualanPreorder $penjualanPreorder)
     {
-
+        //dd($penjualanPreorder->id_bulkbuy);
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
                 'status_order' => 5
             ]);
-
+        $jumlah_target = $penjualanPreorder->kuantitas;
         $harga = $penjualanPreorder->total_harga;
         $saldo_user = DB::table('users')
             ->where('id', $penjualanPreorder->id_user)
             ->get();
+        $bulkbuy = DB::table('produk_bulk_buys')
+            ->join('penjualan_preorders', 'penjualan_preorders.id_bulkbuy', '=', 'produk_bulk_buys.id')
+            ->where('penjualan_preorders.id', $penjualanPreorder->id)
+            ->select('produk_bulk_buys.*')->get();
+        //dd($bulkbuy);
         $saldo_baru = $harga + $saldo_user[0]->saldo;
-        //dd($saldo_user[0]->saldo);
+        $target_update = $jumlah_target + $bulkbuy[0]->jumlah_target;
         User::where('id', $penjualanPreorder->id_user)
             ->update([
                 'saldo' => $saldo_baru
+            ]);
+        ProdukBulkBuy::where('id', $penjualanPreorder->id_bulkbuy)
+            ->update([
+                'jumlah_target' => $target_update
             ]);
         return redirect('penjualan-bulk')->with('status', 'Data Berhasil Dibatalkan!');
     }

@@ -50,6 +50,11 @@
                                 <a href="/penjualan-bulk/{{$data->id}}" class="badge badge-warning">Ganti Resi</a>
                                 @elseif($data->status_order ==='menunggu' && $data->jumlah_target === 0)
                                 <a href="/penjualan-bulk/{{$data->id}}" class="badge badge-success">Kirim Barang</a>
+                                <form action="/penjualan-bulk/{{$data->id}}" method="post">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" class="badge badge-danger border-0">Cancel Order</button>
+                                </form>
                                 @elseif($data->status_order ==='menunggu')
                                 <label>Menunggu Target Terpenuhi</label>
                                 <form action="/penjualan-bulk/{{$data->id}}" method="post">
