@@ -9,8 +9,7 @@
                 </div>
                 @if($produk->id_user !== Auth::user()->id)
                 <div class="col-6">
-                    <a href="/pesan/{{$produk->id_user}}" class="btn float-right btn-success border-0"
-                        style="background-color: #65587f;">Chat Penjual</a>
+                    <a href="/pesan/{{$produk->id_user}}" class="btn float-right btn-success border-0" style="background-color: #65587f;">Chat Penjual</a>
                 </div>
                 @endif
             </div>
@@ -47,55 +46,53 @@
             <div class="col">
                 <div class="card mt-5 border-0">
                     <div class="card-body">
+                        @if (session('status') === "Jumlah Yang Anda Beli Melebihi Batas!")
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                        @elseif (session('status') === "Saldo Anda Tidak Cukup!")
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                        @endif
                         <h3 class="card-title">{{$produk->nama}}</h3>
                         <p class="card-subtitle mb-2 text-muted">{{$kategori[0]->nama_kategori}}</p>
                         <p class="card-text">{{$produk->keterangan}}</p>
                     </div>
                     <ul class="list-group list-group-flush">
 
-                        <li class="list-group-item" id="harga_produk" value="{{$produk->harga_produk}}"><small
-                                class="text-muted">Harga produk:
+                        <li class="list-group-item" id="harga_produk" value="{{$produk->harga_produk}}"><small class="text-muted">Harga produk:
                             </small>Rp.{{number_format($produk->harga_produk)}}</li>
-                        <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small
-                                class="text-muted">Harga jasa:
+                        <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small class="text-muted">Harga jasa:
                             </small>Rp.{{number_format($produk->harga_jasa)}}</li>
                         <li class="list-group-item"><small class="text-muted">Stok: </small>{{$produk->stok}}</li>
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produk->berat}} Kg
                         </li>
 
-                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small
-                                class="text-muted">Asal Pengiriman:
+                        <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
                             </small>{{$produk->asal_pengiriman}}</li>
                     </ul>
 
                     <div class="card-body">
                         <form method="POST" action="/order/confirm">
                             @csrf
-                            <input type="text" hidden class="form-control" id="id_produk" name="id_produk"
-                                value="{{$produk->id}}">
-                            <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli"
-                                value="{{Auth::user()->id}}">
+                            <input type="text" hidden class="form-control" id="id_produk" name="id_produk" value="{{$produk->id}}">
+                            <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                             <div class="form-group">
-                                <input type="text" hidden class="form-control" id="id_produk" name="id_produk"
-                                    value="{{$produk->id}}">
-                                <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli"
-                                    value="{{Auth::user()->id}}">
+                                <input type="text" hidden class="form-control" id="id_produk" name="id_produk" value="{{$produk->id}}">
+                                <input type="text" hidden class="form-control" id="id_pembeli" name="id_pembeli" value="{{Auth::user()->id}}">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Jumlah Pembelian</label>
-                                    <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian"
-                                        value="1" min="1" max="{{$produk->stok}}">
+                                    <input type="number" class="form-control" id="stok_pembelian" name="stok_pembelian" value="1" min="1" max="{{$produk->stok}}">
 
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nama Pembeli</label>
-                                    <input type="text" class="form-control" id="nama" name="nama_pembeli"
-                                        value="{{Auth::user()->name}}" aria-describedby="emailHelp">
+                                    <input type="text" class="form-control" id="nama" name="nama_pembeli" value="{{Auth::user()->name}}" aria-describedby="emailHelp">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Alamat Pengiriman</label>
-                                    <input type="text" class="form-control" id="alamat_pengiriman"
-                                        name="alamat_pengiriman" value="{{Auth::user()->alamat}}"
-                                        aria-describedby="emailHelp">
+                                    <input type="text" class="form-control" id="alamat_pengiriman" name="alamat_pengiriman" value="{{Auth::user()->alamat}}" aria-describedby="emailHelp">
                                 </div>
 
                                 <div class="form-group">

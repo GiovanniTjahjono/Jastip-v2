@@ -90,39 +90,50 @@ class PenjualanPreorderController extends Controller
             'tipeService' => 'required',
             'hargaTotalnya' => 'required'
         ]);
-        PenjualanPreorder::create([
-            'kode_transaksi' => Carbon::now()->format('mdHis') . $request->id_pembeli . $request->id_produk,
-            'kuantitas' => $request->stok_pembelian,
-            'total_harga' => $request->hargaTotalnya,
-            'kurir' => 'Tiki',
-            'service' => explode(",", $request->tipeService)[1],
-            'ongkir' => explode(",", $request->tipeService)[0],
-            'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
-            'status_order' => 'menunggu',
-            'id_user' => $request->id_pembeli,
-            'id_produk' => $request->id_produk
-        ]);
         $produk_stok = DB::table('produks')
             ->where('produks.id', '=', $request->id_produk)
             ->get();
+        if ($request->stok_pembelian > $produk_stok[0]->stok || $request->stok_pembelian < 1) {
+            return redirect()->back()->with('status', 'Jumlah Yang Anda Beli Melebihi Batas!');
+        } else {
+            if (Auth::user()->saldo >= $request->hargaTotalnya) {
+                $saldo_terbaru = Auth::user()->saldo - $request->hargaTotalnya;
+                User::where('id', Auth::user()->id)
+                    ->update([
+                        'saldo' => $saldo_terbaru
+                    ]);
+                PenjualanPreorder::create([
+                    'kode_transaksi' => Carbon::now()->format('mdHis') . $request->id_pembeli . $request->id_produk,
+                    'kuantitas' => $request->stok_pembelian,
+                    'total_harga' => $request->hargaTotalnya,
+                    'kurir' => 'Tiki',
+                    'service' => explode(",", $request->tipeService)[1],
+                    'ongkir' => explode(",", $request->tipeService)[0],
+                    'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'status_order' => 'menunggu',
+                    'id_user' => $request->id_pembeli,
+                    'id_produk' => $request->id_produk
+                ]);
+                $stok_baru = $produk_stok[0]->stok - $request->stok_pembelian;
 
+                DB::table('produks')
+                    ->where('id', $request->id_produk)
+                    ->update(['stok' => $stok_baru]);
+                //cara 3
+                //produk::create($request->all());//all akan mengambil semua data fillable yang ada di model produk
+                $kategoris = DB::table('kategoris')->get();
 
-        $stok_baru = $produk_stok[0]->stok - $request->stok_pembelian;
-
-        DB::table('produks')
-            ->where('id', $request->id_produk)
-            ->update(['stok' => $stok_baru]);
-        //cara 3
-        //produk::create($request->all());//all akan mengambil semua data fillable yang ada di model produk
-        $kategoris = DB::table('kategoris')->get();
-
-        $orders = DB::table('penjualan_preorders')
-            ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
-            ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
-            ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
-            ->latest('penjualan_preorders.created_at')->get();
-        //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
-        return view('pages.preorder.show', compact('orders'));
+                $orders = DB::table('penjualan_preorders')
+                    ->where('penjualan_preorders.id_user', '=', $request->id_pembeli)
+                    ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
+                    ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
+                    ->latest('penjualan_preorders.created_at')->get();
+                //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
+                return view('pages.preorder.show', compact('orders'));
+            } else {
+                return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
+            }
+        }
     }
 
     /**

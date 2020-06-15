@@ -49,7 +49,7 @@
                                 @if($data->status_order === 'dikirim')
                                 <a href="/terjual/{{$data->id}}" class="badge badge-warning">Ganti Resi</a>
                                 @endif
-                                
+
                                 @if($data->status_order ==='menunggu')
                                 <a href="/terjual/{{$data->id}}" class="badge badge-success">Kirim Barang</a>
                                 <form action="/terjual/{{$data->id}}" method="post">
@@ -57,8 +57,12 @@
                                     @csrf
                                     <button type="submit" class="badge badge-danger border-0">Cancel Order</button>
                                 </form>
+                                @elseif($data->status_order ==='diterima')
+                                <label>Selesai</label>
+                                @elseif($data->status_order ==='dibatalkan')
+                                <label>Dibatalkan</label>
                                 @endif
-                            
+
                             </td>
                         </tr>
                         @endforeach
