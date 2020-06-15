@@ -511,21 +511,30 @@ class PenjualanPreorderController extends Controller
      */
     public function destroy(PenjualanPreorder $penjualanPreorder)
     {
-
+        // dd($penjualanPreorder->id_produk);
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
                 'status_order' => 5
             ]);
-
+        $stok = $penjualanPreorder->kuantitas;
         $harga = $penjualanPreorder->total_harga;
         $saldo_user = DB::table('users')
             ->where('id', $penjualanPreorder->id_user)
             ->get();
+        $produk = DB::table('produks')
+            ->join('penjualan_preorders', 'penjualan_preorders.id_produk', '=', 'produks.id')
+            ->where('penjualan_preorders.id', $penjualanPreorder->id)
+            ->select('produks.*')->get();
         $saldo_baru = $harga + $saldo_user[0]->saldo;
-        //dd($saldo_baru);
+        $stok_update = $stok + $produk[0]->stok;
+        //dd($stok);
         User::where('id', $penjualanPreorder->id_user)
             ->update([
                 'saldo' => $saldo_baru
+            ]);
+        Produk::where('id', $penjualanPreorder->id_produk)
+            ->update([
+                'stok' => $stok_update
             ]);
         return redirect('/terjual')->with('status', 'Data Berhasil Dibatalkan!');
     }
