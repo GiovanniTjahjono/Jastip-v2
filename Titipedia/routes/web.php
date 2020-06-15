@@ -23,6 +23,8 @@ Route::get('/', 'HomeController@index');
 Auth::routes();
 
 Route::get('/profile', 'HomeController@index')->name('pages/home');
+//kategori
+Route::get('/kategori/{kategori}', 'KategoriController@show');
 
 //Produk
 //Route::resource('/produk', 'ProdukController'); //Untuk menggunakan method patch, put, delete

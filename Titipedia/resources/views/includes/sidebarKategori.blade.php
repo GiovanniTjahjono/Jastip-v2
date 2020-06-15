@@ -13,7 +13,7 @@
 <div class="card my-4 shadow-lg mb-5 bg-white rounded border-0 d-none d-lg-block">
   <h5 class="card-header">Kategori</h5>
   @foreach($kategoris as $data)
-  <a href="#" class="list-group-item border-0">{{$data->nama_kategori}}</a>
+  <a href="/kategori/{{$data->id}}" class="list-group-item border-0">{{$data->nama_kategori}}</a>
   @endforeach
 </div>
 
@@ -21,7 +21,7 @@
 
 <div class="card my-4 shadow-lg bg-white rounded border-0 d-block d-lg-none">
   <h5 class="card-header">Kategori</h5>
-  
+
   <div class="card-body">
     <div class="input-group">
       <div class="dropdown btn-block">
@@ -30,7 +30,7 @@
         </button>
         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
           @foreach($kategoris as $data)
-          <a class="dropdown-item" href="#" >{{$data->nama_kategori}}</a>
+          <a class="dropdown-item" href="#">{{$data->nama_kategori}}</a>
           @endforeach
         </div>
       </div>
