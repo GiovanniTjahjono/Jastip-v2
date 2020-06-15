@@ -73,7 +73,7 @@
                             <?PHP
                             $data = json_decode($response, true);
                             for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                echo "<option value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                 if (Auth::user()->kota == $data['rajaongkir']['results'][$i]['city_name']) {
                                     echo "<option selected value='" . $data['rajaongkir']['results'][$i]['city_name'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
                                 }
@@ -86,7 +86,7 @@
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
                         <div class="form-group">
-                            <textarea class="form-control @error('keterangan') is-invalid @enderror" id="keterangan"  name="keterangan" rows="3"></textarea>
+                            <textarea class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan" rows="3"></textarea>
                             @error('keterangan')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
@@ -97,7 +97,7 @@
 
                 <label for="gambar" class="col-sm-2 col-form-label">Pilih Foto </label>
                 <div class="input-group control-group increment">
-                    <input type="file" name="gambar[]"  class="form-control @error('gambar') is-invalid @enderror" id="gambar">
+                    <input type="file" name="gambar[]" class="form-control @error('gambar') is-invalid @enderror" id="gambar">
                     @error('gambar')
                     <div class="invalid-feedback">{{$message}}</div>
                     @enderror

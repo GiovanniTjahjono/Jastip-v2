@@ -70,6 +70,21 @@ class NotifikasiController extends Controller
     public function update(Request $request, Notifikasi $notifikasi)
     {
         //
+        $notify = DB::table('notifikasis')
+            ->where('notifikasis.id', $request->id)->get();
+        Notifikasi::where('id', $notifikasi->id)
+            ->update([
+                'dibaca' => 'sudah'
+            ]);
+        if ($notify->jenis == 'follow') {
+            redirect('post/beranda/' . $notify->link);
+        } else if ($notify->jenis == 'order') {
+            redirect('apps/penjualan/update/' . $notify->link);
+        } else if ($notify->jenis == 'service') {
+            redirect('jasa/read/' . $notify->link);
+        } else if ($notify->jenis == 'preorder') {
+            redirect('preorder/update/' . $notify->link);
+        }
     }
 
     /**
@@ -81,5 +96,6 @@ class NotifikasiController extends Controller
     public function destroy(Notifikasi $notifikasi)
     {
         //
+        Notifikasi::destroy($notifikasi->id);
     }
 }

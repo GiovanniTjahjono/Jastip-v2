@@ -72,14 +72,14 @@ class PesanController extends Controller
             'dibaca' => 'belum'
         ]);
         //adding notify
-        Notifikasi::create([
-            'isi_notifikasi' => 'coba',
-            'waktu_kirim' => date("Y-m-d H:i:s"),
-            'jenis' => 'pesan',
-            'dibaca' => 'belum',
-            'id_penerima' => $request->id_penerima,
-            'id_trigger' => Auth::user()->id
-        ]);
+        // Notifikasi::create([
+        //     'isi_notifikasi' => 'coba',
+        //     'waktu_kirim' => date("Y-m-d H:i:s"),
+        //     'jenis' => 'pesan',
+        //     'dibaca' => 'belum',
+        //     'id_penerima' => $request->id_penerima,
+        //     'id_trigger' => Auth::user()->id
+        // ]);
         return redirect()->back();
     }
 

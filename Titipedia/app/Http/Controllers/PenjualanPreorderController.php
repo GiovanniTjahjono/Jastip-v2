@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Produk;
 use App\ProdukBulkBuy;
 use Carbon\Carbon;
+use App\Notifikasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -194,6 +195,18 @@ class PenjualanPreorderController extends Controller
                     ->latest('penjualan_preorders.created_at')->get();
                 //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
                 //dd($orders);
+                $penerima = DB::table('users')
+                    ->join('produk_bulk_buys', 'produk_bulk_buys.id_user', '=', 'users.id')
+                    ->where('produk_bulk_buys.id', $request->id_produk)
+                    ->select('users.*')->get();
+                // Notifikasi::create([
+                //     'isi_notifikasi' => "Anda Mendapatkan Pemesanan Bulk-Buy Dari " . Auth::user()->name,
+                //     'waktu_kirim' => date("Y-m-d H:i:s"),
+                //     'jenis' => 'bulkbuy',
+                //     'dibaca' => 'belum',
+                //     'id_penerima' => $penerima[0]->id,
+                //     'id_trigger' => Auth::user()->id
+                // ]);
                 return view('pages.bulkbuy.show', compact('orders'));
             } else {
                 return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
