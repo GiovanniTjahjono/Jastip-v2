@@ -67,7 +67,7 @@ class PenjualanRequestController extends Controller
                 'service' => explode(",", $request->tipeService)[1],
                 'ongkir' => explode(",", $request->tipeService)[0],
                 'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
-                'kuris' => 'Tiki',
+                'kurir' => 'Tiki',
                 'total_harga' => $totalHarga,
                 'status_penjualan_req' => 1,
                 'id_penawaran' => $request->id_penawaran,

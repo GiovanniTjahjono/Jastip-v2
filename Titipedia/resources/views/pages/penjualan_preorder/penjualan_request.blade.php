@@ -1,4 +1,4 @@
-@extends('layouts.produkview')
+@extends('layouts.pembelianview')
 @section('content')
 <div class="container mt-5">
     <div class="card  shadow-lg p-3 mb-5 bg-white rounded border-0">
@@ -45,15 +45,7 @@
                             <td>{{$data->service}}</td>
                             <td>{{$data->nomor_resi}}</td>
                             <td>Rp. {{number_format($data->total_harga)}}</td>
-                            <td>
-                               
-                                @if($data->status_penjualan_req ==='diterima')
-                                <label>Diproses</label>
-                                @elseif($data->status_penjualan_req ==='dibatalkan')
-                                <label>Dibatalkan</label>
-                                @endif
-
-                            </td>
+                            <td>{{$data->status_penjualan_req}}</td>
                         </tr>
                         @endforeach
                     </tbody>
