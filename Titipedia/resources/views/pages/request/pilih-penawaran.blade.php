@@ -14,19 +14,20 @@
             <div class="col">
                 <div class="card border-0">
                     <div class="card-body">
-
+                        @if (session('status') === "Saldo Anda Tidak Cukup!")
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                        @endif
                         <ul class="list-group list-group-flush">
 
-                            <li class="list-group-item" id="harga_produk" value="{{$penawaran->harga_produk_penawaran}}"
-                                hidden><small class="text-muted" hidden>Harga produk:
+                            <li class="list-group-item" id="harga_produk" value="{{$penawaran->harga_produk_penawaran}}" hidden><small class="text-muted" hidden>Harga produk:
                                 </small>Rp.{{number_format($penawaran->harga_produk_penawaran)}}</li>
-                            <li class="list-group-item" id="harga_jasa" value="{{$penawaran->harga_jasa_penawaran}}"
-                                hidden><small class="text-muted" hidden>Harga jasa:
+                            <li class="list-group-item" id="harga_jasa" value="{{$penawaran->harga_jasa_penawaran}}" hidden><small class="text-muted" hidden>Harga jasa:
                                 </small>Rp.{{number_format($penawaran->harga_jasa_penawaran)}}</li>
 
 
-                            <li class="list-group-item" id="asal" value="{{$penawaran->kota_penawaran}}" hidden><small
-                                    class="text-muted" hidden>Asal Pengiriman:
+                            <li class="list-group-item" id="asal" value="{{$penawaran->kota_penawaran}}" hidden><small class="text-muted" hidden>Asal Pengiriman:
                                 </small>{{$penawaran->kota_penawaran}}</li>
                         </ul>
                         <form action="/pembelian-penawaran" method="POST">
@@ -40,28 +41,25 @@
                             </div>
                             <div class="form-group">
                                 <label>Harga Produk</label>
-                                <input type="text" class="form-control" id="harga_produk"
-                                    value="Rp. {{number_format($penawaran->harga_produk_penawaran)}}" disabled>
+                                <input type="text" class="form-control" id="harga_produk" value="Rp. {{number_format($penawaran->harga_produk_penawaran)}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Harga Jasa</label>
-                                <input type="text" class="form-control" id="harga_jasa"
-                                    value="Rp. {{number_format($penawaran->harga_produk_penawaran)}}" disabled>
+                                <input type="text" class="form-control" id="harga_jasa" value="Rp. {{number_format($penawaran->harga_jasa_penawaran)}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Asal Kota Penawar</label>
-                                <input type="text" class="form-control" id="asal" value="{{$penawaran->kota_penawaran}}"
-                                    disabled>
+                                <input type="text" class="form-control" id="asal" value="{{$penawaran->kota_penawaran}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Kota Pengiriman</label>
                                 <select class="form-control" id="kab_id" name="kab_id">
                                     <option selected>Pilih Kota</option>;
                                     <?PHP
-                                        $data = json_decode($response, true);
-                                        for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
-                                            echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
-                                        }
+                                    $data = json_decode($response, true);
+                                    for ($i = 0; $i < count($data['rajaongkir']['results']); $i++) {
+                                        echo "<option value='" . $data['rajaongkir']['results'][$i]['city_id'] . "'> " . $data['rajaongkir']['results'][$i]['city_name'] . "</option>";
+                                    }
                                     ?>
                                 </select>
                                 <input type="text" hidden class="form-control" id="nama_kota" name="nama_kota">
