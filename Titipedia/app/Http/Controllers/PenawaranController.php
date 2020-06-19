@@ -24,24 +24,24 @@ class PenawaranController extends Controller
     public function index(Req $request)
     {
         $penawarans = DB::table('penawarans')
-                ->join('users', 'users.id', 'penawarans.id_penawar')
-                ->where('id_request',$request->id)
-                ->select('penawarans.*', 'users.name as name')
-                ->get();
+            ->join('users', 'users.id', 'penawarans.id_penawar')
+            ->where('id_request', $request->id)
+            ->select('penawarans.*', 'users.name as name')
+            ->get();
         $gambars = DB::table('gambars')
-                ->where('id_request', $request->id)
-                ->get();
+            ->where('id_request', $request->id)
+            ->get();
         $users = DB::table('users')
-                ->where('id', $request->id_user)
-                ->get();
+            ->where('id', $request->id_user)
+            ->get();
         $kategoris = DB::table('kategoris')
-                ->where('id', $request->id_kategori)
-                ->get();
+            ->where('id', $request->id_kategori)
+            ->get();
         $user = $users[0]->name;
         $kategori = $kategoris[0]->nama_kategori;
         $isAjukanPenawaran = false;
-        foreach($penawarans as $item) {
-            if($item->id_penawar === Auth::user()->id) {
+        foreach ($penawarans as $item) {
+            if ($item->id_penawar === Auth::user()->id) {
                 $isAjukanPenawaran = true;
             }
         }
@@ -50,24 +50,24 @@ class PenawaranController extends Controller
     public function indexCekPenawaran(Req $request)
     {
         $penawarans = DB::table('penawarans')
-        ->join('users', 'users.id', 'penawarans.id_penawar')
-        ->where('id_request',$request->id)
-        ->select('penawarans.*', 'users.name as name')
-        ->get();
-$gambars = DB::table('gambars')
-        ->where('id_request', $request->id)
-        ->get();
-$users = DB::table('users')
-        ->where('id', $request->id_user)
-        ->get();
-$kategoris = DB::table('kategoris')
-        ->where('id', $request->id_kategori)
-        ->get();
-$user = $users[0]->name;
-$kategori = $kategoris[0]->nama_kategori;
-$isAjukanPenawaran = false;
+            ->join('users', 'users.id', 'penawarans.id_penawar')
+            ->where('id_request', $request->id)
+            ->select('penawarans.*', 'users.name as name')
+            ->get();
+        $gambars = DB::table('gambars')
+            ->where('id_request', $request->id)
+            ->get();
+        $users = DB::table('users')
+            ->where('id', $request->id_user)
+            ->get();
+        $kategoris = DB::table('kategoris')
+            ->where('id', $request->id_kategori)
+            ->get();
+        $user = $users[0]->name;
+        $kategori = $kategoris[0]->nama_kategori;
+        $isAjukanPenawaran = false;
 
-return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gambars', 'user', 'kategori'));
+        return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gambars', 'user', 'kategori'));
     }
 
     /**
@@ -99,6 +99,7 @@ return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gam
     }
     public function pilihPenawaran(Penawaran $penawaran)
     {
+        //dd($penawaran->harga_jasa_penawaran);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
@@ -119,8 +120,8 @@ return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gam
         curl_close($curl);
 
         $penawar = DB::table('users')
-                    ->where('id', $penawaran->id_penawar)
-                    ->get();
+            ->where('id', $penawaran->id_penawar)
+            ->get();
         $namaPenawar = $penawar[0];
         return view('pages.request.pilih-penawaran', compact('penawaran', 'response', 'namaPenawar'));
     }
@@ -158,7 +159,7 @@ return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gam
      */
     public function show()
     {
-        $penjualan_request = DB::table('penawarans') 
+        $penjualan_request = DB::table('penawarans')
             ->join('penjualan_requests', 'penjualan_requests.id_penawaran', 'penawarans.id')
             ->join('requests', 'requests.id', 'penawarans.id_request')
             ->join('users', 'users.id', 'requests.id_user')

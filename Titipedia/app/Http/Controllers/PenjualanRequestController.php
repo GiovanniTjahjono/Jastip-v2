@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Notifikasi;
 
 class PenjualanRequestController extends Controller
 {
@@ -18,11 +20,11 @@ class PenjualanRequestController extends Controller
     public function index()
     {
         $penjualan_requests = DB::table('penjualan_requests')
-                ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
-                ->join('requests', 'requests.id', '=', 'penawarans.id_request')
-                ->join('kategoris', 'kategoris.id', '=', 'requests.id_kategori')
-                ->where('penjualan_requests.id_user', Auth::user()->id)
-                ->get();
+            ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
+            ->join('requests', 'requests.id', '=', 'penawarans.id_request')
+            ->join('kategoris', 'kategoris.id', '=', 'requests.id_kategori')
+            ->where('penjualan_requests.id_user', Auth::user()->id)
+            ->get();
         /*
         $penjualan_requests = DB::table('penjualan_requests')
                 ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
@@ -52,18 +54,15 @@ class PenjualanRequestController extends Controller
      */
     public function store(Request $request)
     {
-   
         $request->validate([
             'hargaTotalnya' => 'required',
             'nama_kota' => 'required',
             'tipeService' => 'required'
         ]);
         $totalHarga = $request->hargaTotalnya;
-        if($totalHarga > Auth::user()->saldo) {
-            return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
-        } else {
+        if (Auth::user()->saldo >= $totalHarga) {
             PenjualanRequest::create([
-                'kode_transaksi' => 'R'.Carbon::now()->format('YmdHis'),
+                'kode_transaksi' => 'R' . Carbon::now()->format('YmdHis'),
                 'service' => explode(",", $request->tipeService)[1],
                 'ongkir' => explode(",", $request->tipeService)[0],
                 'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -73,10 +72,26 @@ class PenjualanRequestController extends Controller
                 'id_penawaran' => $request->id_penawaran,
                 'id_user' => Auth::user()->id
             ]);
-            
+            $saldo_terbaru = Auth::user()->saldo - $totalHarga;
+            User::where('id', Auth::user()->id)
+                ->update([
+                    'saldo' => $saldo_terbaru
+                ]);
+            $penerima = DB::table('penawarans')
+                ->where('penawarans.id', $request->id_penawaran)->get();
+            Notifikasi::create([
+                'isi_notifikasi' => "Request Dari " . Auth::user()->name,
+                'waktu_kirim' => date("Y-m-d H:i:s"),
+                'jenis' => 'request',
+                'dibaca' => 'belum',
+                'link' => '/penjualan-penawaran',
+                'id_penerima' => $penerima[0]->id_penawar,
+                'id_trigger' => Auth::user()->id
+            ]);
             return redirect('/pembelian-request');
+        } else {
+            return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
         }
-        
     }
 
     /**
