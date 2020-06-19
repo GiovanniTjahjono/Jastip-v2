@@ -27,7 +27,7 @@
                             <span class="direct-chat-name pull-right"><?= $user2->first()->name; ?></span>
                             <span class="direct-chat-timestamp pull-left">{{$data->waktu_kirim}}</span>
                         </div>
-                        <img class="direct-chat-img" src="{{ asset('photo_profile/'.Auth::user()->foto)}}" alt="Message User Image"><!-- /.direct-chat-img -->
+                        <img class="direct-chat-img" src="{{ asset('photo_profile/'.$data->foto)}}" alt="Message User Image"><!-- /.direct-chat-img -->
                         <div class="direct-chat-text">
                             {{$data->isi_pesan}}
                         </div>
