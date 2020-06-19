@@ -159,15 +159,7 @@ class PenawaranController extends Controller
      */
     public function show()
     {
-        $penjualan_request = DB::table('penawarans')
-            ->join('penjualan_requests', 'penjualan_requests.id_penawaran', 'penawarans.id')
-            ->join('requests', 'requests.id', 'penawarans.id_request')
-            ->join('users', 'users.id', 'requests.id_user')
-            ->where('penawarans.id_penawar', Auth::user()->id)
-            ->select('users.name', 'users.no_hp', 'penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'requests.kota_req as kota_req', 'requests.alamat_req as alamat_req', 'requests.keterangan as keterangan')
-            ->get();
-        //dd($penjualan_request);
-        return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request'));
+        //
     }
 
     /**
