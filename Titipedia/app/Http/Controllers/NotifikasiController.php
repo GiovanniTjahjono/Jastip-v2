@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Notifikasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\DB;
 
 class NotifikasiController extends Controller
 {
@@ -71,20 +74,34 @@ class NotifikasiController extends Controller
     {
         //
         $notify = DB::table('notifikasis')
-            ->where('notifikasis.id', $request->id)->get();
+            ->where('notifikasis.id', $notifikasi->id)->get();
+        //dd($notify[0]->link);
         Notifikasi::where('id', $notifikasi->id)
             ->update([
                 'dibaca' => 'sudah'
             ]);
-        if ($notify->jenis == 'follow') {
-            redirect('post/beranda/' . $notify->link);
-        } else if ($notify->jenis == 'order') {
-            redirect('apps/penjualan/update/' . $notify->link);
-        } else if ($notify->jenis == 'service') {
-            redirect('jasa/read/' . $notify->link);
-        } else if ($notify->jenis == 'preorder') {
-            redirect('preorder/update/' . $notify->link);
+        if ($notify[0]->jenis == 'preorder') {
+            return redirect($notify[0]->link);
+        } else if ($notify[0]->jenis == 'bulkbuy') {
+            return redirect($notify[0]->link);
         }
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Notifikasi  $notifikasi
+     * @return \Illuminate\Http\Response
+     */
+    public function updateDibaca(Request $request, Notifikasi $notifikasi)
+    {
+        //
+        //dd($notify[0]->link);
+        Notifikasi::where('id_penerima', Auth::user()->id)
+            ->update([
+                'dibaca' => 'sudah'
+            ]);
+        return redirect('home');
     }
 
     /**
