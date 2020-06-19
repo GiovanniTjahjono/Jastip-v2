@@ -85,6 +85,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="form-group row">
                     <div class="col-sm-12">
                     <a href="/edit-gambar/{{$produk->id}}" class="btn btn-success float-right">Edit Gambar</a>

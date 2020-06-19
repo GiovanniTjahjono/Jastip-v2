@@ -14,17 +14,13 @@
             <div class="col">
                 <div class="card border-0">
                     <div class="card-body">
-
                         <ul class="list-group list-group-flush">
-
                             <li class="list-group-item" id="harga_produk" value="{{$penawaran->harga_produk_penawaran}}"
                                 hidden><small class="text-muted" hidden>Harga produk:
                                 </small>Rp.{{number_format($penawaran->harga_produk_penawaran)}}</li>
                             <li class="list-group-item" id="harga_jasa" value="{{$penawaran->harga_jasa_penawaran}}"
                                 hidden><small class="text-muted" hidden>Harga jasa:
                                 </small>Rp.{{number_format($penawaran->harga_jasa_penawaran)}}</li>
-
-
                             <li class="list-group-item" id="asal" value="{{$penawaran->kota_penawaran}}" hidden><small
                                     class="text-muted" hidden>Asal Pengiriman:
                                 </small>{{$penawaran->kota_penawaran}}</li>

@@ -67,6 +67,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="estimasi_pengiriman" class="col-sm-2 col-form-label">Estimasi Tanggal Pengiriman</label>
+                    <div class="col-sm-10">
+                        <input class="date form-control @error('estimasi_pengiriman') is-invalid @enderror" id="estimasi_pengiriman" class="form-control" name="estimasi_pengiriman" type="text" value="{{old('estimasi_pengiriman')}}" />
+                        @error('estimasi_pengiriman')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
                     <div class="col-sm-10">
                         <select class="custom-select @error('asal_pengiriman') is-invalid @enderror" id="asal_pengiriman" name="asal_pengiriman">
@@ -143,6 +152,10 @@
                     });
                     $("body").on("click", "#btnRemove", function() {
                         $(this).parents(".control-group").remove();
+                    });
+                    // Script datetime
+                    $('.date').datepicker({
+                        format: 'yyyy-mm-dd'
                     });
                 });
             </script>

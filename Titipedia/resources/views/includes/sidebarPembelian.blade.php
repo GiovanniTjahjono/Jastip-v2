@@ -3,7 +3,7 @@
   <div class="card-header">
     Pembelian
   </div>
-  <a href="/order/daftar_pembelian_preorder/{{Auth::user()->id}}" class="list-group-item border-0">Produk Biasa</a>
+  <a href="/order/daftar_pembelian_preorder/{{Auth::user()->id}}" class="list-group-item border-0">Produk</a>
   <a href="/bulkbuy/daftar_pembelian_preorder/{{Auth::user()->id}}" class="list-group-item border-0">Produk Bulk Buy</a>
   <a href="/pembelian-request" class="list-group-item border-0">Request</a>
 </div>

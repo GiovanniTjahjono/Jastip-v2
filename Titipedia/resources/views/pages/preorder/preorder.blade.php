@@ -57,15 +57,14 @@
                         @endif
                         <h3 class="card-title">{{$produk->nama}}</h3>
                         <p class="card-subtitle mb-2 text-muted">{{$kategori[0]->nama_kategori}}</p>
-                        <p class="card-text">{{$produk->keterangan}}</p>
+                        <p class="card-text text-muted">{{$produk->keterangan}}</p>
                     </div>
                     <ul class="list-group list-group-flush">
-
                         <li class="list-group-item" id="harga_produk" value="{{$produk->harga_produk}}"><small class="text-muted">Harga produk:
                             </small>Rp.{{number_format($produk->harga_produk)}}</li>
                         <li class="list-group-item" id="harga_jasa" value="{{$produk->harga_jasa}}"><small class="text-muted">Harga jasa:
                             </small>Rp.{{number_format($produk->harga_jasa)}}</li>
-                        <li class="list-group-item"><small class="text-muted">Stok: </small>{{$produk->stok}}</li>
+                        <li class="list-group-item"><small class="text-muted">Tersisa: </small>{{$produk->stok}}</li>
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produk->berat}} Kg
                         </li>
 

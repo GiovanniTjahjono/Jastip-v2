@@ -35,28 +35,29 @@
 <h3>Produk Terbaru</h3>
 <div class="row">
     @foreach($produks as $data)
-    <div class="col-lg-3 col-md-6 col-6 mb-4">
+    <div class="col-lg-4 col-md-6 col-6 mb-4">
         <div class="card h-100">
             <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="produk_images/{{$data->url}}" alt=""></a>
             <div class="card-body">
-                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
+                
             </div>
             <div class="card-footer bg-white">
-                <h6>Rp. {{number_format($data->harga_produk)}}</h6>
+                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
+                <h6 class="mt-2">Rp. {{number_format($data->harga_produk)}}</h6>
                 <div class="row">
-                    <div class="col">
-                        <small class="text-muted">stok {{$data->stok}}</small>
+                    <div class="col-5">
+                        <small class="text-muted">tersisa {{$data->stok}}</small>
                     </div>
-                    <div class="col">
+                    <div class="col-7">
                         <div class="text-right">
                             @if(Auth::check())
                             @if(Auth::User()->id === $data->id_user)
                             <a href="/produk/{{$data->id}}/edit" style="border: hidden" class="btn btn-success btn-primary">Edit</a>
                             @else
-                            <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
+                            <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Pre-order</a>
                             @endif
                             @else
-                            <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
+                            <a href="/order/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Pre-rder</a>
                             @endif
                         </div>
                     </div>
@@ -69,14 +70,13 @@
 <h3>Produk Bulk Buy Terbaru</h3>
 <div class="row">
     @foreach($bulkbuys as $data)
-    <div class="col-lg-3 col-md-6 col-6 mb-4">
+    <div class="col-lg-4 col-md-6 col-6 mb-4">
         <div class="card h-100">
             <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="produk_bulk_buy_images/{{$data->url}}" alt=""></a>
-            <div class="card-body">
-                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
-            </div>
+            <div class="card-body"></div>
             <div class="card-footer bg-white">
-                <h6>Rp. {{number_format($data->harga_produk)}}</h6>
+                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
+                <h6 class="mt-2">Rp. {{number_format($data->harga_produk)}}</h6>
                 <div class="row">
                     <div class="col">
                         <small class="text-muted">Jumlah Target {{$data->jumlah_target}}</small>
@@ -87,10 +87,10 @@
                             @if(Auth::User()->id === $data->id_user)
                             <a href="/produk-bulk-buy/{{$data->id}}/edit" style="border: hidden" class="btn btn-success btn-primary">Edit</a>
                             @else
-                            <a href="/bulkbuy/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
+                            <a href="/bulkbuy/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Pre-order</a>
                             @endif
                             @else
-                            <a href="/bulkbuy/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Order</a>
+                            <a href="/bulkbuy/{{$data->id}}" style="background-color: #65587f; border: hidden" class="btn btn-primary">Pre-order</a>
                             @endif
                         </div>
                     </div>
@@ -103,7 +103,7 @@
 <h3>Request Terbaru</h3>
 <div class="row">
     @foreach($requests as $data)
-    <div class="col-lg-3 col-md-6 col-6 mb-4">
+    <div class="col-lg-4 col-md-6 col-6 mb-4">
         <div class="card h-100">
             <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="request_images/{{$data->url}}" alt=""></a>
             <div class="card-body">

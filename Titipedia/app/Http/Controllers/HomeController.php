@@ -46,6 +46,7 @@ class HomeController extends Controller
             ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
             ->select('produk_bulk_buys.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->where('produk_bulk_buys.jumlah_target', '>', 0)
+            ->where('status_bulk', 'aktif')
             ->latest()->take(8)->get();
 
         // Ambil data prequest

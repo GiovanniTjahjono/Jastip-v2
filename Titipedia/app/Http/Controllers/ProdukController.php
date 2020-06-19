@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Produk;
 use App\User;
 use App\Gambar;
+use App\PenjualanPreorder;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Contracts\DataTable;
+
 
 class ProdukController extends Controller
 {
@@ -80,8 +83,15 @@ class ProdukController extends Controller
             'harga_produk' => 'required',
             'berat' => 'required',
             'keterangan' => 'required',
-            'gambar' => 'required'
+            'gambar' => 'required',
+            'estimasi_pengiriman' => 'required'
         ]);
+
+        $status_produk = 1;
+
+        if($request->estimasi_pengiriman < Carbon::now()->format('Y-m-d')) {
+           $status_produk = 2;
+        } 
         Produk::create([
             'nama' => $request->nama_produk,
             'stok' => $request->stok,
@@ -91,8 +101,11 @@ class ProdukController extends Controller
             'keterangan' => $request->keterangan,
             'asal_pengiriman' => $request->asal_pengiriman,
             'id_user' => $request->id_user,
-            'id_kategori' => $request->nama_kategori
+            'id_kategori' => $request->nama_kategori,
+            'status_produk' => $status_produk,
+            'estimasi_pengiriman' => $request->estimasi_pengiriman
         ]);
+        
         //get last id from product
         $produk = DB::table('produks')->orderBy('id', 'desc')->first();
         $id = $produk->id;
@@ -168,6 +181,7 @@ class ProdukController extends Controller
                 'keterangan' => $request->keterangan,
                 'id_user' => $request->id_user
             ]);
+       
         return redirect('produk')->with('status', 'Data Berhasil Diubah!');
     }
 
