@@ -69,5 +69,25 @@ class updateStatusProduk extends Command
                 }
             }
         }
+        //update status pengiriman bulk buys
+        $penjualan_preorder_produks = PenjualanPreorder::where('id_produk', '!=', 'Null')
+                                ->join('produks', 'produks.id', 'penjualan_preorders.id_produk')->get();
+        foreach ($penjualan_preorder_produks as $data) {
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $batas_waktu = strtotime($data->estimasi_pengiriman);
+            $sisa_waktu = intval(($batas_waktu - $waktu_sekarang) / 60 / 60 / 24); //Mengasilkan Hari
+            if($sisa_waktu < 0 && $data->status_order === 'menunggu') {
+                $saldo_lama = User::where('id', $data->id_user)->select('users.saldo')->get()[0]->saldo;
+                $saldo_baru = $saldo_lama + $data->total_harga;
+                User::where('id', $data->id_user)
+                    ->update([
+                        'saldo' => $saldo_baru
+                    ]);
+                PenjualanPreorder::where('id', $data->id)
+                    ->update([
+                        'status_order' => 5
+                    ]);
+            }
+        }
     }
 }

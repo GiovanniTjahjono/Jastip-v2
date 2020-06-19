@@ -43,7 +43,7 @@ class updateStatusBulkbuy extends Command
     public function handle()
     {
         $produksBulkbuy = ProdukBulkBuy::get();
-
+        // Update status batas waktu bulk buys
         foreach($produksBulkbuy as $data) {
             $batas_waktu = $data->batas_waktu;
             $waktu_sekarang = Carbon::now()->format('Y-m-d H:i:s');
@@ -70,5 +70,26 @@ class updateStatusBulkbuy extends Command
                 }
             }
         }
+        //update status pengiriman bulk buys
+        $penjualan_preorder_bulkbuys = PenjualanPreorder::where('id_bulkbuy', '!=', 'Null')
+                                ->join('produk_bulk_buys', 'produk_bulk_buys.id', 'penjualan_preorders.id_bulkbuy')->get();
+        foreach ($penjualan_preorder_bulkbuys as $data) {
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $batas_waktu = strtotime($data->batas_waktu);
+            $sisa_waktu = intval(($batas_waktu - $waktu_sekarang) / 60 / 60 / 24); //Mengasilkan Hari
+            if($sisa_waktu < 0 && $data->status_order === 'menunggu') {
+                $saldo_lama = User::where('id', $data->id_user)->select('users.saldo')->get()[0]->saldo;
+                $saldo_baru = $saldo_lama + $data->total_harga;
+                User::where('id', $data->id_user)
+                    ->update([
+                        'saldo' => $saldo_baru
+                    ]);
+                PenjualanPreorder::where('id', $data->id)
+                    ->update([
+                        'status_order' => 5
+                    ]);
+            }
+        }
+
     }
 }
