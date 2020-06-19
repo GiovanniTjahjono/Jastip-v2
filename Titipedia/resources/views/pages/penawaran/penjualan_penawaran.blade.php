@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <div class="card  shadow-lg p-3 mb-5 bg-white rounded border-0">
         <div class="card-header bg-white">
-            <h3>Daftar Pre-Order</h3>
+            <h3>Daftar Penawaran Terjual</h3>
         </div>
         <div class="card-body">
             @if (session('status') === "Data Berhasil Ditambahkan!")
@@ -33,6 +33,7 @@
                             <th>Nama Pembeli</th>
                             <th>No. Hp</th>
                             <th>Total Harga</th>
+                            <th>Batas Pengiriman</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -50,6 +51,14 @@
                             <td>{{$data->name}}</td>
                             <td>{{$data->no_hp}}</td>
                             <td>{{number_format($data->total_harga)}}</td>
+                            <td>
+                                @if($data->status_penjualan_req === 'menunggu dikirim')
+                                {{$sisa_waktu}} Hari
+                                @elseif($data->status_penjualan_req === 'dikirim')
+                                Sedang dikirim
+                                @else
+                                @endif
+                            </td>
                             <td>{{$data->status_penjualan_req}}</td>
                             <td>
                                 @if($data->status_penjualan_req === 'dikirim')

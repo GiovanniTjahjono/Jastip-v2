@@ -2,11 +2,11 @@
   <h5 class="card-header">Pencarian</h5>
   <div class="card-body">
     <div class="input-group">
-      <form action="/cari" class="form-inline">
-        <div class="form-group mb-2">
-          <input type="text" name="cari" class="form-control" placeholder="pencarian..." value="{{old('cari')}}">
-        </div>
-        <button class="btn btn-secondary mb-2" type="submit">Cari</button>
+      <form action="/cari" class="form-inline col-12">
+        
+          <input type="text" name="cari" class="form-control mb-2 col-12" placeholder="pencarian..." value="{{old('cari')}}">
+         
+        <button class="btn btn-success float-right col-12" type="submit">Cari</button>
       </form>
     </div>
   </div>

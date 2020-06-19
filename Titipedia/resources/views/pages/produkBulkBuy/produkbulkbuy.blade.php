@@ -44,7 +44,11 @@
                     </thead>
                     <tbody>
                         @foreach($produkBulkBuys as $data)
+                        @if($data->status_bulk === 'tidak aktif')
+                        <tr class="bg-warning">
+                        @else
                         <tr>
+                        @endif
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->jumlah_target}}</td>

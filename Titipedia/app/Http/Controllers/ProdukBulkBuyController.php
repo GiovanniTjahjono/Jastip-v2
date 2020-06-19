@@ -91,7 +91,7 @@ class ProdukBulkBuyController extends Controller
             'batas_waktu' => $request->batas_waktu,
             'asal_pengiriman' => $request->asal_pengiriman,
             'keterangan' => $request->keterangan,
-            'status_bulk' => 'menunggu',
+            'status_bulk' => 'aktif',
             'id_user' => $request->id_user,
             'id_kategori' => $request->nama_kategori
         ]);
@@ -176,8 +176,7 @@ class ProdukBulkBuyController extends Controller
             'jumlah_target' => 'required',
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
-            'berat' => 'required',
-            'batas_waktu' => 'required',
+            'berat' => 'required'
         ]);
         ProdukBulkBuy::where('id', $produkBulkBuy->id)
             ->update([
@@ -186,7 +185,6 @@ class ProdukBulkBuyController extends Controller
                 'harga_jasa' => $request->harga_jasa,
                 'harga_produk' => $request->harga_produk,
                 'berat' => $request->berat,
-                'batas_waktu' => $request->batas_waktu,
                 'asal_pengiriman' => $request->asal_pengiriman,
                 'keterangan' => $request->keterangan,
                 'status_bulk' => 'menunggu',

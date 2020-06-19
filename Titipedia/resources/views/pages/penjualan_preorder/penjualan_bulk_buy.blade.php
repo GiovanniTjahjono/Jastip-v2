@@ -30,6 +30,7 @@
                             <th>Kurir</th>
                             <th>Servis</th>
                             <th>Total Harga</th>
+                            <th>Batas Pengiriman</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -44,6 +45,14 @@
                             <td>{{$data->kurir}}</td>
                             <td>{{$data->service}}</td>
                             <td>{{$data->total_harga}}</td>
+                            <td>
+                                @if($data->status_order === 'menunggu')
+                                {{$sisa_waktu}} Hari
+                                @elseif($data->status_order === 'dikirim')
+                                Sedang dikirim
+                                @else
+                                @endif
+                            </td>
                             <td>{{$data->status_order}}</td>
                             <td>
                                 @if($data->status_order === 'dikirim')

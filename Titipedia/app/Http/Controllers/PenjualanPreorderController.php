@@ -37,9 +37,16 @@ class PenjualanPreorderController extends Controller
             ->join('users', 'users.id', '=', 'produks.id_user')
             ->join('kategoris', 'kategoris.id', '=', 'produks.id_kategori')
             ->where('users.id', $id_user)
-            ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori')
+            ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori', 'produks.estimasi_pengiriman')
             ->get();
-        return view('pages.penjualan_preorder.penjualan_preorder', compact('penjualanOrders'));
+        //------------FIX-------------
+        $sisa_waktu = 0;
+        if (count($penjualanOrders) > 0) {
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $waktu_pembelian = strtotime($penjualanOrders[0]->estimasi_pengiriman);
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+        }
+        return view('pages.penjualan_preorder.penjualan_preorder', compact('penjualanOrders', 'sisa_waktu'));
     }
     /**
      * Display a listing of the resource.
@@ -54,10 +61,16 @@ class PenjualanPreorderController extends Controller
             ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
             ->join('kategoris', 'kategoris.id', '=', 'produk_bulk_buys.id_kategori')
             ->where('users.id', $id_user)
-            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'produk_bulk_buys.jumlah_target as jumlah_target', 'kategoris.nama_kategori')
+            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'produk_bulk_buys.jumlah_target as jumlah_target', 'kategoris.nama_kategori', 'produk_bulk_buys.batas_waktu')
             ->get();
-        //dd($jumlah_target);
-        return view('pages.penjualan_preorder.penjualan_bulk_buy', compact('penjualanOrders'));
+        //------------FIX--------------
+        $sisa_waktu = 0;
+        if (count($penjualanOrders) > 0) {
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $waktu_pembelian = strtotime($penjualanOrders[0]->batas_waktu);
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+        }
+        return view('pages.penjualan_preorder.penjualan_bulk_buy', compact('penjualanOrders', 'sisa_waktu'));
     }
     public function editPreorderTerjual(PenjualanPreorder $prenjualan_preorder)
     {
@@ -249,10 +262,16 @@ class PenjualanPreorderController extends Controller
             ->where('penjualan_preorders.id_user', '=', $id)
             ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
             ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
-            ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori as nama_kategori')
+            ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori as nama_kategori', 'produks.estimasi_pengiriman')
             ->latest('penjualan_preorders.created_at')->get();
-        //$ordsers = DB::table('orders')->where('id_user', '=', $id)->get();
-        return view('pages.preorder.show', compact('orders'));
+         //-------------------FIX-------------------   
+            $sisa_waktu = 0;
+            if (count($orders) > 0) {
+                $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+                $waktu_pembelian = strtotime($orders[0]->estimasi_pengiriman);
+                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            }
+        return view('pages.preorder.show', compact('orders', 'sisa_waktu'));
     }
     public function showPembelianBulkBuy($id_bulk)
     {
@@ -261,11 +280,16 @@ class PenjualanPreorderController extends Controller
             ->where('penjualan_preorders.id_user', '=', $id_user)
             ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
-            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'kategoris.nama_kategori as nama_kategori')
+            ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'kategoris.nama_kategori as nama_kategori', 'produk_bulk_buys.batas_waktu')
             ->latest('penjualan_preorders.created_at')->get();
-        //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
-        //dd($id_user);
-        return view('pages.bulkbuy.show', compact('orders'));;
+            //-------------------FIX-------------------   
+            $sisa_waktu = 0;
+            if (count($orders) > 0) {
+                $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+                $waktu_pembelian = strtotime($orders[0]->batas_waktu);
+                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            }
+        return view('pages.bulkbuy.show', compact('orders', 'sisa_waktu'));;
     }
     /**
      * Display the specified resource.
@@ -275,8 +299,7 @@ class PenjualanPreorderController extends Controller
      */
     public function showProduk(Produk $produk)
     {
-        if($produk->status_produk !== 'tidak aktif')
-        {
+        if ($produk->status_produk !== 'tidak aktif') {
             //Get nama kota list
             $key = Config::get('RAJA_ONGKIR_API');
             $curl = curl_init();
@@ -302,8 +325,7 @@ class PenjualanPreorderController extends Controller
             $kategori = DB::table('kategoris')->where('id', '=', $produk->id_kategori)->get();
             $gambar = DB::table('gambars')->where('id_produk', '=', $produk->id)->get();
             return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
-        }
-        else {
+        } else {
             return redirect(('/home'));
         }
     }

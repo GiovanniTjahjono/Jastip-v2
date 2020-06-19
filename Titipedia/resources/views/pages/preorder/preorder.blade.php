@@ -70,6 +70,7 @@
 
                         <li class="list-group-item" id="asal" value="{{$produk->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
                             </small>{{$produk->asal_pengiriman}}</li>
+                        <li class="list-group-item"><small class="text-muted">Estimasi Pengiriman: </small>{{$produk->estimasi_pengiriman}}</li>
                     </ul>
 
                     <div class="card-body">

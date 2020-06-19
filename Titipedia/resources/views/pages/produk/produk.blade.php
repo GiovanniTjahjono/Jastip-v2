@@ -42,7 +42,11 @@
                     </thead>
                     <tbody>
                         @foreach($produks as $data)
+                        @if($data->status_produk === 'tidak aktif')
+                        <tr class="bg-warning">
+                        @else
                         <tr>
+                        @endif
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->stok}}</td>

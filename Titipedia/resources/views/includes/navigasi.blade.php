@@ -27,10 +27,10 @@
           ->where('id_penerima', Auth::user()->id)->get();
         ?>
         <li class="nav-item">
-          <a class="nav-link text-light" href="/produk">Produk & Request</a>
+          <a class="nav-link text-light" href="/produk"><i class="fa fa-tags"></i> Produk & Request</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="/order/daftar_pembelian_preorder/{{Auth::user()->id}}">Pembelian</a>
+          <a class="nav-link text-light" href="/order/daftar_pembelian_preorder/{{Auth::user()->id}}"><i class="fa fa-shopping-basket"></i> Pembelian</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light" href="/pesan"> <i class="fa fa-envelope"></i> <span> Pesan <span class="label label-danger"><?= $notify->count() ?: '' ?></span></span></a>
@@ -38,7 +38,7 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-envelope"></i>
+            <i class="fa fa-bell"></i>
             notifikasi
             <span class="label label-danger"><?= $notify_user->count() ?: '' ?></span>
           </a>

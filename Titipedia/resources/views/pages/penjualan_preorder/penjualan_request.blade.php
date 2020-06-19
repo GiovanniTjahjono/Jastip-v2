@@ -32,6 +32,7 @@
                             <th>Nomer Resi</th>
                             <th>Total Harga</th>
                             <th>Status Pengiriman</th>
+                            <th>Batas Pengiriman</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +47,14 @@
                             <td>{{$data->nomor_resi}}</td>
                             <td>Rp. {{number_format($data->total_harga)}}</td>
                             <td>{{$data->status_penjualan_req}}</td>
+                            <td>
+                                @if($data->status_penjualan_req === 'menunggu dikirim')
+                                {{$sisa_waktu}} Hari
+                                @elseif($data->status_penjualan_req === 'dikirim')
+                                Sedang dikirim
+                                @else
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

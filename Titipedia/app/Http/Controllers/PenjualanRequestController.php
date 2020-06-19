@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Notifikasi;
+use App\PenjualanPreorder;
 
 class PenjualanRequestController extends Controller
 {
@@ -25,15 +26,17 @@ class PenjualanRequestController extends Controller
             ->join('kategoris', 'kategoris.id', '=', 'requests.id_kategori')
             ->where('penjualan_requests.id_user', Auth::user()->id)
             ->get();
-        /*
-        $penjualan_requests = DB::table('penjualan_requests')
-                ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
-                ->join('requests', 'requests.id', '=', 'penawarans.id_request')
-                ->join('kategoris', 'kategoris.id', '=', 'requests.id_kategori')
-                ->where('penjualan_requests.id_user', Auth::user()->id)
-                ->get();
-        */
-        return view('pages.penjualan_preorder.penjualan_request', compact('penjualan_requests'));
+
+        //-------------Dicoba-------------
+            $sisa_waktu = 0;
+            if (count($penjualan_requests) > 0) {
+                $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+                $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_requests[0]->created_at. ' + 3 days')));
+                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            }
+            
+            
+        return view('pages.penjualan_preorder.penjualan_request', compact('penjualan_requests', 'sisa_waktu'));
     }
 
     /**

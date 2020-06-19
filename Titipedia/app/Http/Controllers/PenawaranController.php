@@ -7,6 +7,8 @@ use App\PenjualanRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Req;
+use Carbon\Carbon;
+
 use Illuminate\Support\Facades\Auth;
 
 
@@ -166,8 +168,14 @@ class PenawaranController extends Controller
             ->where('penawarans.id_penawar', Auth::user()->id)
             ->select('users.name', 'users.no_hp', 'penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'requests.kota_req as kota_req', 'requests.alamat_req as alamat_req', 'requests.keterangan as keterangan')
             ->get();
-        //dd($penjualan_request);
-        return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request'));
+        //-------------FIX-------------
+        $sisa_waktu = 0;
+        if (count($penjualan_request) > 0) {
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_request[0]->created_at. ' + 3 days')));
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+        }
+        return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request', 'sisa_waktu'));
     }
 
     /**

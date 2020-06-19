@@ -24,7 +24,7 @@ class CreatePenjualanRequestsTable extends Migration
             $table->date('tanggal_pengiriman')->nullable();
             $table->string('nomor_resi')->nullable();
             $table->integer('total_harga');
-            $table->enum('status_penjualan_req', ['menunggu dikirim', 'dikirim', 'diterima', 'selesai']);
+            $table->enum('status_penjualan_req', ['menunggu dikirim', 'dikirim', 'diterima', 'selesai', 'dibatalkan']);
             $table->integer('rating');
             $table->string('review')->nullable();
             $table->integer('id_penawaran');

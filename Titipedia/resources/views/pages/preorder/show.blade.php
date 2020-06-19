@@ -18,6 +18,7 @@
                             <th>Servis</th>
                             <th>Total Harga</th>
                             <th>Status</th>
+                            <th>Batas Pengiriman</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -32,6 +33,14 @@
                             <td>{{$data->service}}</td>
                             <td>{{$data->total_harga}}</td>
                             <td>{{$data->status_order}}</td>
+                            <td>
+                                @if($data->status_order === 'menunggu')
+                                {{$sisa_waktu}} Hari
+                                @elseif($data->status_order === 'dikirim')
+                                Sedang dikirim
+                                @else
+                                @endif
+                            </td>
                             <td>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
                                 @if($data->status_order === 'dikirim')

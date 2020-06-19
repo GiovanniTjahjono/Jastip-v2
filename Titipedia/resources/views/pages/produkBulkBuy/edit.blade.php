@@ -71,15 +71,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="date_of_birth" class="col-sm-2 col-form-label">Batas Waktu</label>
-                    <div class="col-sm-10">
-                        <input class="date form-control @error('batas_waktu') is-invalid @enderror" id="date_of_birth" class="form-control" name="batas_waktu" type="text" value="{{$produkBulkBuy->batas_waktu}}" />
-                        @error('batas_waktu')
-                        <div class="invalid-feedback">{{$message}}</div>
-                        @enderror
-                    </div>
-                </div>
+               
                 <div class="form-group row">
                     <label for="asal_pengiriman" class="col-sm-2 col-form-label">Asal Pengiriman</label>
                     <div class="col-sm-10">
