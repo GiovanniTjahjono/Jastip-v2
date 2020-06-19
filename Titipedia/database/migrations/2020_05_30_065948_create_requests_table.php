@@ -17,7 +17,6 @@ class CreateRequestsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('nama_req');
-            $table->integer('id_kategori');
             $table->integer('jumlah_req');
             $table->string('alamat_req');
             $table->string('kota_req');

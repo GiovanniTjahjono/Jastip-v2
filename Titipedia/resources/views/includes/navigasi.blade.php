@@ -22,6 +22,9 @@
         $notify = DB::table('pesans')
           ->where('dibaca', 'belum')
           ->where('id_penerima', Auth::user()->id)->get();
+        $notify_user = DB::table('notifikasis')
+          ->where('dibaca', 'belum')
+          ->where('id_penerima', Auth::user()->id)->get();
         ?>
         <li class="nav-item">
           <a class="nav-link text-light" href="/produk">Produk & Request</a>
@@ -32,17 +35,31 @@
         <li class="nav-item">
           <a class="nav-link text-light" href="/pesan"> <i class="fa fa-envelope"></i> <span> Pesan <span class="label label-danger"><?= $notify->count() ?: '' ?></span></span></a>
         </li>
-        <!--
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-envelope"></i>
-           Notifikasi
+            notifikasi
+            <span class="label label-danger"><?= $notify_user->count() ?: '' ?></span>
           </a>
-          <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-            <a class="nav-link text-dark" href="/">Notif 1</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            @foreach($notify_user as $notifikasi)
+            <a class="nav-link text-dark" href="/notifikasi/{{$notifikasi->id}}"><i class="fa fa-<?php switch ($notifikasi->jenis) {
+                                                                                                    case "preorder":
+                                                                                                      echo "dropbox";
+                                                                                                      break;
+                                                                                                    case "bulkbuy":
+                                                                                                      echo "clock-o";
+                                                                                                      break;
+                                                                                                  } ?>">
+              </i> {{$notifikasi->isi_notifikasi}}</a>
+            @endforeach
+            @if($notify_user->count() > 0)
+            <a href="/notifikasi" class="btn border-0 float-right text-danger">Hapus Notifikasi</a>
+            @endif
           </div>
         </li>
-      -->
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img src="{{ asset('photo_profile/'.Auth::user()->foto)}}" width="30" height="30" class="rounded-circle">

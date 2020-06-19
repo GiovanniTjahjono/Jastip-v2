@@ -27,6 +27,9 @@ Route::get('/profile', 'HomeController@index')->name('pages/home');
 Route::get('/kategori/{kategori}', 'KategoriController@show');
 //cari
 Route::get('/cari', 'HomeController@cari');
+//notifikasi
+Route::get('/notifikasi/{notifikasi}', 'NotifikasiController@update');
+Route::get('/notifikasi', 'NotifikasiController@updateDibaca');
 //Produk
 //Route::resource('/produk', 'ProdukController'); //Untuk menggunakan method patch, put, delete
 Route::get('/produk', 'ProdukController@index');

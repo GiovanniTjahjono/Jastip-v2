@@ -130,6 +130,19 @@ class PenjualanPreorderController extends Controller
                     ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
                     ->latest('penjualan_preorders.created_at')->get();
                 //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
+                $penerima = DB::table('users')
+                    ->join('produks', 'produks.id_user', '=', 'users.id')
+                    ->where('produks.id', $request->id_produk)
+                    ->select('users.*')->get();
+                Notifikasi::create([
+                    'isi_notifikasi' => "Preorder Dari " . Auth::user()->name,
+                    'waktu_kirim' => date("Y-m-d H:i:s"),
+                    'jenis' => 'preorder',
+                    'dibaca' => 'belum',
+                    'link' => '/terjual',
+                    'id_penerima' => $penerima[0]->id,
+                    'id_trigger' => Auth::user()->id
+                ]);
                 return view('pages.preorder.show', compact('orders'));
             } else {
                 return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
@@ -199,14 +212,15 @@ class PenjualanPreorderController extends Controller
                     ->join('produk_bulk_buys', 'produk_bulk_buys.id_user', '=', 'users.id')
                     ->where('produk_bulk_buys.id', $request->id_produk)
                     ->select('users.*')->get();
-                // Notifikasi::create([
-                //     'isi_notifikasi' => "Anda Mendapatkan Pemesanan Bulk-Buy Dari " . Auth::user()->name,
-                //     'waktu_kirim' => date("Y-m-d H:i:s"),
-                //     'jenis' => 'bulkbuy',
-                //     'dibaca' => 'belum',
-                //     'id_penerima' => $penerima[0]->id,
-                //     'id_trigger' => Auth::user()->id
-                // ]);
+                Notifikasi::create([
+                    'isi_notifikasi' => "Bulk-Buy Dari " . Auth::user()->name,
+                    'waktu_kirim' => date("Y-m-d H:i:s"),
+                    'jenis' => 'bulkbuy',
+                    'dibaca' => 'belum',
+                    'link' => '/penjualan-bulk',
+                    'id_penerima' => $penerima[0]->id,
+                    'id_trigger' => Auth::user()->id
+                ]);
                 return view('pages.bulkbuy.show', compact('orders'));
             } else {
                 return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
