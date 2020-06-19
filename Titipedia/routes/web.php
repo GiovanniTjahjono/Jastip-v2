@@ -68,6 +68,7 @@ Route::get('/pilih-penawaran/{penawaran}', 'PenawaranController@pilihPenawaran')
 
 Route::post('/pembelian-penawaran', 'PenjualanRequestController@store');
 Route::get('/pembelian-request', 'PenjualanRequestController@index');
+Route::get('/penjualan-penawaran', 'PenawaranController@show');
 
 Route::resource('/permintaan', 'PermintaanController');
 

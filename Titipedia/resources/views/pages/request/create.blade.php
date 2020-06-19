@@ -64,18 +64,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="status_req" class="col-sm-2 col-form-label">Status</label>
-                    <div class="col-sm-10">
-                        <select class="custom-select @error('status_req') is-invalid @enderror" id="status_req" name="status_req" value="{{old('status_req')}}">
-                            <option value="aktif">Aktif</option>
-                            <option value="tidak aktif">Tidak Aktif</option>
-                        </select>
-                        @error('status_req')
-                        <div class="invalid-feedback">{{$message}}</div>
-                        @enderror
-                    </div>
-                </div>
+                
                 <div class="form-group row">
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">

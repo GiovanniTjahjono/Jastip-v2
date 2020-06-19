@@ -261,31 +261,37 @@ class PenjualanPreorderController extends Controller
      */
     public function showProduk(Produk $produk)
     {
-        //Get nama kota list
-        $key = Config::get('RAJA_ONGKIR_API');
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "key: b4cf42007b63acb57e34af6c70bddd8d"
-            ),
-        ));
+        if($produk->status_produk !== 'tidak aktif')
+        {
+            //Get nama kota list
+            $key = Config::get('RAJA_ONGKIR_API');
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "key: b4cf42007b63acb57e34af6c70bddd8d"
+                ),
+            ));
 
-        // Response
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+            // Response
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
 
-        curl_close($curl);
+            curl_close($curl);
 
-        $kategori = DB::table('kategoris')->where('id', '=', $produk->id_kategori)->get();
-        $gambar = DB::table('gambars')->where('id_produk', '=', $produk->id)->get();
-        return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
+            $kategori = DB::table('kategoris')->where('id', '=', $produk->id_kategori)->get();
+            $gambar = DB::table('gambars')->where('id_produk', '=', $produk->id)->get();
+            return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
+        }
+        else {
+            return redirect(('/home'));
+        }
     }
     /**
      * Display the specified resource.

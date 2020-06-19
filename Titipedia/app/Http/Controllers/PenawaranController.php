@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Penawaran;
+use App\PenjualanRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Req;
 use Illuminate\Support\Facades\Auth;
+
 
 class PenawaranController extends Controller
 {
@@ -154,9 +156,17 @@ return view('pages.request.cek-penawaran', compact('penawarans', 'request', 'gam
      * @param  \App\Penawaran  $penawaran
      * @return \Illuminate\Http\Response
      */
-    public function show(Penawaran $penawaran)
+    public function show()
     {
-        
+        $penjualan_request = DB::table('penawarans') 
+            ->join('penjualan_requests', 'penjualan_requests.id_penawaran', 'penawarans.id')
+            ->join('requests', 'requests.id', 'penawarans.id_request')
+            ->join('users', 'users.id', 'requests.id_user')
+            ->where('penawarans.id_penawar', Auth::user()->id)
+            ->select('users.name', 'users.no_hp', 'penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'requests.kota_req as kota_req', 'requests.alamat_req as alamat_req', 'requests.keterangan as keterangan')
+            ->get();
+        //dd($penjualan_request);
+        return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request'));
     }
 
     /**

@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="mt-3">
-                <table id="table_product" class="table table-responsive table-hover">
+                <table id="table_product" class="table table-responsive w-100 table-hover">
                     <thead>
                         <tr>
                             <th>No</th>

@@ -26,6 +26,9 @@ class ProdukSeeder extends Seeder
                 'id_user' => 1,
                 'asal_pengiriman' => $faker->city,
                 'id_kategori' => 1,
+                'status_produk' => 1,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'estimasi_pengiriman' => Carbon::tomorrow()->format('Y-m-d H:i:s'),
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             DB::table('gambars')->insert([

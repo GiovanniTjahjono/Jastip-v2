@@ -14,5 +14,5 @@
   </div>
   <a href="/terjual" class="list-group-item border-0">Produk Biasa</a>
   <a href="/penjualan-bulk" class="list-group-item border-0">Produk Bulk Buy</a>
-  <a href="/req" class="list-group-item border-0">Request</a>
+  <a href="/penjualan-penawaran" class="list-group-item border-0">Penawaran</a>
 </div>

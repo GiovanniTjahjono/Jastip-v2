@@ -25,6 +25,8 @@ class CreateProduksTable extends Migration
             $table->string('asal_pengiriman');
             $table->integer('id_user');
             $table->integer('id_kategori');
+            $table->enum('status_produk', ['aktif', 'tidak aktif']);
+            $table->dateTime('estimasi_pengiriman');
         });
     }
 

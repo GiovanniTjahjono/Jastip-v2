@@ -61,6 +61,7 @@ class KategoriController extends Controller
             ->select('produks.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->where('produks.stok', '>', 0)
             ->where('produks.id_kategori', $kategori->id)
+            ->where('produks.status_produk', 'aktif')
             ->latest()->take(8)->get();
         //dd($produks);
         // Ambil data produk bulk buy

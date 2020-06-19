@@ -24,3 +24,9 @@ Bug:
 - auto cancel 
 - edit profile
 - number format
+
+Algoritma rating
+--------Komen------------
+- di bawahnya show produk (pembeli) muncul rating
+- jika pembelian di konfirmasi, tambahkan pilihan "tambah review" di tabel (pembeli)
+- show rating produk d home, kategori, dan pencarian

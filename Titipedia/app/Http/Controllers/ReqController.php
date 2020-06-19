@@ -68,7 +68,6 @@ class ReqController extends Controller
             'jumlah_req' => 'required',
             'alamat_req' => 'required',
             'kota_req' => 'required',
-            'status_req' => 'required',
             'gambar' => 'required',
             'id_kategori' => 'required'
         ]);
@@ -78,7 +77,7 @@ class ReqController extends Controller
             'jumlah_req' => $request->jumlah_req,
             'alamat_req' => $request->alamat_req,
             'kota_req' => $request->kota_req,
-            'status_req' => $request->status_req,
+            'status_req' => 1,
             'keterangan' => $request->keterangan,
             'id_user' => $request->id_user,
             'id_kategori' => $request->id_kategori

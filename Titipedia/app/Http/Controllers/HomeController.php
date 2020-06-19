@@ -36,6 +36,7 @@ class HomeController extends Controller
             ->join('gambars', 'produks.id', '=', 'gambars.id_produk')->groupBy('produks.id')
             ->select('produks.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
             ->where('produks.stok', '>', 0)
+            ->where('produks.status_produk', 'aktif')
             ->latest()->take(8)->get();
 
         // Ambil data produk bulk buy

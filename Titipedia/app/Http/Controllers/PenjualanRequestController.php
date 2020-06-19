@@ -69,7 +69,7 @@ class PenjualanRequestController extends Controller
                 'tanggal_penjualan' => Carbon::now()->format('Y-m-d H:i:s'),
                 'kuris' => 'Tiki',
                 'total_harga' => $totalHarga,
-                'status_penjualan_req' => 3,
+                'status_penjualan_req' => 1,
                 'id_penawaran' => $request->id_penawaran,
                 'id_user' => Auth::user()->id
             ]);
