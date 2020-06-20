@@ -239,13 +239,15 @@ class PenjualanRequestController extends Controller
     {
 
         $request->validate([
-            'review' => 'required'
+            'review' => 'required',
+            'rating' => 'required'
         ]);
 
         //dd($request->review);
         PenjualanRequest::where('id', $penjualanRequest->id)
             ->update([
-                'review' => $request->review
+                'review' => $request->review,
+                'rating' => $request->rating
             ]);
         return redirect('/pembelian-request/daftar_pembelian_request/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }

@@ -327,6 +327,7 @@ class PenjualanPreorderController extends Controller
                 ->join('produks', 'penjualan_preorders.id_produk', '=', 'produks.id')
                 ->join('users', 'penjualan_preorders.id_user', '=', 'users.id')
                 ->where('produks.id', $produk->id)
+                ->where('penjualan_preorders.status_order', "diterima")
                 ->select('penjualan_preorders.*', 'users.name as name', 'users.foto as foto')->get();
             //dd($penjualanRatingReview);
             $kategori = DB::table('kategoris')->where('id', '=', $produk->id_kategori)->get();
@@ -373,6 +374,7 @@ class PenjualanPreorderController extends Controller
             ->join('produk_bulk_buys', 'penjualan_preorders.id_bulkbuy', '=', 'produk_bulk_buys.id')
             ->join('users', 'penjualan_preorders.id_user', '=', 'users.id')
             ->where('produk_bulk_buys.id', $produkBulkBuy->id)
+            ->where('penjualan_preorders.status_order', 'diterima')
             ->select('penjualan_preorders.*', 'users.name as name', 'users.foto as foto')->get();
         // $count_target = DB::table('penjualan_preorders')
         //     ->where('penjualan_preorders.id_bulkbuy', $produkBulkBuy->id)
@@ -534,13 +536,15 @@ class PenjualanPreorderController extends Controller
     {
 
         $request->validate([
-            'review' => 'required'
+            'review' => 'required',
+            'rating' => 'required'
         ]);
 
         //dd($request->review);
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
-                'review' => $request->review
+                'review' => $request->review,
+                'rating' => $request->rating
             ]);
         return redirect('/order/daftar_pembelian_preorder/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }
@@ -565,13 +569,15 @@ class PenjualanPreorderController extends Controller
     {
 
         $request->validate([
-            'review' => 'required'
+            'review' => 'required',
+            'rating' => 'required'
         ]);
 
         //dd($request->review);
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
-                'review' => $request->review
+                'review' => $request->review,
+                'rating' => $request->rating
             ]);
         return redirect('/bulkbuy/daftar_pembelian_preorder/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }

@@ -50,7 +50,15 @@
                             <img class="direct-chat-img" src="{{ asset('photo_profile/'.$ratingreview->foto)}}">
                         </div>
                         <div class="col-10">
-                            <small><i class="fa fa-bell"></i></small>
+                            <?php
+                                $bintangKosong = 5 - $ratingreview->rating;
+                                for($i = 0; $i < $ratingreview->rating; $i++) {
+                                    echo '<small><i class="fa fa-star"></i></small>';
+                                }
+                                for($i = 0; $i < $bintangKosong; $i++) {
+                                    echo '<small><i class="fa fa-star-o"></i></small>';
+                                }
+                            ?>
                             <br>
                             <small for="">{{$ratingreview->review}}</small>
                         </div>
