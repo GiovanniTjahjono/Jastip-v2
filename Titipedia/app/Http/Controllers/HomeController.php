@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Monarobase\CountryList\CountryListFacade as Negara;
 
 class HomeController extends Controller
 {
@@ -28,6 +29,7 @@ class HomeController extends Controller
     {
         //auth::chek untuk kondisi jika user login
         //if (Auth::check()) {
+        //dd(Negara::getList('en', 'json'));
         $kategoris = DB::table('kategoris')->get();
         // Ambil data produk
         $produks = DB::table('produks')

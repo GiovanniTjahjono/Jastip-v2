@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Contracts\DataTable;
+use Monarobase\CountryList\CountryListFacade as Negara;
 
 
 class ProdukController extends Controller
@@ -64,7 +65,9 @@ class ProdukController extends Controller
 
         curl_close($curl);
         $kategoris = DB::table('kategoris')->get();
-        return view('pages.produk.create', compact('response', 'kategoris'));
+        $negara = Negara::getList('id', 'json');
+        //dd($negara);
+        return view('pages.produk.create', compact('response', 'kategoris', 'negara'));
     }
 
     /**
@@ -84,11 +87,11 @@ class ProdukController extends Controller
             'berat' => 'required',
             'keterangan' => 'required',
             'gambar' => 'required',
-            'estimasi_pengiriman' => 'required'
+            'estimasi_pengiriman' => 'required',
+            'asal_negara' => 'required'
         ]);
 
         $status_produk = 1;
-
         if($request->estimasi_pengiriman < Carbon::now()->format('Y-m-d')) {
            $status_produk = 2;
         } 
@@ -100,6 +103,7 @@ class ProdukController extends Controller
             'berat' => $request->berat,
             'keterangan' => $request->keterangan,
             'asal_pengiriman' => $request->asal_pengiriman,
+            'asal_negara' => $request->asal_negara,
             'id_user' => $request->id_user,
             'id_kategori' => $request->nama_kategori,
             'status_produk' => $status_produk,
