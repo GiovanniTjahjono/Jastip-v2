@@ -31,7 +31,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Produk</th>
-                            <th>Stok</th>
+                            <th>Batas Produk</th>
                             <th>Harga Jasa</th>
                             <th>Harga Produk</th>
                             <th>Berat</th>
@@ -51,13 +51,13 @@
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->stok}}</td>
-                            <td>{{$data->harga_jasa}}</td>
-                            <td>{{$data->harga_produk}}</td>
-                            <td>{{$data->berat}}</td>
+                            <td>Rp. {{number_format($data->harga_jasa)}}</td>
+                            <td>Rp. {{number_format($data->harga_produk)}}</td>
+                            <td>{{$data->berat}} kg</td>
                             <td>{{date_format(date_create($data->estimasi_pengiriman),"d-F-Y")}}</td>
                             <td>{{$data->asal_negara}}</td>
                             <td>{{$data->status_produk}}</td>
-                            <td><a href="/produk/{{$data->id}}" class="badge badge-primary">detail</a>
+                            <td>
                                 <a href="/produk/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
                                 <form action="/produk/{{$data->id}}" method="post">

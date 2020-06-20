@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="stok" class="col-sm-2 col-form-label">Stok Produk</label>
+                    <label for="stok" class="col-sm-2 col-form-label">Batas Produk</label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok"
                             name="stok" value="{{$produk->stok}}">
@@ -74,6 +74,27 @@
                         @error('berat')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="asal_negara" class="col-sm-2 col-form-label">Asal Negara</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('asal_negara') is-invalid @enderror" id="asal_negara" name="asal_negara">
+                           
+                            <?PHP
+                            
+                            $data = json_decode($negara, true);
+                            foreach($data as $item) {
+                                if($produk->asal_negara === $item) {
+                                    echo "<option selected value='" . $item . "'>" . $item . "</option>";
+                                } else {
+                                    echo "<option value='" . $item . "'>" . $item . "</option>";
+                                }
+                                
+                            }
+                           
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">

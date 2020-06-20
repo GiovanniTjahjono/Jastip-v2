@@ -36,6 +36,7 @@
                             <th>Harga Produk</th>
                             <th>Berat</th>
                             <th>Asal Pengiriman</th>
+                            <th>Asal Negara</th>
                             <th>Batas Waktu</th>
                             <th>Status</th>
                             <th>Keterangan</th>
@@ -52,14 +53,15 @@
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->jumlah_target}}</td>
-                            <td>{{$data->harga_jasa}}</td>
-                            <td>{{$data->harga_produk}}</td>
-                            <td>{{$data->berat}}</td>
+                            <td>Rp. {{number_format($data->harga_jasa)}}</td>
+                            <td>Rp. {{number_format($data->harga_produk)}}</td>
+                            <td>{{$data->berat}} kg</td>
                             <td>{{$data->asal_pengiriman}}</td>
+                            <td>{{$data->asal_negara}}</td>
                             <td>{{$data->batas_waktu}}</td>
                             <td>{{$data->status_bulk}}</td>
                             <td>{{$data->keterangan}}</td>
-                            <td><a href="/produk-bulk-buy/{{$data->id}}" class="badge badge-primary">detail</a>
+                            <td>
                                 <a href="/produk-bulk-buy/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
                                 <form action="/produk-bulk-buy/{{$data->id}}" method="post">
