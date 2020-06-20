@@ -14,6 +14,10 @@ use App\PenjualanPreorder;
 
 class PenjualanRequestController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +59,7 @@ class PenjualanRequestController extends Controller
             $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_request[0]->created_at . ' + 3 days')));
             $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
         }
-
+        
         return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request', 'sisa_waktu'));
     }
     /**
@@ -78,10 +82,14 @@ class PenjualanRequestController extends Controller
             ->where('penjualan_requests.id_user', $id_user)
             ->select('penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'kategoris.nama_kategori as nama_kategori')
             ->get();
-        //$ordsers = DB::table('prenjualan_preorders')->where('id_user', '=', $id)->get();
-        //dd($penjualan_requests);
-        //dd($id_user);
-        return view('pages.penawaran.show_request', compact('penjualan_requests'));;
+            $sisa_waktu = 0;
+            if (count($penjualan_requests) > 0) {
+                $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+                $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_requests[0]->created_at . ' + 3 days')));
+                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            }
+
+        return view('pages.penawaran.show_request', compact('penjualan_requests', 'sisa_waktu'));;
     }
     /**
      * Update the specified resource in storage.

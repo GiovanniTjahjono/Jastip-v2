@@ -156,7 +156,8 @@ class PenjualanPreorderController extends Controller
                     'id_penerima' => $penerima[0]->id,
                     'id_trigger' => Auth::user()->id
                 ]);
-                return view('pages.preorder.show', compact('orders'));
+                //return view('pages.preorder.show', compact('orders'));
+                return redirect('order/daftar_pembelian_preorder/'. Auth::user()->id);
             } else {
                 return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
             }

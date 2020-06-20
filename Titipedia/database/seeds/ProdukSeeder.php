@@ -24,7 +24,7 @@ class ProdukSeeder extends Seeder
                 'berat' => 0,
                 'keterangan' => '',
                 'id_user' => 1,
-                'asal_pengiriman' => $faker->city,
+                'asal_pengiriman' => 'Surabaya',
                 'id_kategori' => 1,
                 'status_produk' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

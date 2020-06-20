@@ -71,6 +71,8 @@ class updateStatusBulkbuy extends Command
             }
         }
         //update status pengiriman bulk buys
+
+        //PENGECEKAN DICEK LAGI YAAA
         $penjualan_preorder_bulkbuys = PenjualanPreorder::where('id_bulkbuy', '!=', 'Null')
                                 ->join('produk_bulk_buys', 'produk_bulk_buys.id', 'penjualan_preorders.id_bulkbuy')->get();
         foreach ($penjualan_preorder_bulkbuys as $data) {

@@ -33,6 +33,7 @@
                             <th>Total Harga</th>
                             <th>Status Pengiriman</th>
                             <th>Batas Pengiriman</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,10 @@
                                 @elseif($data->status_penjualan_req === 'dikirim')
                                 Sedang dikirim
                                 @else
+                                @endif
+                               
+                            </td>
+                            <td>
                                 @if($data->status_penjualan_req === 'dikirim')
                                 <a href="/penjualan-penawaran-konfirmasi/{{$data->id}}" class="badge badge-success">Konfirmasi</a>
                                 @elseif($data->status_penjualan_req === 'menunggu dikirim')
