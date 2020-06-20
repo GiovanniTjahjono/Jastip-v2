@@ -161,21 +161,7 @@ class PenawaranController extends Controller
      */
     public function show()
     {
-        $penjualan_request = DB::table('penawarans')
-            ->join('penjualan_requests', 'penjualan_requests.id_penawaran', 'penawarans.id')
-            ->join('requests', 'requests.id', 'penawarans.id_request')
-            ->join('users', 'users.id', 'requests.id_user')
-            ->where('penawarans.id_penawar', Auth::user()->id)
-            ->select('users.name', 'users.no_hp', 'penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'requests.kota_req as kota_req', 'requests.alamat_req as alamat_req', 'requests.keterangan as keterangan')
-            ->get();
-        //-------------FIX-------------
-        $sisa_waktu = 0;
-        if (count($penjualan_request) > 0) {
-            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
-            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_request[0]->created_at. ' + 3 days')));
-            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
-        }
-        return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request', 'sisa_waktu'));
+        
     }
 
     /**

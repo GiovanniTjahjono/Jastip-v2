@@ -62,12 +62,12 @@
                             <td>{{$data->status_penjualan_req}}</td>
                             <td>
                                 @if($data->status_penjualan_req === 'dikirim')
-                                <a href="/terjual/{{$data->id}}" class="badge badge-warning">Ganti Resi</a>
+                                <a href="/penjualan-penawaran/{{$data->id}}" class="badge badge-warning">Ganti Resi</a>
                                 @endif
 
                                 @if($data->status_penjualan_req ==='menunggu dikirim')
-                                <a href="/terjual/{{$data->id}}" class="badge badge-success">Kirim Barang</a>
-                                <form action="/terjual/{{$data->id}}" method="post">
+                                <a href="/penjualan-penawaran/{{$data->id}}" class="badge badge-success">Kirim Barang</a>
+                                <form action="/penjualan-penawaran/{{$data->id}}" method="post">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="badge badge-danger border-0">Cancel Order</button>

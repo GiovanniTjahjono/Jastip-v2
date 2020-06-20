@@ -20,6 +20,7 @@ class CreateNotifikasisTable extends Migration
             $table->dateTime('waktu_kirim');
             $table->enum('jenis', ['preorder', 'request', 'pesan', 'bulkbuy']);
             $table->enum('dibaca', ['belum', 'sudah']);
+            $table->string('link');
             $table->integer('id_penerima');
             $table->integer('id_trigger');
         });

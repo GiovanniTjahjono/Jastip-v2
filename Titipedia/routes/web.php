@@ -71,7 +71,13 @@ Route::get('/pilih-penawaran/{penawaran}', 'PenawaranController@pilihPenawaran')
 
 Route::post('/pembelian-penawaran', 'PenjualanRequestController@store');
 Route::get('/pembelian-request', 'PenjualanRequestController@index');
-Route::get('/penjualan-penawaran', 'PenawaranController@show');
+Route::get('/pembelian-request/daftar_pembelian_request/{id_request}', 'PenjualanRequestController@showPembelianRequest');
+//Update status penawaran
+Route::get('/penjualan-penawaran', 'PenjualanRequestController@indexRequestTerjual');
+Route::get('/penjualan-penawaran/{penjualanRequest}', 'PenjualanRequestController@edit');
+Route::patch('/penjualan-penawaran/{penjualanRequest}', 'PenjualanRequestController@update');
+Route::delete('/penjualan-penawaran/{penjualanRequest}', 'PenjualanRequestController@destroy');
+Route::get('/penjualan-penawaran-konfirmasi/{penjualanRequest}', 'PenjualanRequestController@konfirmasiRequest');
 
 Route::resource('/permintaan', 'PermintaanController');
 
