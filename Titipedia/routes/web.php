@@ -78,6 +78,9 @@ Route::get('/penjualan-penawaran/{penjualanRequest}', 'PenjualanRequestControlle
 Route::patch('/penjualan-penawaran/{penjualanRequest}', 'PenjualanRequestController@update');
 Route::delete('/penjualan-penawaran/{penjualanRequest}', 'PenjualanRequestController@destroy');
 Route::get('/penjualan-penawaran-konfirmasi/{penjualanRequest}', 'PenjualanRequestController@konfirmasiRequest');
+//rating
+Route::get('/pembelian-penawaran-rating/{penjualanRequest}', 'PenjualanRequestController@editRatingReq');
+Route::patch('/pembelian-penawaran-rating/{penjualanRequest}', 'PenjualanRequestController@updateRatingReq');
 
 Route::resource('/permintaan', 'PermintaanController');
 
@@ -105,6 +108,9 @@ Route::get('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@edit');
 Route::patch('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@update');
 Route::delete('/terjual/{penjualanPreorder}', 'PenjualanPreorderController@destroy');
 Route::get('/terjual-konfirmasi/{penjualanPreorder}', 'PenjualanPreorderController@konfirmasiPreorder');
+//rating
+Route::get('/terjual-rating/{penjualanPreorder}', 'PenjualanPreorderController@editRating');
+Route::patch('/terjual-rating/{penjualanPreorder}', 'PenjualanPreorderController@updateRating');
 
 //Penjualan BulkBuy
 Route::get('/bulkbuy/{produkBulkBuy}', 'PenjualanPreorderController@showBulkBuy');
@@ -117,6 +123,9 @@ Route::get('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@e
 Route::get('/konfirmasi/{penjualanPreorder}', 'PenjualanPreorderController@konfirmasiBulkBuy');
 Route::patch('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@updatePenjualanBulk');
 Route::delete('/penjualan-bulk/{penjualanPreorder}', 'PenjualanPreorderController@destroyPenjualanBulk');
+//rating
+Route::get('/penjualan-bulk-rating/{penjualanPreorder}', 'PenjualanPreorderController@editRatingBulkBuy');
+Route::patch('/penjualan-bulk-rating/{penjualanPreorder}', 'PenjualanPreorderController@updateRatingBulkBuy');
 
 //pesan
 Route::get('/pesan', 'PesanController@index');

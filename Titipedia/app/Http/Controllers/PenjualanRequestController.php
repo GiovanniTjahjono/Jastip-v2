@@ -42,7 +42,7 @@ class PenjualanRequestController extends Controller
         }
 
 
-        return view('pages.penjualan_preorder.penjualan_request', compact('penjualan_requests', 'sisa_waktu'));
+        return view('pages.penawaran.show_request', compact('penjualan_requests', 'sisa_waktu'));
     }
     public function indexRequestTerjual()
     {
@@ -59,7 +59,7 @@ class PenjualanRequestController extends Controller
             $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_request[0]->created_at . ' + 3 days')));
             $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
         }
-        
+
         return view('pages.penawaran.penjualan_penawaran', compact('penjualan_request', 'sisa_waktu'));
     }
     /**
@@ -82,12 +82,12 @@ class PenjualanRequestController extends Controller
             ->where('penjualan_requests.id_user', $id_user)
             ->select('penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'kategoris.nama_kategori as nama_kategori')
             ->get();
-            $sisa_waktu = 0;
-            if (count($penjualan_requests) > 0) {
-                $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
-                $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_requests[0]->created_at . ' + 3 days')));
-                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
-            }
+        $sisa_waktu = 0;
+        if (count($penjualan_requests) > 0) {
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_requests[0]->created_at . ' + 3 days')));
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+        }
 
         return view('pages.penawaran.show_request', compact('penjualan_requests', 'sisa_waktu'));;
     }
@@ -218,7 +218,37 @@ class PenjualanRequestController extends Controller
             ]);
         return redirect('/penjualan-penawaran')->with('status', 'Data Berhasil Diubah!');
     }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\PenjualanRequest  $penjualanRequest
+     * @return \Illuminate\Http\Response
+     */
+    public function editRatingReq(PenjualanRequest $penjualanRequest)
+    {
+        return view('pages.penjualan_preorder.rating_request', compact('penjualanRequest'));
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanRequest  $penjualanRequest
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRatingReq(Request $request, PenjualanRequest $penjualanRequest)
+    {
 
+        $request->validate([
+            'review' => 'required'
+        ]);
+
+        //dd($request->review);
+        PenjualanRequest::where('id', $penjualanRequest->id)
+            ->update([
+                'review' => $request->review
+            ]);
+        return redirect('/pembelian-request/daftar_pembelian_request/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
+    }
     /**
      * Remove the specified resource from storage.
      *
