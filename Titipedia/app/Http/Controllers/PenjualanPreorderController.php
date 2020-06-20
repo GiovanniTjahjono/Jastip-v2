@@ -323,10 +323,15 @@ class PenjualanPreorderController extends Controller
             $err = curl_error($curl);
 
             curl_close($curl);
-
+            $penjualanRatingReview = DB::table('penjualan_preorders')
+                ->join('produks', 'penjualan_preorders.id_produk', '=', 'produks.id')
+                ->join('users', 'penjualan_preorders.id_user', '=', 'users.id')
+                ->where('produks.id', $produk->id)
+                ->select('penjualan_preorders.*', 'users.name as name', 'users.foto as foto')->get();
+            //dd($penjualanRatingReview);
             $kategori = DB::table('kategoris')->where('id', '=', $produk->id_kategori)->get();
             $gambar = DB::table('gambars')->where('id_produk', '=', $produk->id)->get();
-            return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar'));
+            return view('pages.preorder.preorder', compact('produk', 'kategori', 'response', 'gambar', 'penjualanRatingReview'));
         } else {
             return redirect(('/home'));
         }
@@ -364,11 +369,16 @@ class PenjualanPreorderController extends Controller
 
         $kategori = DB::table('kategoris')->where('id', '=', $produkBulkBuy->id_kategori)->get();
         $gambar = DB::table('gambars')->where('id_bulkbuy', '=', $produkBulkBuy->id)->get();
+        $penjualanRatingReview = DB::table('penjualan_preorders')
+            ->join('produk_bulk_buys', 'penjualan_preorders.id_bulkbuy', '=', 'produk_bulk_buys.id')
+            ->join('users', 'penjualan_preorders.id_user', '=', 'users.id')
+            ->where('produk_bulk_buys.id', $produkBulkBuy->id)
+            ->select('penjualan_preorders.*', 'users.name as name', 'users.foto as foto')->get();
         // $count_target = DB::table('penjualan_preorders')
         //     ->where('penjualan_preorders.id_bulkbuy', $produkBulkBuy->id)
         //     ->count();
         // dd($count_target);
-        return view('pages.bulkbuy.bulkbuy', compact('produkBulkBuy', 'kategori', 'response', 'gambar'));
+        return view('pages.bulkbuy.bulkbuy', compact('produkBulkBuy', 'kategori', 'response', 'gambar', 'penjualanRatingReview'));
     }
     public function RajaOngkir(Request $request)
     {

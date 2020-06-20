@@ -43,6 +43,20 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
+                <div class="overflow-auto h-50 mt-5">
+                    @foreach($penjualanRatingReview as $ratingreview)
+                    <div class="row">
+                        <div class="col-2">
+                            <img class="direct-chat-img" src="{{ asset('photo_profile/'.$ratingreview->foto)}}">
+                        </div>
+                        <div class="col-10">
+                            <small><i class="fa fa-bell"></i></small>
+                            <br>
+                            <small for="">{{$ratingreview->review}}</small>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
             <div class="col">
                 <div class="card mt-5 border-0">
