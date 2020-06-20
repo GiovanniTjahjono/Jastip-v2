@@ -23,6 +23,7 @@ class CreateProduksTable extends Migration
             $table->integer('berat');
             $table->string('keterangan')->nullable();
             $table->string('asal_pengiriman');
+            $table->string('asal_negara');
             $table->integer('id_user');
             $table->integer('id_kategori');
             $table->enum('status_produk', ['aktif', 'tidak aktif']);

@@ -25,6 +25,7 @@ class ProdukSeeder extends Seeder
                 'keterangan' => '',
                 'id_user' => 1,
                 'asal_pengiriman' => 'Surabaya',
+                'asal_negara' => 'Indonesia',
                 'id_kategori' => 1,
                 'status_produk' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
