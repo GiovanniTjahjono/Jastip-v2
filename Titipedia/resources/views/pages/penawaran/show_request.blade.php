@@ -55,7 +55,6 @@
                                 Sedang dikirim
                                 @else
                                 @endif
-                               
                             </td>
                             <td>
                                 @if($data->status_penjualan_req === 'dikirim')

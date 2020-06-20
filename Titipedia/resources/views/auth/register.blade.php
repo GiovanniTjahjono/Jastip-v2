@@ -171,8 +171,8 @@
                         <div class="form-group row">
                             <label for="filePhoto" class="col-sm-4 col-form-label text-right">Unggah foto</label>
                             <div class="col-sm-8" id="addBrowsePhoto">
-                                <input type="file" id="photo_profile" name="photo_profile" class="validate"
-                                    placeholder="optional" />
+                                <input type="file" id="photo_profile" name="photo_profile" class="validate @error('password') is-invalid @enderror"
+                                    placeholder="optional" required/>
                                 <img src="" id="showgambar" style="max-width:200px;max-height:200px;float:left;" />
                             </div>
                         </div>
