@@ -6,6 +6,11 @@
             <h3>Daftar Pre-Order</h3>
         </div>
         <div class="card-body">
+            @if (session('status') === "Pemberian Rating dan Review Berhasil!")
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+            @endif
             <div class="mt-3">
                 <table id="table_order" class="table  table-responsive table-hover">
                     <thead>
@@ -47,6 +52,8 @@
                                 <a href="/terjual-konfirmasi/{{$data->id}}" class="badge badge-success">Konfirmasi</a>
                                 @elseif($data->status_order === 'menunggu')
                                 <label>Menunggu Pengiriman</label>
+                                @elseif($data->status_order === 'diterima' && $data->review === NULL)
+                                <a href="/terjual-rating/{{$data->id}}" class="badge badge-primary">Beri Rating</a>
                                 @elseif($data->status_order === 'diterima')
                                 <label>Sukses</label>
                                 @elseif($data->status_order === 'dibatalkan')

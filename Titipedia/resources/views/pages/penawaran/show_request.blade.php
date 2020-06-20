@@ -6,16 +6,8 @@
             <h3>Daftar Pembelian Request</h3>
         </div>
         <div class="card-body">
-            @if (session('status') === "Data Berhasil Ditambahkan!")
+            @if (session('status') === "Pemberian Rating dan Review Berhasil!")
             <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-            @elseif (session('status')==="Data Berhasil Diubah!")
-            <div class="alert alert-primary">
-                {{ session('status') }}
-            </div>
-            @elseif (session('status')==="Data Berhasil Dibatalkan!")
-            <div class="alert alert-danger">
                 {{ session('status') }}
             </div>
             @endif
@@ -61,6 +53,8 @@
                                 <a href="/penjualan-penawaran-konfirmasi/{{$data->id}}" class="badge badge-success">Konfirmasi</a>
                                 @elseif($data->status_penjualan_req === 'menunggu dikirim')
                                 <label>Menunggu Pengiriman</label>
+                                @elseif($data->status_penjualan_req === 'diterima' && $data->review === NULL)
+                                <a href="/pembelian-penawaran-rating/{{$data->id}}" class="badge badge-primary">Beri Rating</a>
                                 @elseif($data->status_penjualan_req === 'diterima')
                                 <label>Sukses</label>
                                 @elseif($data->status_penjualan_req === 'dibatalkan')

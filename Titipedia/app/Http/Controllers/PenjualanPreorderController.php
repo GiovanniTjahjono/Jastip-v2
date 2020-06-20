@@ -157,7 +157,7 @@ class PenjualanPreorderController extends Controller
                     'id_trigger' => Auth::user()->id
                 ]);
                 //return view('pages.preorder.show', compact('orders'));
-                return redirect('order/daftar_pembelian_preorder/'. Auth::user()->id);
+                return redirect('order/daftar_pembelian_preorder/' . Auth::user()->id);
             } else {
                 return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
             }
@@ -236,7 +236,7 @@ class PenjualanPreorderController extends Controller
                     'id_trigger' => Auth::user()->id
                 ]);
                 //return view('pages.bulkbuy.show', compact('orders'));
-                return redirect('bulkbuy/daftar_pembelian_preorder/'. Auth::user()->id);
+                return redirect('bulkbuy/daftar_pembelian_preorder/' . Auth::user()->id);
             } else {
                 return redirect()->back()->with('status', 'Saldo Anda Tidak Cukup!');
             }
@@ -266,13 +266,13 @@ class PenjualanPreorderController extends Controller
             ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
             ->select('penjualan_preorders.*', 'produks.nama as nama', 'kategoris.nama_kategori as nama_kategori', 'produks.estimasi_pengiriman')
             ->latest('penjualan_preorders.created_at')->get();
-         //-------------------FIX-------------------   
-            $sisa_waktu = 0;
-            if (count($orders) > 0) {
-                $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
-                $waktu_pembelian = strtotime($orders[0]->estimasi_pengiriman);
-                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
-            }
+        //-------------------FIX-------------------   
+        $sisa_waktu = 0;
+        if (count($orders) > 0) {
+            $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+            $waktu_pembelian = strtotime($orders[0]->estimasi_pengiriman);
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+        }
         return view('pages.preorder.show', compact('orders', 'sisa_waktu'));
     }
     public function showPembelianBulkBuy($id_bulk)
@@ -284,13 +284,13 @@ class PenjualanPreorderController extends Controller
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
             ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'kategoris.nama_kategori as nama_kategori', 'produk_bulk_buys.batas_waktu')
             ->latest('penjualan_preorders.created_at')->get();
-            //-------------------FIX-------------------   
-            $sisa_waktu = 0;
-            if (count($orders) > 0) {
-                $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
-                $waktu_pembelian = strtotime($orders[0]->batas_waktu);
-                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
-            }
+        //-------------------FIX-------------------   
+        $sisa_waktu = 0;
+        if (count($orders) > 0) {
+            $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+            $waktu_pembelian = strtotime($orders[0]->batas_waktu);
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+        }
         return view('pages.bulkbuy.show', compact('orders', 'sisa_waktu'));;
     }
     /**
@@ -502,6 +502,68 @@ class PenjualanPreorderController extends Controller
                 'status_order' => 2
             ]);
         return redirect('penjualan-bulk')->with('status', 'Data Berhasil Diubah!');
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function editRating(PenjualanPreorder $penjualanPreorder)
+    {
+        return view('pages.penjualan_preorder.rating_preorder', compact('penjualanPreorder'));
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRating(Request $request, PenjualanPreorder $penjualanPreorder)
+    {
+
+        $request->validate([
+            'review' => 'required'
+        ]);
+
+        //dd($request->review);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'review' => $request->review
+            ]);
+        return redirect('/order/daftar_pembelian_preorder/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function editRatingBulkBuy(PenjualanPreorder $penjualanPreorder)
+    {
+        return view('pages.penjualan_preorder.rating_bulkbuy', compact('penjualanPreorder'));
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PenjualanPreorder  $penjualanPreorder
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRatingBulkBuy(Request $request, PenjualanPreorder $penjualanPreorder)
+    {
+
+        $request->validate([
+            'review' => 'required'
+        ]);
+
+        //dd($request->review);
+        PenjualanPreorder::where('id', $penjualanPreorder->id)
+            ->update([
+                'review' => $request->review
+            ]);
+        return redirect('/bulkbuy/daftar_pembelian_preorder/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }
 
     /**
