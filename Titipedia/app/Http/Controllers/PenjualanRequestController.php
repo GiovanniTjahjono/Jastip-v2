@@ -66,6 +66,7 @@ class PenjualanRequestController extends Controller
     }
     public function showPembelianRequest($id_request)
     {
+        //dd('a');
         $id_user = $id_request;
         $penjualan_requests = DB::table('penjualan_requests')
             ->join('penawarans', 'penawarans.id', '=', 'penjualan_requests.id_penawaran')
