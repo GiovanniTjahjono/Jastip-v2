@@ -92,6 +92,22 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="asal_negara" class="col-sm-2 col-form-label">Asal Negara</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select @error('asal_negara') is-invalid @enderror" id="asal_negara" name="asal_negara">
+                           
+                            <?PHP
+                            
+                            $data = json_decode($negara, true);
+                            foreach($data as $item) {
+                                echo "<option value='" . $item . "'>" . $item . "</option>";
+                            }
+                           
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
                         <div class="form-group">
