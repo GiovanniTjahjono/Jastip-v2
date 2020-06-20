@@ -19,9 +19,9 @@ class ProdukSeeder extends Seeder
             DB::table('produks')->insert([
                 'nama' => $faker->productName,
                 'stok' => 9,
-                'harga_jasa' => 8000,
+                'harga_jasa' => 80000,
                 'harga_produk' => 2000,
-                'berat' => 0,
+                'berat' => 1,
                 'keterangan' => '',
                 'id_user' => 1,
                 'asal_pengiriman' => 'Surabaya',

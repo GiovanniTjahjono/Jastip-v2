@@ -42,11 +42,12 @@
                 
             </div>
             <div class="card-footer bg-white">
-                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
+                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small><br>
+                <small class="text-muted">{{$data->asal_negara}}</small>
                 <h6 class="mt-2">Rp. {{number_format($data->harga_produk)}}</h6>
                 <div class="row">
                     <div class="col-5">
-                        <small class="text-muted">tersisa {{$data->stok}}</small>
+                        <small class="text-muted">batas {{$data->stok}}</small>
                     </div>
                     <div class="col-7">
                         <div class="text-right">
@@ -75,7 +76,8 @@
             <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="produk_bulk_buy_images/{{$data->url}}" alt=""></a>
             <div class="card-body"></div>
             <div class="card-footer bg-white">
-                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small>
+                <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small><br>
+                <small class="text-muted">{{$data->asal_negara}}</small>
                 <h6 class="mt-2">Rp. {{number_format($data->harga_produk)}}</h6>
                 <div class="row">
                     <div class="col">

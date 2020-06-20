@@ -36,6 +36,7 @@
                             <th>Harga Produk</th>
                             <th>Berat</th>
                             <th>Estimasi Pengiriman</th>
+                            <th>Asal Negara</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -54,6 +55,7 @@
                             <td>{{$data->harga_produk}}</td>
                             <td>{{$data->berat}}</td>
                             <td>{{date_format(date_create($data->estimasi_pengiriman),"d-F-Y")}}</td>
+                            <td>{{$data->asal_negara}}</td>
                             <td>{{$data->status_produk}}</td>
                             <td><a href="/produk/{{$data->id}}" class="badge badge-primary">detail</a>
                                 <a href="/produk/{{$data->id}}/edit" class="badge badge-success">edit</a>

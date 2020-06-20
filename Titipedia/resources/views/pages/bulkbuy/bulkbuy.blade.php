@@ -65,17 +65,11 @@
                             </small>Rp.{{$produkBulkBuy->harga_produk}}</li>
                         <li class="list-group-item" id="harga_jasa" value="{{$produkBulkBuy->harga_jasa}}"><small class="text-muted">Harga jasa:
                             </small>Rp.{{$produkBulkBuy->harga_jasa}}</li>
-                        <li class="list-group-item"><small class="text-muted">Jenis produk:
-                            </small>{{$produkBulkBuy->jenis_produk}}</li>
                         <li class="list-group-item"><small class="text-muted">Jumlah Target: </small>{{$produkBulkBuy->jumlah_target}}</li>
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produkBulkBuy->berat}} Kg
                         </li>
-
                         <li class="list-group-item" id="asal" value="{{$produkBulkBuy->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
-
-                        <li class="list-group-item" id="asal" value="{{$produkBulkBuy->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:
-
-                            </small>Rp.{{$produkBulkBuy->asal_pengiriman}}</li>
+                            </small>{{$produkBulkBuy->asal_pengiriman}}</li>
                     </ul>
 
                     <div class="card-body">
