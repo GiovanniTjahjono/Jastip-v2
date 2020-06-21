@@ -49,7 +49,15 @@
                             <img class="direct-chat-img" src="{{ asset('photo_profile/'.$ratingreview->foto)}}">
                         </div>
                         <div class="col-10">
-                            <small><i class="fa fa-bell"></i></small>
+                            <?php
+                                $bintangKosong = 5 - $ratingreview->rating;
+                                for($i = 0; $i < $ratingreview->rating; $i++) {
+                                    echo '<small><i class="fa fa-star"></i></small>';
+                                }
+                                for($i = 0; $i < $bintangKosong; $i++) {
+                                    echo '<small><i class="fa fa-star-o"></i></small>';
+                                }
+                            ?>
                             <br>
                             <small for="">{{$ratingreview->review}}</small>
                         </div>
@@ -80,6 +88,7 @@
                         <li class="list-group-item" id="harga_jasa" value="{{$produkBulkBuy->harga_jasa}}"><small class="text-muted">Harga jasa:
                             </small>Rp.{{$produkBulkBuy->harga_jasa}}</li>
                         <li class="list-group-item"><small class="text-muted">Jumlah Target: </small>{{$produkBulkBuy->jumlah_target}}</li>
+                        <li class="list-group-item"><small class="text-muted">Asal Negara: </small>{{$produkBulkBuy->asal_negara}}</li>
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produkBulkBuy->berat}} Kg
                         </li>
                         <li class="list-group-item" id="asal" value="{{$produkBulkBuy->asal_pengiriman}}"><small class="text-muted">Asal Pengiriman:

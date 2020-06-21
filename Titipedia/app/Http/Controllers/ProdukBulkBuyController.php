@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Contracts\DataTable;
+use Monarobase\CountryList\CountryListFacade as Negara;
 
 class ProdukBulkBuyController extends Controller
 {
@@ -29,7 +30,7 @@ class ProdukBulkBuyController extends Controller
                     ->where('users.id', '=', Auth::user()->id);
             })
             ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
-            ->select('produk_bulk_buys.*', 'users.name', 'kategoris.nama_kategori')
+            ->select('produk_bulk_buys.*', 'users.name', 'produk_bulk_buys.asal_negara','kategoris.nama_kategori')
             ->orderBy('updated_at', 'desc')
             ->get();
         return view('pages.produkBulkBuy.produkbulkbuy', compact('produkBulkBuys'));
@@ -61,7 +62,8 @@ class ProdukBulkBuyController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
-        return view('pages.produkBulkBuy.create', compact('response', 'kategoris'));
+        $negara = Negara::getList('id', 'json');
+        return view('pages.produkBulkBuy.create', compact('response', 'kategoris', 'negara'));
     }
 
     /**
@@ -80,7 +82,8 @@ class ProdukBulkBuyController extends Controller
             'harga_produk' => 'required',
             'berat' => 'required',
             'batas_waktu' => 'required',
-            'gambar' => 'required'
+            'gambar' => 'required',
+            'asal_negara' => 'required'
         ]);
         ProdukBulkBuy::create([
             'nama' => $request->nama_produk,
@@ -90,6 +93,7 @@ class ProdukBulkBuyController extends Controller
             'berat' => $request->berat,
             'batas_waktu' => $request->batas_waktu,
             'asal_pengiriman' => $request->asal_pengiriman,
+            'asal_negara' => $request->asal_negara,
             'keterangan' => $request->keterangan,
             'status_bulk' => 'aktif',
             'id_user' => $request->id_user,
@@ -158,7 +162,8 @@ class ProdukBulkBuyController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
-        return view('pages.produkBulkBuy.edit', compact('produkBulkBuy', 'gambars', 'kategoris', 'response'));
+        $negara = Negara::getList('id', 'json');
+        return view('pages.produkBulkBuy.edit', compact('produkBulkBuy', 'gambars', 'kategoris', 'response', 'negara'));
     }
 
     /**
@@ -176,6 +181,7 @@ class ProdukBulkBuyController extends Controller
             'jumlah_target' => 'required',
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
+            'asal_negara' => 'required',
             'berat' => 'required'
         ]);
         ProdukBulkBuy::where('id', $produkBulkBuy->id)
@@ -186,6 +192,7 @@ class ProdukBulkBuyController extends Controller
                 'harga_produk' => $request->harga_produk,
                 'berat' => $request->berat,
                 'asal_pengiriman' => $request->asal_pengiriman,
+                'asal_negara' => $request->asal_negara,
                 'keterangan' => $request->keterangan,
                 'status_bulk' => 'menunggu',
                 'id_user' => $request->id_user,

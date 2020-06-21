@@ -2,7 +2,9 @@
 <meta name="description" content="">
 <meta name="author" content="Scotch">
 
+
 <title>Titipedia</title>
+
 <!-- Bootstrap 3.3.7 -->
 <!-- <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css')}}"> -->
 <!-- Font Awesome -->

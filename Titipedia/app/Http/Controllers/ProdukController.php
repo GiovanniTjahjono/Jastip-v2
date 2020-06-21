@@ -155,7 +155,8 @@ class ProdukController extends Controller
         $gambars = DB::table('gambars')
                 ->where('id_produk', '=', $produk->id)
                 ->get();
-        return view('pages.produk.edit', compact('produk', 'gambars', 'kategoris'));
+                $negara = Negara::getList('id', 'json');
+        return view('pages.produk.edit', compact('produk', 'gambars', 'kategoris', 'negara'));
     }
     /**
      * Update the specified resource in storage.
@@ -172,7 +173,8 @@ class ProdukController extends Controller
             'nama_kategori' => 'required',
             'harga_jasa' => 'required',
             'harga_produk' => 'required',
-            'berat' => 'required'
+            'berat' => 'required',
+            'asal_negara' => 'required'
         ]);
         Produk::where('id', $produk->id)
             ->update([
@@ -183,6 +185,7 @@ class ProdukController extends Controller
                 'harga_produk' => $request->harga_produk,
                 'berat' => $request->berat,
                 'keterangan' => $request->keterangan,
+                'asal_negara' => $request->asal_negara,
                 'id_user' => $request->id_user
             ]);
        

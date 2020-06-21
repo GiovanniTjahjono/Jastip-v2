@@ -26,6 +26,7 @@
                             <th>Kode Transaksi</th>
                             <th>Nama Produk</th>
                             <th>Kategori</th>
+                            <th>Asal Negara</th>
                             <th>Jumlah Beli</th>
                             <th>Kurir</th>
                             <th>Servis</th>
@@ -41,6 +42,7 @@
                             <td>{{$data->kode_transaksi}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->nama_kategori}}</td>
+                            <td>{{$data->asal_negara}}</td>
                             <td>{{$data->kuantitas}}</td>
                             <td>{{$data->kurir}}</td>
                             <td>{{$data->service}}</td>
