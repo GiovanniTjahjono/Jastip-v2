@@ -9,6 +9,7 @@ use App\Produk;
 use App\ProdukBulkBuy;
 use Carbon\Carbon;
 use App\Notifikasi;
+use App\PenjualanRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,7 @@ class PenjualanPreorderController extends Controller
             ->join('users', 'users.id', '=', 'produks.id_user')
             ->join('kategoris', 'kategoris.id', '=', 'produks.id_kategori')
             ->where('users.id', $id_user)
-            ->select('penjualan_preorders.*', 'produks.nama as nama', 'produks.asal_negara','kategoris.nama_kategori', 'produks.estimasi_pengiriman')
+            ->select('penjualan_preorders.*', 'produks.nama as nama', 'produks.asal_negara', 'kategoris.nama_kategori', 'produks.estimasi_pengiriman')
             ->get();
         //------------FIX-------------
         $sisa_waktu = 0;
@@ -66,8 +67,12 @@ class PenjualanPreorderController extends Controller
         //------------FIX--------------
         $sisa_waktu = 0;
         if (count($penjualanOrders) > 0) {
-            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            // 21 juni 2020
+            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s')); 
+            // 30 juni 2020
             $waktu_pembelian = strtotime($penjualanOrders[0]->batas_waktu);
+            // 9 hari
+            
             $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
         }
         return view('pages.penjualan_preorder.penjualan_bulk_buy', compact('penjualanOrders', 'sisa_waktu'));
@@ -264,20 +269,23 @@ class PenjualanPreorderController extends Controller
             ->where('penjualan_preorders.id_user', '=', $id)
             ->join('produks', 'produks.id', '=', 'penjualan_preorders.id_produk')
             ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
-            ->select('penjualan_preorders.*', 'produks.nama as nama', 'produks.asal_negara','kategoris.nama_kategori as nama_kategori', 'produks.estimasi_pengiriman')
+            ->select('penjualan_preorders.*', 'produks.nama as nama', 'produks.asal_negara', 'kategoris.nama_kategori as nama_kategori', 'produks.estimasi_pengiriman')
             ->latest('penjualan_preorders.created_at')->get();
         //-------------------FIX-------------------   
-        $sisa_waktu = 0;
-        if (count($orders) > 0) {
+        $batas_waktu = [];
+        foreach($orders as $data) {
+            $sisa_waktu = 0;
             $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
-            $waktu_pembelian = strtotime($orders[0]->estimasi_pengiriman);
+            $waktu_pembelian = strtotime($data->estimasi_pengiriman);
             $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            array_push($batas_waktu, $sisa_waktu);
         }
-        return view('pages.preorder.show', compact('orders', 'sisa_waktu'));
+        return view('pages.preorder.show', compact('orders', 'batas_waktu'));
     }
     public function showPembelianBulkBuy($id_bulk)
     {
         $id_user = $id_bulk;
+        
         $orders = DB::table('penjualan_preorders')
             ->where('penjualan_preorders.id_user', '=', $id_user)
             ->join('produk_bulk_buys', 'produk_bulk_buys.id', '=', 'penjualan_preorders.id_bulkbuy')
@@ -285,13 +293,17 @@ class PenjualanPreorderController extends Controller
             ->select('penjualan_preorders.*', 'produk_bulk_buys.nama as nama', 'produk_bulk_buys.asal_negara', 'kategoris.nama_kategori as nama_kategori', 'produk_bulk_buys.batas_waktu')
             ->latest('penjualan_preorders.created_at')->get();
         //-------------------FIX-------------------   
-        $sisa_waktu = 0;
-        if (count($orders) > 0) {
+        
+        $batas_waktu = [];
+        foreach($orders as $data) {
+            $sisa_waktu = 0;
             $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
-            $waktu_pembelian = strtotime($orders[0]->batas_waktu);
+            $waktu_pembelian = strtotime($data->batas_waktu);
             $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            array_push($batas_waktu, $sisa_waktu);
         }
-        return view('pages.bulkbuy.show', compact('orders', 'sisa_waktu'));;
+       
+        return view('pages.bulkbuy.show', compact('orders', 'batas_waktu'));;
     }
     /**
      * Display the specified resource.
@@ -534,18 +546,41 @@ class PenjualanPreorderController extends Controller
      */
     public function updateRating(Request $request, PenjualanPreorder $penjualanPreorder)
     {
-
         $request->validate([
             'review' => 'required',
             'rating' => 'required'
         ]);
-
-        //dd($request->review);
         PenjualanPreorder::where('id', $penjualanPreorder->id)
             ->update([
                 'review' => $request->review,
                 'rating' => $request->rating
             ]);
+        //Update rating user produk-------------------------------------------
+        $id_produk = PenjualanPreorder::where('id', $penjualanPreorder->id)->get()[0]->id_produk;
+        $id_penjual = Produk::where('produks.id', $id_produk)->get()[0]->id_user;
+        $data_rating_user_preorder = PenjualanPreorder::where('penjualan_preorders.id_user', $id_penjual)
+            ->where('status_order', 'diterima')
+            ->where('rating', '!=', 0)
+            ->get();
+
+        $penawaran_request = PenjualanRequest::join('penawarans', 'penawarans.id', 'penjualan_requests.id_penawaran')
+            ->where('penawarans.id_penawar', $id_penjual)
+            ->where('status_penjualan_req', 'diterima')
+            ->where('rating', '!=', 0)
+            ->get();
+
+        $jumlah_rating = intval(count($data_rating_user_preorder)) + intval(count($penawaran_request));
+        $total_rating = 0;
+        foreach ($data_rating_user_preorder as $data) {
+            $total_rating += intval($data->rating);
+        }
+        foreach ($penawaran_request as $data) {
+            $total_rating += intval($data->rating);
+        }
+        $rating = $total_rating / $jumlah_rating;
+        User::where('id', $id_penjual)->update(['rating' => $rating]);
+        //-------------------------------------------------------------
+
         return redirect('/order/daftar_pembelian_preorder/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }
     /**
@@ -579,6 +614,33 @@ class PenjualanPreorderController extends Controller
                 'review' => $request->review,
                 'rating' => $request->rating
             ]);
+
+        //Update rating user produk-------------------------------------------
+        $id_produk = PenjualanPreorder::where('id', $penjualanPreorder->id)->get()[0]->id_produk;
+        $id_penjual = Produk::where('produks.id', $id_produk)->get()[0]->id_user;
+        $data_rating_user_preorder = PenjualanPreorder::where('penjualan_preorders.id_user', $id_penjual)
+            ->where('status_order', 'diterima')
+            ->where('rating', '!=', 0)
+            ->get();
+
+        $penawaran_request = PenjualanRequest::join('penawarans', 'penawarans.id', 'penjualan_requests.id_penawaran')
+            ->where('penawarans.id_penawar', $id_penjual)
+            ->where('status_penjualan_req', 'diterima')
+            ->where('rating', '!=', 0)
+            ->get();
+
+        $jumlah_rating = intval(count($data_rating_user_preorder)) + intval(count($penawaran_request));
+        $total_rating = 0;
+        foreach ($data_rating_user_preorder as $data) {
+            $total_rating += intval($data->rating);
+        }
+        foreach ($penawaran_request as $data) {
+            $total_rating += intval($data->rating);
+        }
+        $rating = $total_rating / $jumlah_rating;
+        User::where('id', $id_penjual)->update(['rating' => $rating]);
+        //-------------------------------------------------------------
+
         return redirect('/bulkbuy/daftar_pembelian_preorder/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }
 

@@ -1,4 +1,4 @@
-@extends('layouts.produkView')
+@extends('layouts.pembelianview')
 @section('content')
 <div class="container mt-4 shadow-lg p-3 mb-5 bg-white rounded border-0">
     <div class="card border-0">
@@ -6,7 +6,7 @@
             <h3>Rating dan Review</h3>
         </div>
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data" action="/terjual-rating/{{$penjualanPreorder->id}}">
+            <form method="post" enctype="multipart/form-data" action="/penjualan-bulk-rating/{{$penjualanPreorder->id}}">
                 @method('PATCH')
                 @csrf
                 <div class="form-group row">

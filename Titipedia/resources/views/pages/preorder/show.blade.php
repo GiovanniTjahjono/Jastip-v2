@@ -42,7 +42,7 @@
                             <td>{{$data->status_order}}</td>
                             <td>
                                 @if($data->status_order === 'menunggu')
-                                {{$sisa_waktu}} Hari
+                                {{$batas_waktu[$loop->iteration - 1]}} Hari
                                 @elseif($data->status_order === 'dikirim')
                                 Sedang dikirim
                                 @else

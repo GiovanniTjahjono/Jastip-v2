@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Req;
 use App\Notifikasi;
+use App\Penawaran;
 use App\PenjualanPreorder;
+use App\Produk;
 
 class PenjualanRequestController extends Controller
 {
@@ -33,16 +35,18 @@ class PenjualanRequestController extends Controller
             ->select('penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'kategoris.nama_kategori as nama_kategori')
             ->get();
 
-        //-------------Dicoba-------------
-        $sisa_waktu = 0;
-        if (count($penjualan_requests) > 0) {
-            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
-            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_requests[0]->created_at . ' + 3 days')));
+
+        $batas_waktu = [];
+        foreach($penjualan_requests as $data) {
+            $sisa_waktu = 0;
+            $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($data->created_at . ' + 3 days')));
             $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            array_push($batas_waktu, $sisa_waktu);
         }
 
 
-        return view('pages.penawaran.show_request', compact('penjualan_requests', 'sisa_waktu'));
+        return view('pages.penawaran.show_request', compact('penjualan_requests', 'batas_waktu'));
     }
     public function indexRequestTerjual()
     {
@@ -82,14 +86,17 @@ class PenjualanRequestController extends Controller
             ->where('penjualan_requests.id_user', $id_user)
             ->select('penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'kategoris.nama_kategori as nama_kategori')
             ->get();
-        $sisa_waktu = 0;
-        if (count($penjualan_requests) > 0) {
-            $waktu_sekarang = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
-            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($penjualan_requests[0]->created_at . ' + 3 days')));
-            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
-        }
+       
+            $batas_waktu = [];
+            foreach($penjualan_requests as $data) {
+                $sisa_waktu = 0;
+                $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+                $waktu_pembelian = strtotime(date('Y-m-d', strtotime($data->created_at . ' + 3 days')));
+                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+                array_push($batas_waktu, $sisa_waktu);
+            }
 
-        return view('pages.penawaran.show_request', compact('penjualan_requests', 'sisa_waktu'));;
+        return view('pages.penawaran.show_request', compact('penjualan_requests', 'batas_waktu'));;
     }
     /**
      * Update the specified resource in storage.
@@ -235,6 +242,8 @@ class PenjualanRequestController extends Controller
      * @param  \App\PenjualanRequest  $penjualanRequest
      * @return \Illuminate\Http\Response
      */
+
+
     public function updateRatingReq(Request $request, PenjualanRequest $penjualanRequest)
     {
 
@@ -249,6 +258,33 @@ class PenjualanRequestController extends Controller
                 'review' => $request->review,
                 'rating' => $request->rating
             ]);
+
+        //Update rating user-------------------------------------------
+        $id_penawar = Penawaran::where('id', $penjualanRequest->id_penawaran)->get()[0]->id_penawar;
+        $penawaran_request = PenjualanRequest::join('penawarans', 'penawarans.id', 'penjualan_requests.id_penawaran')
+            ->where('penawarans.id_penawar', $id_penawar)
+            ->where('status_penjualan_req', 'diterima')
+            ->where('rating', '!=', 0)
+            ->get();
+
+        $id_penjual = Produk::where('produks.id', $id_penawar)->get()[0]->id_user;
+        $data_rating_user_preorder = PenjualanPreorder::where('penjualan_preorders.id_user', $id_penjual)
+            ->where('status_order', 'diterima')
+            ->where('rating', '!=', 0)
+            ->get();
+
+        $jumlah_rating = intval(count($data_rating_user_preorder)) + intval(count($penawaran_request));
+        $total_rating = 0;
+        foreach ($data_rating_user_preorder as $data) {
+            $total_rating += intval($data->rating);
+        }
+        foreach ($penawaran_request as $data) {
+            $total_rating += intval($data->rating);
+        }
+        $rating = $total_rating / $jumlah_rating;
+        User::where('id', $id_penjual)->update(['rating' => $rating]);
+        //-------------------------------------------------------------
+
         return redirect('/pembelian-request/daftar_pembelian_request/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }
     /**

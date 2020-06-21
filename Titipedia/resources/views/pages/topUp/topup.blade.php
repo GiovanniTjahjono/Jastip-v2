@@ -3,7 +3,7 @@
 <div class="container mt-4 shadow-lg p-3 mb-5 bg-white rounded border-0">
     <div class="card border-0">
         <div class="card-header bg-white">
-            <h3>Total Saldo : Rp.{{Auth::user()->saldo}}</h3>
+            <h3>Total Saldo : Rp.{{number_format(Auth::user()->saldo)}}</h3>
         </div>
         <div class="card-body">
             <div class="row" style="margin-bottom: 10px">
@@ -42,8 +42,8 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama_bank}}</td>
-                            <td>{{$data->saldo_masuk}}</td>
-                            <td>{{$data->saldo_keluar}}</td>
+                            <td>Rp. {{number_format($data->saldo_masuk)}}</td>
+                            <td>Rp. {{number_format($data->saldo_keluar)}}</td>
                             <td>{{$data->tanggal}}</td>
                             <td>{{$data->keterangan}}</td>
                         </tr>

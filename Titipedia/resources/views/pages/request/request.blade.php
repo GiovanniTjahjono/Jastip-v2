@@ -48,6 +48,7 @@
                             <td>{{$data->kota_req}}</td>
                             <td>{{$data->status_req}}</td>
                             <td>{{$data->keterangan}}</td>
+                            @if($data->status_req === "aktif")
                             <td><a href="/cek-penawaran/{{$data->id}}" class="badge badge-primary">cek penawaran</a>
                                 <a href="/req/{{$data->id}}/edit" class="badge badge-success">edit</a>
                                 <!-- <a href="" class="badge badge-danger">delete</a> -->
@@ -57,6 +58,10 @@
                                     <button type="submit" class="badge badge-danger">Delete</button>
                                 </form>
                             </td>
+                            @else
+                            <td><a href="pembelian-request/daftar_pembelian_request/{{Auth::user()->id}}" class="badge badge-primary">cek pembelian</a>
+                            </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>

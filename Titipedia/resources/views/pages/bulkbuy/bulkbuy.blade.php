@@ -84,9 +84,9 @@
                     <ul class="list-group list-group-flush">
 
                         <li class="list-group-item" id="harga_produk" value="{{$produkBulkBuy->harga_produk}}"><small class="text-muted">Harga produk:
-                            </small>Rp.{{$produkBulkBuy->harga_produk}}</li>
+                            </small>Rp.{{number_format($produkBulkBuy->harga_produk)}}</li>
                         <li class="list-group-item" id="harga_jasa" value="{{$produkBulkBuy->harga_jasa}}"><small class="text-muted">Harga jasa:
-                            </small>Rp.{{$produkBulkBuy->harga_jasa}}</li>
+                            </small>Rp.{{number_format($produkBulkBuy->harga_jasa)}}</li>
                         <li class="list-group-item"><small class="text-muted">Jumlah Target: </small>{{$produkBulkBuy->jumlah_target}}</li>
                         <li class="list-group-item"><small class="text-muted">Asal Negara: </small>{{$produkBulkBuy->asal_negara}}</li>
                         <li class="list-group-item"><small class="text-muted">Berat: </small>{{$produkBulkBuy->berat}} Kg
@@ -198,7 +198,7 @@
                     localStorage.setItem('harga', hargaJadi);
                     // Tampilkan d total harga
                     $('#totalHarga').html('');
-                    $('#totalHarga').append('<h3>Rp.' + localStorage.getItem('harga') + '</h3><input type="hidden" class="form-control" name="hargaTotalnya" id="totalHargaH3" value="' + localStorage.getItem('harga') + '">');
+                    $('#totalHarga').append('<h3>Rp. ' + localStorage.getItem('harga') + '</h3><input type="hidden" class="form-control" name="hargaTotalnya" id="totalHargaH3" value="' + localStorage.getItem('harga') + '">');
 
                 });
         });
@@ -220,7 +220,7 @@
             localStorage.setItem('harga', hargaBaru);
             // tampilkan
             $('#totalHarga').html('');
-            $('#totalHarga').append('<h3>Rp.' + localStorage.getItem('harga') + '</h3><input type="hidden" class="form-control" name="hargaTotalnya" id="totalHargaH3" value="' + localStorage.getItem('harga') + '">');
+            $('#totalHarga').append('<h3>Rp. ' + localStorage.getItem('harga') + '</h3><input type="hidden" class="form-control" name="hargaTotalnya" id="totalHargaH3" value="' + localStorage.getItem('harga') + '">');
         });
     });
 </script>
