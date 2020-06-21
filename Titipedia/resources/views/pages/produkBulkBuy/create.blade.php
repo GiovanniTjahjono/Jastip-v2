@@ -33,25 +33,25 @@
                 <div class="form-group row">
                     <label for="jumlah_target" class="col-sm-2 col-form-label">Jumlah Target</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control @error('jumlah_target') is-invalid @enderror" id="jumlah_target" name="jumlah_target" value="{{old('jumlah_target')}}">
+                        <input type="number" class="form-control @error('jumlah_target') is-invalid @enderror" id="jumlah_target" name="jumlah_target" value="{{old('jumlah_target')}}" min="1">
                         @error('jumlah_target')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="harga_jasa" class="col-sm-2 col-form-label">Harga Jasa</label>
+                    <label for="harga_jasa" class="col-sm-2 col-form-label">Harga Jasa (Rp.)</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control @error('harga_jasa') is-invalid @enderror" id="harga_jasa" name="harga_jasa" value="{{old('harga_jasa')}}">
+                        <input type="number" class="form-control @error('harga_jasa') is-invalid @enderror" id="harga_jasa" name="harga_jasa" value="{{old('harga_jasa')}}" min="1">
                         @error('harga_jasa')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="harga_produk" class="col-sm-2 col-form-label">Harga Produk</label>
+                    <label for="harga_produk" class="col-sm-2 col-form-label">Harga Produk (Rp.)</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control @error('harga_produk') is-invalid @enderror" id="harga_produk" name="harga_produk" value="{{old('harga_produk')}}">
+                        <input type="number" class="form-control @error('harga_produk') is-invalid @enderror" id="harga_produk" name="harga_produk" value="{{old('harga_produk')}}" min="1">
                         @error('harga_produk')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -60,7 +60,7 @@
                 <div class="form-group row">
                     <label for="berat" class="col-sm-2 col-form-label">Berat (Kg)</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control @error('berat') is-invalid @enderror" id="berat" name="berat" value="{{old('berat')}}">
+                        <input type="number" class="form-control @error('berat') is-invalid @enderror" id="berat" name="berat" value="{{old('berat')}}" min="1">
                         @error('berat')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -95,14 +95,14 @@
                     <label for="asal_negara" class="col-sm-2 col-form-label">Asal Negara</label>
                     <div class="col-sm-10">
                         <select class="custom-select @error('asal_negara') is-invalid @enderror" id="asal_negara" name="asal_negara">
-                           
+
                             <?PHP
-                            
+
                             $data = json_decode($negara, true);
-                            foreach($data as $item) {
+                            foreach ($data as $item) {
                                 echo "<option value='" . $item . "'>" . $item . "</option>";
                             }
-                           
+
                             ?>
                         </select>
                     </div>
