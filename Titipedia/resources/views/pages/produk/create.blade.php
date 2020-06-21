@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="stok" class="col-sm-2 col-form-label">Stok Produk</label>
+                    <label for="stok" class="col-sm-2 col-form-label">Batas Produk</label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" name="stok" value="{{old('stok')}}">
                         @error('stok')

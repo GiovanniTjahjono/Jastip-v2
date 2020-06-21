@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 use Illuminate\Validation\Validator as Val;
+
 
 class UserController extends Controller
 {
@@ -17,7 +19,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('pages.profile.profile');
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 20abcef3dbf0bc2149a7412bc9b60005"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+        return view('pages.profile.profile', compact('response'));
     }
 
     /**
@@ -73,14 +93,26 @@ class UserController extends Controller
     public function update(Request $request)
     {
         //Kurang Validator
-        $user = User::find($request->id_user);
-        $saldo = $user->saldo;
-        $saldo_baru = $saldo + $request->saldo_baru;
-        User::where('id', $request->id_user)
+        $request->validate([
+            'nama' => 'required',
+            'tanggal_lahir' => 'required',
+            'tempat_lahir' => 'required',
+            'kota' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'no_hp' => 'required'
+        ]);
+        User::where('id', Auth::user()->id)
             ->update([
-                'saldo' => $saldo_baru
+                'name' => $request->nama,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'tempat_lahir' => $request->tempat_lahir,
+                'kota' => $request->kota,
+                'alamat' => $request->alamat,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'no_hp' => $request->no_hp,
             ]);
-        return redirect('produk')->with('status', 'Data Berhasil Diubah!');
+        return redirect()->back();
     }
 
     /**
