@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/home', 'HomeController@index');
 Route::get('/', 'HomeController@index');
+Route::get('/home-preorder', 'HomeController@indexAllPreorder');
+Route::get('/home-bulkbuy', 'HomeController@indexAllBulkBuy');
+Route::get('/home-request', 'HomeController@indexAllRequest');
 Auth::routes();
 
 Route::get('/profile', 'HomeController@index')->name('pages/home');
