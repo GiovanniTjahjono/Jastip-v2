@@ -32,14 +32,21 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<h3>Produk Terbaru</h3>
+<div class="row">
+    <div class="col">
+        <h3>Produk Terbaru</h3>
+    </div>
+    <div class="pull-right">
+        <a href="/home-preorder"> <small>Tampilkan Semua-></small> </a>
+    </div>
+</div>
 <div class="row">
     @foreach($produks as $data)
     <div class="col-lg-4 col-md-6 col-6 mb-4">
         <div class="card h-100">
             <a href="#"><img class="w-100 h-100 card-img-top mx-auto d-block" src="produk_images/{{$data->url}}" alt=""></a>
             <div class="card-body">
-                
+
             </div>
             <div class="card-footer bg-white">
                 <small class="font-weight-bold" style="color: #65587f;">{{$data->nama}}</small><br>
@@ -68,7 +75,14 @@
     </div>
     @endforeach
 </div>
-<h3>Produk Bulk Buy Terbaru</h3>
+<div class="row">
+    <div class="col">
+        <h3>Produk Bulk Buy Terbaru</h3>
+    </div>
+    <div class="pull-right">
+        <a href="/home-bulkbuy"> <small>Tampilkan Semua-></small> </a>
+    </div>
+</div>
 <div class="row">
     @foreach($bulkbuys as $data)
     <div class="col-lg-4 col-md-6 col-6 mb-4">
@@ -102,7 +116,14 @@
     </div>
     @endforeach
 </div>
-<h3>Request Terbaru</h3>
+<div class="row">
+    <div class="col">
+        <h3>Produk Request</h3>
+    </div>
+    <div class="pull-right">
+        <a href="/home-request"> <small>Tampilkan Semua-></small> </a>
+    </div>
+</div>
 <div class="row">
     @foreach($requests as $data)
     <div class="col-lg-4 col-md-6 col-6 mb-4">
@@ -114,11 +135,11 @@
             <div class="card-footer bg-white">
                 <div class="text-right">
                     @if(Auth::check())
-                        @if($data->id_user === Auth::user()->id)
-                        <a href="/cek-penawaran/{{$data->id}}" class="btn btn-success border-0">Lihat Penawaran</a>
-                        @else
-                        <a href="/penawaran/{{$data->id}}" style="background-color: #65587f;" class="btn btn-primary border-0">Ajukan Penawaran</a>
-                        @endif
+                    @if($data->id_user === Auth::user()->id)
+                    <a href="/cek-penawaran/{{$data->id}}" class="btn btn-success border-0">Lihat Penawaran</a>
+                    @else
+                    <a href="/penawaran/{{$data->id}}" style="background-color: #65587f;" class="btn btn-primary border-0">Ajukan Penawaran</a>
+                    @endif
                     @else
                     <a href="/penawaran/{{$data->id}}" style="background-color: #65587f;" class="btn btn-primary border-0">Ajukan Penawaran</a>
                     @endif

@@ -64,6 +64,70 @@ class HomeController extends Controller
         return view('pages.home', compact('produks', 'kategoris', 'bulkbuys', 'requests'));
     }
     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function indexAllPreorder()
+    {
+        //auth::chek untuk kondisi jika user login
+        //if (Auth::check()) {
+        //dd(Negara::getList('en', 'json'));
+        $kategoris = DB::table('kategoris')->get();
+        // Ambil data produk
+        $produks = DB::table('produks')
+            ->join('users', 'users.id', '=', 'produks.id_user')
+            ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
+            ->join('gambars', 'produks.id', '=', 'gambars.id_produk')->groupBy('produks.id')
+            ->select('produks.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
+            ->where('produks.stok', '>', 0)
+            ->where('produks.status_produk', 'aktif')
+            ->latest()->get();
+        return view('pages.home_preorder', compact('produks', 'kategoris'));
+    }
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function indexAllBulkBuy()
+    {
+        //auth::chek untuk kondisi jika user login
+        //if (Auth::check()) {
+        //dd(Negara::getList('en', 'json'));
+        $kategoris = DB::table('kategoris')->get();
+        // Ambil data produk bulk buy
+        $bulkbuys = DB::table('produk_bulk_buys')
+            ->join('users', 'users.id', '=', 'produk_bulk_buys.id_user')
+            ->join('kategoris', 'produk_bulk_buys.id_kategori', '=', 'kategoris.id')
+            ->join('gambars', 'produk_bulk_buys.id', '=', 'gambars.id_bulkbuy')->groupBy('produk_bulk_buys.id')
+            ->select('produk_bulk_buys.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
+            ->where('produk_bulk_buys.jumlah_target', '>', 0)
+            ->where('produk_bulk_buys.status_bulk', 'aktif')
+            ->latest()->get();
+        return view('pages.home_bulkbuy', compact('bulkbuys', 'kategoris'));
+    }
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function indexAllRequest()
+    {
+        //auth::chek untuk kondisi jika user login
+        //if (Auth::check()) {
+        //dd(Negara::getList('en', 'json'));
+        $kategoris = DB::table('kategoris')->get();
+        $requests = DB::table('requests')
+            ->join('users', 'users.id', '=', 'requests.id_user')
+            ->join('kategoris', 'requests.id_kategori', '=', 'kategoris.id')
+            ->join('gambars', 'requests.id', '=', 'gambars.id_request')->groupBy('requests.id')
+            ->select('requests.*', 'users.name', 'gambars.url', 'kategoris.nama_kategori')
+            ->where('requests.status_req', 'aktif')
+            ->latest()->get();
+        return view('pages.home_request', compact('requests', 'kategoris'));
+    }
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
