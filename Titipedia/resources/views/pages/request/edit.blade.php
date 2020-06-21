@@ -38,7 +38,7 @@
                 <div class="form-group row">
                     <label for="jumlah_req" class="col-sm-2 col-form-label">Jumlah</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control @error('jumlah_req') is-invalid @enderror" id="jumlah_req" name="jumlah_req" value="{{$req->jumlah_req}}">
+                        <input type="number" class="form-control @error('jumlah_req') is-invalid @enderror" id="jumlah_req" name="jumlah_req" value="{{$req->jumlah_req}}" min="1">
                         @error('jumlah_req')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -94,14 +94,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group row">
                     <div class="col-sm-12">
-                    <a href="/edit-gambar-request/{{$req->id}}" class="btn btn-success float-right">Edit Gambar</a>
+                        <a href="/edit-gambar-request/{{$req->id}}" class="btn btn-success float-right">Edit Gambar</a>
                     </div>
                 </div>
                 <div class="form-group row">
-                    
+
                     <table class="table">
                         <thead>
                             <tr>
@@ -109,12 +109,11 @@
                                 <th scope="col">Gambar</th>
                             </tr>
                         </thead>
-                        <tbody >
+                        <tbody>
                             @foreach($gambars as $key => $data)
                             <tr>
                                 <th scope="row">{{$key + 1}}</th>
-                                <td><img class="rounded img-thumbnail" style="max-width: 150px;"
-                                        src="{{asset('request_images/' . $data->url)}}"></td>
+                                <td><img class="rounded img-thumbnail" style="max-width: 150px;" src="{{asset('request_images/' . $data->url)}}"></td>
                             </tr>
                             @endforeach
                         </tbody>

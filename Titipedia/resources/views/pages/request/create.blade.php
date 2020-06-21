@@ -33,7 +33,7 @@
                 <div class="form-group row">
                     <label for="jumlah_req" class="col-sm-2 col-form-label">Jumlah</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control @error('jumlah_req') is-invalid @enderror" id="jumlah_req" name="jumlah_req" value="{{old('jumlah_req')}}">
+                        <input type="number" class="form-control @error('jumlah_req') is-invalid @enderror" id="jumlah_req" name="jumlah_req" value="{{old('jumlah_req')}}" min="1">
                         @error('jumlah_req')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -64,7 +64,7 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="form-group row">
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
