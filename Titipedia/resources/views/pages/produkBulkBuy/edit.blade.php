@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="harga_jasa" class="col-sm-2 col-form-label">Harga Jasa</label>
+                    <label for="harga_jasa" class="col-sm-2 col-form-label">Harga Jasa (Rp.)</label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control @error('harga_jasa') is-invalid @enderror" id="harga_jasa" name="harga_jasa" value="{{$produkBulkBuy->harga_jasa}}" min="1">
                         @error('harga_jasa')
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="harga_produk" class="col-sm-2 col-form-label">Harga Produk</label>
+                    <label for="harga_produk" class="col-sm-2 col-form-label">Harga Produk (Rp.)</label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control @error('harga_produk') is-invalid @enderror" id="harga_produk" name="harga_produk" value="{{$produkBulkBuy->harga_produk}}" min="1">
                         @error('harga_produk')
