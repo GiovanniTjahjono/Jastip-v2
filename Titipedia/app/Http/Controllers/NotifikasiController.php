@@ -90,6 +90,8 @@ class NotifikasiController extends Controller
             return redirect($notify[0]->link);
         } else if ($notify[0]->jenis == 'request') {
             return redirect($notify[0]->link);
+        } else if ($notify[0]->jenis == 'penawaran') {
+            return redirect($notify[0]->link);
         }
     }
     /**

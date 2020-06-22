@@ -18,7 +18,7 @@ class CreateNotifikasisTable extends Migration
             $table->timestamps();
             $table->string('isi_notifikasi');
             $table->dateTime('waktu_kirim');
-            $table->enum('jenis', ['preorder', 'request', 'pesan', 'bulkbuy']);
+            $table->enum('jenis', ['preorder', 'request', 'penawaran', 'bulkbuy']);
             $table->enum('dibaca', ['belum', 'sudah']);
             $table->string('link');
             $table->integer('id_penerima');

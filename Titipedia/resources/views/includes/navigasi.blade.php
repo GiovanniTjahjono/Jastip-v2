@@ -51,6 +51,12 @@
                                                                                                     case "bulkbuy":
                                                                                                       echo "clock-o";
                                                                                                       break;
+                                                                                                    case "request":
+                                                                                                      echo "hand-paper-o";
+                                                                                                      break;
+                                                                                                    case "penawaran":
+                                                                                                      echo "times-rectangle-o";
+                                                                                                      break;
                                                                                                   } ?>">
               </i> {{$notifikasi->isi_notifikasi}}</a>
             @endforeach

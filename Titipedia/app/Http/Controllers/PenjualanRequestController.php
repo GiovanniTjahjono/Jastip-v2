@@ -37,7 +37,7 @@ class PenjualanRequestController extends Controller
 
 
         $batas_waktu = [];
-        foreach($penjualan_requests as $data) {
+        foreach ($penjualan_requests as $data) {
             $sisa_waktu = 0;
             $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
             $waktu_pembelian = strtotime(date('Y-m-d', strtotime($data->created_at . ' + 3 days')));
@@ -86,15 +86,15 @@ class PenjualanRequestController extends Controller
             ->where('penjualan_requests.id_user', $id_user)
             ->select('penjualan_requests.*', 'requests.nama_req as nama_req', 'requests.jumlah_req as jumlah_req', 'kategoris.nama_kategori as nama_kategori')
             ->get();
-       
-            $batas_waktu = [];
-            foreach($penjualan_requests as $data) {
-                $sisa_waktu = 0;
-                $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
-                $waktu_pembelian = strtotime(date('Y-m-d', strtotime($data->created_at . ' + 3 days')));
-                $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
-                array_push($batas_waktu, $sisa_waktu);
-            }
+
+        $batas_waktu = [];
+        foreach ($penjualan_requests as $data) {
+            $sisa_waktu = 0;
+            $waktu_sekarang = strtotime(date(Carbon::now()->format('Y-m-d H:i:s')));
+            $waktu_pembelian = strtotime(date('Y-m-d', strtotime($data->created_at . ' + 3 days')));
+            $sisa_waktu = strval(intval(($waktu_pembelian - $waktu_sekarang) / 60 / 60 / 24)); //Mengasilkan Hari
+            array_push($batas_waktu, $sisa_waktu);
+        }
 
         return view('pages.penawaran.show_request', compact('penjualan_requests', 'batas_waktu'));;
     }
@@ -159,6 +159,15 @@ class PenjualanRequestController extends Controller
                 ]);
             $query_penawaran = DB::table('penawarans')
                 ->where('penawarans.id', $request->id_penawaran)->get();
+            Penawaran::where('id', $request->id_penawaran)
+                ->update([
+                    'status' => 'diterima'
+                ]);
+            Penawaran::where('id_request', $query_penawaran[0]->id_request)
+                ->where('status', 'menunggu')
+                ->update([
+                    'status' => 'ditolak'
+                ]);
             Notifikasi::create([
                 'isi_notifikasi' => "Request Dari " . Auth::user()->name,
                 'waktu_kirim' => date("Y-m-d H:i:s"),
@@ -168,6 +177,21 @@ class PenjualanRequestController extends Controller
                 'id_penerima' => $query_penawaran[0]->id_penawar,
                 'id_trigger' => Auth::user()->id
             ]);
+            $query_penawar_notif = DB::table('penawarans')
+                ->where('status', 'ditolak')
+                ->where('id_request', $query_penawaran[0]->id_request)
+                ->get();
+            foreach ($query_penawar_notif as $penawar) {
+                Notifikasi::create([
+                    'isi_notifikasi' => "Penawaran Ditolak " . Auth::user()->name,
+                    'waktu_kirim' => date("Y-m-d H:i:s"),
+                    'jenis' => 'penawaran',
+                    'dibaca' => 'belum',
+                    'link' => '/penawaran/' . $request->id_penawaran,
+                    'id_penerima' => $penawar->id_penawar,
+                    'id_trigger' => Auth::user()->id
+                ]);
+            }
             Req::where('id', $query_penawaran[0]->id_request)
                 ->update([
                     'status_req' => 2

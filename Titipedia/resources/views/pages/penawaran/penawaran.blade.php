@@ -8,8 +8,7 @@
             </div>
             @if($request->id_user !== Auth::user()->id)
             <div class="col-6">
-                <a href="/pesan/{{$request->id_user}}" class="btn float-right btn-success border-0"
-                    style="background-color: #65587f;">Chat Peminta</a>
+                <a href="/pesan/{{$request->id_user}}" class="btn float-right btn-success border-0" style="background-color: #65587f;">Chat Peminta</a>
             </div>
             @endif
         </div>
@@ -20,8 +19,7 @@
                         <div class="carousel-inner">
                             @if(count($gambars) > 0)
                             @for($i = 0;$i < count($gambars); $i++) @if($i===0) <div class="carousel-item active">
-                                <img src="{{asset('request_images/'.$gambars[$i]->url)}}" class="d-block w-100"
-                                    alt="...">
+                                <img src="{{asset('request_images/'.$gambars[$i]->url)}}" class="d-block w-100" alt="...">
                         </div>
                     </div>
                     @else
@@ -130,12 +128,16 @@
                         <td>{{$data->status}}</td>
                         <td>{{$data->name}}</td>
                         <td>
-                            @if($data->id_penawar === Auth::user()->id)
+                            @if($data->id_penawar === Auth::user()->id && $data->status === "menunggu")
                             <form action="/penawaran/{{$data->id}}" method="post">
                                 @method('delete')
                                 @csrf
                                 <button type="submit" class="badge badge-danger">DELETE</button>
                             </form>
+                            @elseif($data->status === "ditolak")
+                            <label>Maaf Penawaran Ditolak</label>
+                            @elseif($data->status === "diterima")
+                            <label>Penawaran Diterima</label>
                             @endif
                         </td>
                     </tr>
