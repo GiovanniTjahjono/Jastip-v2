@@ -277,37 +277,48 @@ class PenjualanRequestController extends Controller
         ]);
 
         //dd($request->review);
+        
         PenjualanRequest::where('id', $penjualanRequest->id)
             ->update([
                 'review' => $request->review,
                 'rating' => $request->rating
             ]);
+                
+       //-------------------------------------------------------------------------------------------
 
-        //Update rating user-------------------------------------------
-        $id_penawar = Penawaran::where('id', $penjualanRequest->id_penawaran)->get()[0]->id_penawar;
-        $penawaran_request = PenjualanRequest::join('penawarans', 'penawarans.id', 'penjualan_requests.id_penawaran')
-            ->where('penawarans.id_penawar', $id_penawar)
-            ->where('status_penjualan_req', 'diterima')
-            ->where('rating', '!=', 0)
-            ->get();
+       $id_penjual = PenjualanRequest::join('penawarans', 'penawarans.id', 'penjualan_requests.id_penawaran')->where('penjualan_requests.id', $penjualanRequest->id_penawaran)->get()[0]->id_penawar;
+       // Ambil semua PO yang sudah terjual dari penjual x
+       $produks = PenjualanPreorder::join('produks', 'produks.id', 'penjualan_preorders.id_produk')
+           ->where('produks.id_user', $id_penjual)
+           ->where('penjualan_preorders.rating', '!=', 0)
+           ->get();
+       // Ambil semua PO Bulkbuy yang sudah terjual dari penjual x
+       $produkBulkBuys = PenjualanPreorder::join('produk_bulk_buys', 'produk_bulk_buys.id', 'penjualan_preorders.id_bulkbuy')
+           ->where('produk_bulk_buys.id_user', $id_penjual)
+           ->where('penjualan_preorders.rating', '!=', 0)
+           ->get();
+       // Ambil semua Penawaran yang sudah terjual dari penjual x
+       $penawarans = PenjualanRequest::join('penawarans', 'penawarans.id', 'penjualan_requests.id_penawaran')
+           ->join('requests', 'requests.id', 'penawarans.id_request')
+           ->where('penawarans.id_penawar', $id_penjual)
+           ->where('penjualan_requests.rating', '!=', 0)
+           ->get();
+       
+       $jumlah_rating = intval(count($produks)) + intval(count($produkBulkBuys)) + intval(count($penawarans));
+       $nilai_rating = 0;
+       
+       foreach ($produks as $data) {
+           $nilai_rating += intval($data->rating);
+       }
+       foreach ($produkBulkBuys as $data) {
+           $nilai_rating += intval($data->rating);
+       }
+       foreach ($penawarans as $data) {
+           $nilai_rating += intval($data->rating);
+       }
 
-        $id_penjual = Produk::where('produks.id', $id_penawar)->get()[0]->id_user;
-        $data_rating_user_preorder = PenjualanPreorder::where('penjualan_preorders.id_user', $id_penjual)
-            ->where('status_order', 'diterima')
-            ->where('rating', '!=', 0)
-            ->get();
-
-        $jumlah_rating = intval(count($data_rating_user_preorder)) + intval(count($penawaran_request));
-        $total_rating = 0;
-        foreach ($data_rating_user_preorder as $data) {
-            $total_rating += intval($data->rating);
-        }
-        foreach ($penawaran_request as $data) {
-            $total_rating += intval($data->rating);
-        }
-        $rating = $total_rating / $jumlah_rating;
-        User::where('id', $id_penjual)->update(['rating' => $rating]);
-        //-------------------------------------------------------------
+       $rating_user = $nilai_rating/$jumlah_rating;
+       User::where('id', $id_penjual)->update(['rating' => $rating_user]);
 
         return redirect('/pembelian-request/daftar_pembelian_request/' . Auth::user()->id)->with('status', 'Pemberian Rating dan Review Berhasil!');
     }

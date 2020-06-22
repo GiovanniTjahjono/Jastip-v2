@@ -24,8 +24,9 @@ Route::get('/home-preorder', 'HomeController@indexAllPreorder');
 Route::get('/home-bulkbuy', 'HomeController@indexAllBulkBuy');
 Route::get('/home-request', 'HomeController@indexAllRequest');
 Auth::routes();
-
+//Profile
 Route::get('/profile', 'HomeController@index')->name('pages/home');
+Route::post('/edit-profile', 'UserController@update');
 //kategori
 Route::get('/kategori/{kategori}', 'KategoriController@show');
 //cari
