@@ -23,6 +23,18 @@
                         <div class="card-body">                              
                             <h3 class="card-title">{{Auth::user()->name}}</h3>
                             <p class="card-subtitle mb-2 text-muted">{{Auth::user()->username}}</p>
+                            <p class="card-text"><small class="text-muted">Rating: </small>
+                                <?PHP
+                                    $bintang = 5;
+                                    for ($i = 0; $i < intval(Auth::user()->rating); $i++) {
+                                        echo "&#9733;";
+                                        $bintang -= 1;
+                                    }
+                                    for ($i = 0; $i < $bintang; $i++) {
+                                        echo "&#9734;";   
+                                    }
+                                ?>
+                            </p>
                             <p class="card-text"><small class="text-muted">Email: </small>{{Auth::user()->email}}</p> 
                             <p class="card-text"><small class="text-muted">Jenis Kelamin: </small>{{Auth::user()->jenis_kelamin}}</p>
                             <p class="card-text"><small class="text-muted">Tanggal Lahir: </small>{{Auth::user()->tanggal_lahir}}</p>
